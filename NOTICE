@@ -1,0 +1,11 @@
+Gladys Anniversaries integration
+Copyright 2026 William Deren
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+The options and the date semantics (years at the next anniversary, current
+years, count up, one-time dates, half anniversary, dates without a year) follow
+the Home Assistant Anniversaries integration by pinkywafer
+(https://github.com/pinkywafer/Anniversaries, MIT License). No file of it is
+included: the calendar code of this integration is a new JavaScript
+implementation.

@@ -1,0 +1,1881 @@
+{
+  "manifest_version": 1,
+  "type": "device",
+  "name": "Anniversaries",
+  "description": {
+    "en": "Countdowns to birthdays and important dates: days left, years, scenes, widgets.",
+    "fr": "Compte à rebours des anniversaires et dates importantes : jours, années, scènes, widgets.",
+    "de": "Countdown zu Geburtstagen und wichtigen Daten: Tage, Jahre, Szenen, Widgets.",
+    "es": "Cuenta atrás de cumpleaños y fechas importantes: días, años, escenas, widgets."
+  },
+  "version": "0.1.0",
+  "docker_image": "ghcr.io/william-de71/gladys-anniversaries:0.1.0",
+  "gladys_version": ">=5.1.0",
+  "categories": ["services"],
+  "cover_image": "https://raw.githubusercontent.com/William-De71/gladys-anniversaries/main/cover.jpg",
+  "transports": ["local"],
+  "config_schema": [
+    {
+      "key": "intro",
+      "type": "section",
+      "label": {
+        "en": "Your dates",
+        "fr": "Vos dates",
+        "de": "Ihre Daten",
+        "es": "Sus fechas"
+      },
+      "description": {
+        "en": "Declare each birthday, anniversary or important date with the “Add a date” button below, then add it from the Discover tab: it becomes a device counting the days. Nothing leaves your Gladys: the integration calls no online service.",
+        "fr": "Déclarez chaque anniversaire ou date importante avec le bouton « Ajouter une date » ci-dessous, puis ajoutez-la depuis l’onglet Découverte : elle devient un appareil qui compte les jours. Rien ne quitte votre Gladys : l’intégration n’appelle aucun service en ligne.",
+        "de": "Legen Sie jeden Geburtstag, Jahrestag oder jedes wichtige Datum mit der Schaltfläche „Datum hinzufügen“ unten an und fügen Sie es dann im Tab Entdecken hinzu: Es wird zu einem Gerät, das die Tage zählt. Nichts verlässt Ihr Gladys: Die Integration ruft keinen Onlinedienst auf.",
+        "es": "Declare cada cumpleaños, aniversario o fecha importante con el botón «Añadir una fecha» de abajo y luego añádala desde la pestaña Descubrir: se convierte en un dispositivo que cuenta los días. Nada sale de su Gladys: la integración no llama a ningún servicio en línea."
+      }
+    },
+    {
+      "key": "event_hour",
+      "type": "number",
+      "min": 0,
+      "max": 23,
+      "default": 9,
+      "label": {
+        "en": "Hour of the scene events",
+        "fr": "Heure des événements de scène",
+        "de": "Uhrzeit der Szenenereignisse",
+        "es": "Hora de los eventos de escena"
+      },
+      "description": {
+        "en": "The “today”, “in N days” and reminder scenes start every day at this hour (0 to 23, in the timezone of Gladys). The days change at midnight.",
+        "fr": "Les scènes « aujourd’hui », « dans N jours » et de rappel démarrent chaque jour à cette heure (0 à 23, dans le fuseau horaire de Gladys). Les jours changent à minuit.",
+        "de": "Die Szenen „heute“, „in N Tagen“ und Erinnerung starten jeden Tag zu dieser Stunde (0 bis 23, in der Zeitzone von Gladys). Die Tage wechseln um Mitternacht.",
+        "es": "Las escenas «hoy», «dentro de N días» y de recordatorio empiezan cada día a esta hora (0 a 23, en la zona horaria de Gladys). Los días cambian a medianoche."
+      },
+      "placeholder": {
+        "en": "9",
+        "fr": "9",
+        "de": "9",
+        "es": "9"
+      }
+    },
+    {
+      "key": "reminder_days",
+      "type": "number",
+      "min": 0,
+      "max": 60,
+      "default": 7,
+      "label": {
+        "en": "Default reminder (days before)",
+        "fr": "Rappel par défaut (jours avant)",
+        "de": "Standard-Erinnerung (Tage vorher)",
+        "es": "Recordatorio por defecto (días antes)"
+      },
+      "description": {
+        "en": "For the dates without their own reminder. 0: no reminder.",
+        "fr": "Pour les dates sans rappel propre. 0 : aucun rappel.",
+        "de": "Für Daten ohne eigene Erinnerung. 0: keine Erinnerung.",
+        "es": "Para las fechas sin recordatorio propio. 0: ningún recordatorio."
+      },
+      "placeholder": {
+        "en": "7",
+        "fr": "7",
+        "de": "7",
+        "es": "7"
+      }
+    },
+    {
+      "key": "language",
+      "type": "select",
+      "default": "auto",
+      "label": {
+        "en": "Language of the texts",
+        "fr": "Langue des textes",
+        "de": "Sprache der Texte",
+        "es": "Idioma de los textos"
+      },
+      "description": {
+        "en": "Feature names, next date, scene summaries and messages of the buttons. Automatic: the language of your dashboard, once a widget of the integration has been displayed.",
+        "fr": "Noms des fonctionnalités, prochaine date, résumés des scènes et messages des boutons. Automatique : la langue de votre tableau de bord, dès qu’un widget de l’intégration a été affiché.",
+        "de": "Funktionsnamen, nächstes Datum, Szenen-Zusammenfassungen und Meldungen der Schaltflächen. Automatisch: die Sprache Ihres Dashboards, sobald ein Widget der Integration angezeigt wurde.",
+        "es": "Nombres de funciones, próxima fecha, resúmenes de escenas y mensajes de los botones. Automático: el idioma de su panel, en cuanto se haya mostrado un widget de la integración."
+      },
+      "options": [
+        {
+          "value": "auto",
+          "label": {
+            "en": "Automatic",
+            "fr": "Automatique",
+            "de": "Automatisch",
+            "es": "Automático"
+          }
+        },
+        {
+          "value": "en",
+          "label": {
+            "en": "English",
+            "fr": "English",
+            "de": "English",
+            "es": "English"
+          }
+        },
+        {
+          "value": "fr",
+          "label": {
+            "en": "Français",
+            "fr": "Français",
+            "de": "Français",
+            "es": "Français"
+          }
+        },
+        {
+          "value": "de",
+          "label": {
+            "en": "Deutsch",
+            "fr": "Deutsch",
+            "de": "Deutsch",
+            "es": "Deutsch"
+          }
+        },
+        {
+          "value": "es",
+          "label": {
+            "en": "Español",
+            "fr": "Español",
+            "de": "Español",
+            "es": "Español"
+          }
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "key": "add_date",
+      "timeout_seconds": 15,
+      "label": {
+        "en": "Add a date",
+        "fr": "Ajouter une date",
+        "de": "Datum hinzufügen",
+        "es": "Añadir una fecha"
+      },
+      "description": {
+        "en": "A birthday, an anniversary, an event: day and month, with the year when you know it.",
+        "fr": "Un anniversaire, une date anniversaire, un événement : jour et mois, avec l’année si vous la connaissez.",
+        "de": "Ein Geburtstag, ein Jahrestag, ein Ereignis: Tag und Monat, mit dem Jahr, wenn Sie es kennen.",
+        "es": "Un cumpleaños, un aniversario, un evento: día y mes, con el año si lo conoce."
+      },
+      "fields": [
+        {
+          "key": "name",
+          "type": "string",
+          "required": true,
+          "label": {
+            "en": "Name",
+            "fr": "Nom",
+            "de": "Name",
+            "es": "Nombre"
+          },
+          "placeholder": {
+            "en": "Marie",
+            "fr": "Marie",
+            "de": "Marie",
+            "es": "Marie"
+          },
+          "description": {
+            "en": "Shown as the device name, in the widgets and in the scenes (60 characters at most).",
+            "fr": "Affiché comme nom de l’appareil, dans les widgets et dans les scènes (60 caractères au maximum).",
+            "de": "Wird als Gerätename, in den Widgets und in den Szenen angezeigt (höchstens 60 Zeichen).",
+            "es": "Se muestra como nombre del dispositivo, en los widgets y en las escenas (60 caracteres como máximo)."
+          }
+        },
+        {
+          "key": "day",
+          "type": "number",
+          "required": true,
+          "min": 1,
+          "max": 31,
+          "label": {
+            "en": "Day",
+            "fr": "Jour",
+            "de": "Tag",
+            "es": "Día"
+          },
+          "placeholder": {
+            "en": "24",
+            "fr": "24",
+            "de": "24",
+            "es": "24"
+          }
+        },
+        {
+          "key": "month",
+          "type": "select",
+          "required": true,
+          "label": {
+            "en": "Month",
+            "fr": "Mois",
+            "de": "Monat",
+            "es": "Mes"
+          },
+          "options": [
+            {
+              "value": "1",
+              "label": {
+                "en": "January",
+                "fr": "janvier",
+                "de": "Januar",
+                "es": "enero"
+              }
+            },
+            {
+              "value": "2",
+              "label": {
+                "en": "February",
+                "fr": "février",
+                "de": "Februar",
+                "es": "febrero"
+              }
+            },
+            {
+              "value": "3",
+              "label": {
+                "en": "March",
+                "fr": "mars",
+                "de": "März",
+                "es": "marzo"
+              }
+            },
+            {
+              "value": "4",
+              "label": {
+                "en": "April",
+                "fr": "avril",
+                "de": "April",
+                "es": "abril"
+              }
+            },
+            {
+              "value": "5",
+              "label": {
+                "en": "May",
+                "fr": "mai",
+                "de": "Mai",
+                "es": "mayo"
+              }
+            },
+            {
+              "value": "6",
+              "label": {
+                "en": "June",
+                "fr": "juin",
+                "de": "Juni",
+                "es": "junio"
+              }
+            },
+            {
+              "value": "7",
+              "label": {
+                "en": "July",
+                "fr": "juillet",
+                "de": "Juli",
+                "es": "julio"
+              }
+            },
+            {
+              "value": "8",
+              "label": {
+                "en": "August",
+                "fr": "août",
+                "de": "August",
+                "es": "agosto"
+              }
+            },
+            {
+              "value": "9",
+              "label": {
+                "en": "September",
+                "fr": "septembre",
+                "de": "September",
+                "es": "septiembre"
+              }
+            },
+            {
+              "value": "10",
+              "label": {
+                "en": "October",
+                "fr": "octobre",
+                "de": "Oktober",
+                "es": "octubre"
+              }
+            },
+            {
+              "value": "11",
+              "label": {
+                "en": "November",
+                "fr": "novembre",
+                "de": "November",
+                "es": "noviembre"
+              }
+            },
+            {
+              "value": "12",
+              "label": {
+                "en": "December",
+                "fr": "décembre",
+                "de": "Dezember",
+                "es": "diciembre"
+              }
+            }
+          ]
+        },
+        {
+          "key": "year",
+          "type": "number",
+          "min": 1000,
+          "max": 2999,
+          "label": {
+            "en": "Year",
+            "fr": "Année",
+            "de": "Jahr",
+            "es": "Año"
+          },
+          "placeholder": {
+            "en": "1995",
+            "fr": "1995",
+            "de": "1995",
+            "es": "1995"
+          },
+          "description": {
+            "en": "Leave empty when it is unknown: the years are then not counted.",
+            "fr": "Laissez vide si elle est inconnue : les années ne sont alors pas comptées.",
+            "de": "Leer lassen, wenn es unbekannt ist: Die Jahre werden dann nicht gezählt.",
+            "es": "Déjelo vacío si se desconoce: los años no se cuentan entonces."
+          }
+        },
+        {
+          "key": "kind",
+          "type": "select",
+          "default": "birthday",
+          "label": {
+            "en": "Kind",
+            "fr": "Type",
+            "de": "Art",
+            "es": "Tipo"
+          },
+          "options": [
+            {
+              "value": "birthday",
+              "label": {
+                "en": "Birthday",
+                "fr": "Anniversaire",
+                "de": "Geburtstag",
+                "es": "Cumpleaños"
+              }
+            },
+            {
+              "value": "wedding",
+              "label": {
+                "en": "Wedding anniversary",
+                "fr": "Anniversaire de mariage",
+                "de": "Hochzeitstag",
+                "es": "Aniversario de boda"
+              }
+            },
+            {
+              "value": "anniversary",
+              "label": {
+                "en": "Anniversary",
+                "fr": "Date anniversaire",
+                "de": "Jahrestag",
+                "es": "Aniversario"
+              }
+            },
+            {
+              "value": "memorial",
+              "label": {
+                "en": "Remembrance",
+                "fr": "Commémoration",
+                "de": "Gedenktag",
+                "es": "Conmemoración"
+              }
+            },
+            {
+              "value": "event",
+              "label": {
+                "en": "Event",
+                "fr": "Événement",
+                "de": "Ereignis",
+                "es": "Evento"
+              }
+            },
+            {
+              "value": "other",
+              "label": {
+                "en": "Other",
+                "fr": "Autre",
+                "de": "Sonstiges",
+                "es": "Otro"
+              }
+            }
+          ]
+        },
+        {
+          "key": "recurrence",
+          "type": "select",
+          "default": "yearly",
+          "display": "radio",
+          "label": {
+            "en": "Repeats",
+            "fr": "Répétition",
+            "de": "Wiederholung",
+            "es": "Repetición"
+          },
+          "options": [
+            {
+              "value": "yearly",
+              "label": {
+                "en": "Every year",
+                "fr": "Chaque année",
+                "de": "Jedes Jahr",
+                "es": "Cada año"
+              }
+            },
+            {
+              "value": "once",
+              "label": {
+                "en": "One time only",
+                "fr": "Une seule fois",
+                "de": "Nur einmal",
+                "es": "Una sola vez"
+              }
+            }
+          ],
+          "description": {
+            "en": "One time only: an event or a deadline, which needs its year.",
+            "fr": "Une seule fois : un événement ou une échéance, qui a besoin de son année.",
+            "de": "Nur einmal: ein Ereignis oder eine Frist, die ihr Jahr braucht.",
+            "es": "Una sola vez: un evento o un plazo, que necesita su año."
+          }
+        },
+        {
+          "key": "reminder_days",
+          "type": "number",
+          "min": 0,
+          "max": 60,
+          "label": {
+            "en": "Reminder (days before)",
+            "fr": "Rappel (jours avant)",
+            "de": "Erinnerung (Tage vorher)",
+            "es": "Recordatorio (días antes)"
+          },
+          "description": {
+            "en": "When the “Reminder of a date” scenes start. Empty: the default reminder of the configuration; 0: none.",
+            "fr": "Quand démarrent les scènes « Rappel d’une date ». Vide : le rappel par défaut de la configuration ; 0 : aucun.",
+            "de": "Wann die Szenen „Erinnerung an ein Datum“ starten. Leer: die Standard-Erinnerung der Konfiguration; 0: keine.",
+            "es": "Cuándo empiezan las escenas «Recordatorio de una fecha». Vacío: el recordatorio por defecto de la configuración; 0: ninguno."
+          }
+        },
+        {
+          "key": "count_up",
+          "type": "boolean",
+          "default": false,
+          "label": {
+            "en": "Count the days elapsed",
+            "fr": "Compter les jours écoulés",
+            "de": "Vergangene Tage zählen",
+            "es": "Contar los días pasados"
+          },
+          "description": {
+            "en": "Adds a feature counting the days since the last occurrence (or since the date, for a one-time date).",
+            "fr": "Ajoute une fonctionnalité qui compte les jours depuis la dernière occurrence (ou depuis la date, pour une date unique).",
+            "de": "Fügt eine Funktion hinzu, die die Tage seit dem letzten Termin zählt (oder seit dem Datum bei einem einmaligen Datum).",
+            "es": "Añade una función que cuenta los días desde la última vez (o desde la fecha, para una fecha única)."
+          }
+        },
+        {
+          "key": "half_anniversary",
+          "type": "boolean",
+          "default": false,
+          "label": {
+            "en": "Half anniversary",
+            "fr": "Demi-anniversaire",
+            "de": "Halber Jahrestag",
+            "es": "Medio aniversario"
+          },
+          "description": {
+            "en": "Yearly dates: adds a feature counting the days to the half anniversary, six months later.",
+            "fr": "Dates annuelles : ajoute une fonctionnalité qui compte les jours jusqu’au demi-anniversaire, six mois plus tard.",
+            "de": "Jährliche Daten: fügt eine Funktion hinzu, die die Tage bis zum halben Jahrestag sechs Monate später zählt.",
+            "es": "Fechas anuales: añade una función que cuenta los días hasta el medio aniversario, seis meses después."
+          }
+        }
+      ]
+    },
+    {
+      "key": "edit_date",
+      "timeout_seconds": 15,
+      "label": {
+        "en": "Edit a date",
+        "fr": "Modifier une date",
+        "de": "Datum ändern",
+        "es": "Modificar una fecha"
+      },
+      "description": {
+        "en": "Only the fields you fill in change.",
+        "fr": "Seuls les champs remplis changent.",
+        "de": "Nur die ausgefüllten Felder ändern sich.",
+        "es": "Solo cambian los campos que rellene."
+      },
+      "fields": [
+        {
+          "key": "date",
+          "type": "string",
+          "required": true,
+          "label": {
+            "en": "Date (name or number)",
+            "fr": "Date (nom ou numéro)",
+            "de": "Datum (Name oder Nummer)",
+            "es": "Fecha (nombre o número)"
+          },
+          "description": {
+            "en": "As shown by “List the dates”: the name, or the number such as #2.",
+            "fr": "Comme l’affiche « Lister les dates » : le nom, ou le numéro comme #2.",
+            "de": "Wie „Daten auflisten“ es anzeigt: der Name oder die Nummer wie #2.",
+            "es": "Como lo muestra «Listar las fechas»: el nombre, o el número como #2."
+          },
+          "placeholder": {
+            "en": "#2",
+            "fr": "#2",
+            "de": "#2",
+            "es": "#2"
+          }
+        },
+        {
+          "key": "name",
+          "type": "string",
+          "label": {
+            "en": "Name",
+            "fr": "Nom",
+            "de": "Name",
+            "es": "Nombre"
+          },
+          "placeholder": {
+            "en": "Marie",
+            "fr": "Marie",
+            "de": "Marie",
+            "es": "Marie"
+          },
+          "description": {
+            "en": "Empty: unchanged.",
+            "fr": "Vide : inchangé.",
+            "de": "Leer: unverändert.",
+            "es": "Vacío: sin cambios."
+          }
+        },
+        {
+          "key": "day",
+          "type": "number",
+          "min": 1,
+          "max": 31,
+          "label": {
+            "en": "Day",
+            "fr": "Jour",
+            "de": "Tag",
+            "es": "Día"
+          },
+          "placeholder": {
+            "en": "24",
+            "fr": "24",
+            "de": "24",
+            "es": "24"
+          }
+        },
+        {
+          "key": "month",
+          "type": "select",
+          "label": {
+            "en": "Month",
+            "fr": "Mois",
+            "de": "Monat",
+            "es": "Mes"
+          },
+          "options": [
+            {
+              "value": "keep",
+              "label": {
+                "en": "Unchanged",
+                "fr": "Inchangé",
+                "de": "Unverändert",
+                "es": "Sin cambios"
+              }
+            },
+            {
+              "value": "1",
+              "label": {
+                "en": "January",
+                "fr": "janvier",
+                "de": "Januar",
+                "es": "enero"
+              }
+            },
+            {
+              "value": "2",
+              "label": {
+                "en": "February",
+                "fr": "février",
+                "de": "Februar",
+                "es": "febrero"
+              }
+            },
+            {
+              "value": "3",
+              "label": {
+                "en": "March",
+                "fr": "mars",
+                "de": "März",
+                "es": "marzo"
+              }
+            },
+            {
+              "value": "4",
+              "label": {
+                "en": "April",
+                "fr": "avril",
+                "de": "April",
+                "es": "abril"
+              }
+            },
+            {
+              "value": "5",
+              "label": {
+                "en": "May",
+                "fr": "mai",
+                "de": "Mai",
+                "es": "mayo"
+              }
+            },
+            {
+              "value": "6",
+              "label": {
+                "en": "June",
+                "fr": "juin",
+                "de": "Juni",
+                "es": "junio"
+              }
+            },
+            {
+              "value": "7",
+              "label": {
+                "en": "July",
+                "fr": "juillet",
+                "de": "Juli",
+                "es": "julio"
+              }
+            },
+            {
+              "value": "8",
+              "label": {
+                "en": "August",
+                "fr": "août",
+                "de": "August",
+                "es": "agosto"
+              }
+            },
+            {
+              "value": "9",
+              "label": {
+                "en": "September",
+                "fr": "septembre",
+                "de": "September",
+                "es": "septiembre"
+              }
+            },
+            {
+              "value": "10",
+              "label": {
+                "en": "October",
+                "fr": "octobre",
+                "de": "Oktober",
+                "es": "octubre"
+              }
+            },
+            {
+              "value": "11",
+              "label": {
+                "en": "November",
+                "fr": "novembre",
+                "de": "November",
+                "es": "noviembre"
+              }
+            },
+            {
+              "value": "12",
+              "label": {
+                "en": "December",
+                "fr": "décembre",
+                "de": "Dezember",
+                "es": "diciembre"
+              }
+            }
+          ],
+          "default": "keep"
+        },
+        {
+          "key": "year",
+          "type": "number",
+          "min": 0,
+          "max": 2999,
+          "label": {
+            "en": "Year",
+            "fr": "Année",
+            "de": "Jahr",
+            "es": "Año"
+          },
+          "placeholder": {
+            "en": "1995",
+            "fr": "1995",
+            "de": "1995",
+            "es": "1995"
+          },
+          "description": {
+            "en": "Empty: unchanged; 0: remove the year.",
+            "fr": "Vide : inchangée ; 0 : retirer l’année.",
+            "de": "Leer: unverändert; 0: Jahr entfernen.",
+            "es": "Vacío: sin cambios; 0: quitar el año."
+          }
+        },
+        {
+          "key": "kind",
+          "type": "select",
+          "label": {
+            "en": "Kind",
+            "fr": "Type",
+            "de": "Art",
+            "es": "Tipo"
+          },
+          "options": [
+            {
+              "value": "keep",
+              "label": {
+                "en": "Unchanged",
+                "fr": "Inchangé",
+                "de": "Unverändert",
+                "es": "Sin cambios"
+              }
+            },
+            {
+              "value": "birthday",
+              "label": {
+                "en": "Birthday",
+                "fr": "Anniversaire",
+                "de": "Geburtstag",
+                "es": "Cumpleaños"
+              }
+            },
+            {
+              "value": "wedding",
+              "label": {
+                "en": "Wedding anniversary",
+                "fr": "Anniversaire de mariage",
+                "de": "Hochzeitstag",
+                "es": "Aniversario de boda"
+              }
+            },
+            {
+              "value": "anniversary",
+              "label": {
+                "en": "Anniversary",
+                "fr": "Date anniversaire",
+                "de": "Jahrestag",
+                "es": "Aniversario"
+              }
+            },
+            {
+              "value": "memorial",
+              "label": {
+                "en": "Remembrance",
+                "fr": "Commémoration",
+                "de": "Gedenktag",
+                "es": "Conmemoración"
+              }
+            },
+            {
+              "value": "event",
+              "label": {
+                "en": "Event",
+                "fr": "Événement",
+                "de": "Ereignis",
+                "es": "Evento"
+              }
+            },
+            {
+              "value": "other",
+              "label": {
+                "en": "Other",
+                "fr": "Autre",
+                "de": "Sonstiges",
+                "es": "Otro"
+              }
+            }
+          ],
+          "default": "keep"
+        },
+        {
+          "key": "recurrence",
+          "type": "select",
+          "label": {
+            "en": "Repeats",
+            "fr": "Répétition",
+            "de": "Wiederholung",
+            "es": "Repetición"
+          },
+          "options": [
+            {
+              "value": "keep",
+              "label": {
+                "en": "Unchanged",
+                "fr": "Inchangé",
+                "de": "Unverändert",
+                "es": "Sin cambios"
+              }
+            },
+            {
+              "value": "yearly",
+              "label": {
+                "en": "Every year",
+                "fr": "Chaque année",
+                "de": "Jedes Jahr",
+                "es": "Cada año"
+              }
+            },
+            {
+              "value": "once",
+              "label": {
+                "en": "One time only",
+                "fr": "Une seule fois",
+                "de": "Nur einmal",
+                "es": "Una sola vez"
+              }
+            }
+          ],
+          "default": "keep"
+        },
+        {
+          "key": "reminder_days",
+          "type": "number",
+          "min": 0,
+          "max": 60,
+          "label": {
+            "en": "Reminder (days before)",
+            "fr": "Rappel (jours avant)",
+            "de": "Erinnerung (Tage vorher)",
+            "es": "Recordatorio (días antes)"
+          },
+          "description": {
+            "en": "Empty: unchanged; 0: no reminder.",
+            "fr": "Vide : inchangé ; 0 : aucun rappel.",
+            "de": "Leer: unverändert; 0: keine Erinnerung.",
+            "es": "Vacío: sin cambios; 0: sin recordatorio."
+          }
+        },
+        {
+          "key": "count_up",
+          "type": "select",
+          "label": {
+            "en": "Count the days elapsed",
+            "fr": "Compter les jours écoulés",
+            "de": "Vergangene Tage zählen",
+            "es": "Contar los días pasados"
+          },
+          "options": [
+            {
+              "value": "keep",
+              "label": {
+                "en": "Unchanged",
+                "fr": "Inchangé",
+                "de": "Unverändert",
+                "es": "Sin cambios"
+              }
+            },
+            {
+              "value": "yes",
+              "label": {
+                "en": "Yes",
+                "fr": "Oui",
+                "de": "Ja",
+                "es": "Sí"
+              }
+            },
+            {
+              "value": "no",
+              "label": {
+                "en": "No",
+                "fr": "Non",
+                "de": "Nein",
+                "es": "No"
+              }
+            }
+          ],
+          "default": "keep"
+        },
+        {
+          "key": "half_anniversary",
+          "type": "select",
+          "label": {
+            "en": "Half anniversary",
+            "fr": "Demi-anniversaire",
+            "de": "Halber Jahrestag",
+            "es": "Medio aniversario"
+          },
+          "options": [
+            {
+              "value": "keep",
+              "label": {
+                "en": "Unchanged",
+                "fr": "Inchangé",
+                "de": "Unverändert",
+                "es": "Sin cambios"
+              }
+            },
+            {
+              "value": "yes",
+              "label": {
+                "en": "Yes",
+                "fr": "Oui",
+                "de": "Ja",
+                "es": "Sí"
+              }
+            },
+            {
+              "value": "no",
+              "label": {
+                "en": "No",
+                "fr": "Non",
+                "de": "Nein",
+                "es": "No"
+              }
+            }
+          ],
+          "default": "keep"
+        }
+      ]
+    },
+    {
+      "key": "remove_date",
+      "timeout_seconds": 15,
+      "label": {
+        "en": "Remove a date",
+        "fr": "Supprimer une date",
+        "de": "Datum entfernen",
+        "es": "Eliminar una fecha"
+      },
+      "description": {
+        "en": "Its device stays in Gladys until you delete it from the Devices tab.",
+        "fr": "Son appareil reste dans Gladys jusqu’à ce que vous le supprimiez depuis l’onglet Appareils.",
+        "de": "Sein Gerät bleibt in Gladys, bis Sie es im Tab Geräte löschen.",
+        "es": "Su dispositivo permanece en Gladys hasta que lo elimine desde la pestaña Dispositivos."
+      },
+      "fields": [
+        {
+          "key": "date",
+          "type": "string",
+          "required": true,
+          "label": {
+            "en": "Date (name or number)",
+            "fr": "Date (nom ou numéro)",
+            "de": "Datum (Name oder Nummer)",
+            "es": "Fecha (nombre o número)"
+          },
+          "description": {
+            "en": "As shown by “List the dates”: the name, or the number such as #2.",
+            "fr": "Comme l’affiche « Lister les dates » : le nom, ou le numéro comme #2.",
+            "de": "Wie „Daten auflisten“ es anzeigt: der Name oder die Nummer wie #2.",
+            "es": "Como lo muestra «Listar las fechas»: el nombre, o el número como #2."
+          },
+          "placeholder": {
+            "en": "#2",
+            "fr": "#2",
+            "de": "#2",
+            "es": "#2"
+          }
+        }
+      ]
+    },
+    {
+      "key": "list_dates",
+      "timeout_seconds": 10,
+      "label": {
+        "en": "List the dates",
+        "fr": "Lister les dates",
+        "de": "Daten auflisten",
+        "es": "Listar las fechas"
+      },
+      "description": {
+        "en": "Every date with its number, next occurrence and options.",
+        "fr": "Toutes les dates avec leur numéro, leur prochaine occurrence et leurs options.",
+        "de": "Alle Daten mit ihrer Nummer, dem nächsten Termin und ihren Optionen.",
+        "es": "Todas las fechas con su número, su próxima vez y sus opciones."
+      }
+    }
+  ],
+  "widgets": [
+    {
+      "key": "upcoming",
+      "icon": "calendar",
+      "label": {
+        "en": "Upcoming dates",
+        "fr": "Prochaines dates",
+        "de": "Nächste Daten",
+        "es": "Próximas fechas"
+      },
+      "description": {
+        "en": "The next birthdays and dates, with the days left.",
+        "fr": "Les prochains anniversaires et dates, avec les jours restants.",
+        "de": "Die nächsten Geburtstage und Daten, mit den verbleibenden Tagen.",
+        "es": "Los próximos cumpleaños y fechas, con los días restantes."
+      },
+      "settings": [
+        {
+          "key": "count",
+          "type": "number",
+          "min": 1,
+          "max": 8,
+          "default": 5,
+          "label": {
+            "en": "Number of dates",
+            "fr": "Nombre de dates",
+            "de": "Anzahl der Daten",
+            "es": "Número de fechas"
+          }
+        },
+        {
+          "key": "days",
+          "type": "number",
+          "min": 1,
+          "max": 366,
+          "default": 366,
+          "label": {
+            "en": "Within (days)",
+            "fr": "Dans les (jours)",
+            "de": "Innerhalb von (Tagen)",
+            "es": "Dentro de (días)"
+          }
+        },
+        {
+          "key": "kinds",
+          "type": "multi_select",
+          "label": {
+            "en": "Kinds",
+            "fr": "Types",
+            "de": "Arten",
+            "es": "Tipos"
+          },
+          "options": [
+            {
+              "value": "birthday",
+              "label": {
+                "en": "Birthday",
+                "fr": "Anniversaire",
+                "de": "Geburtstag",
+                "es": "Cumpleaños"
+              }
+            },
+            {
+              "value": "wedding",
+              "label": {
+                "en": "Wedding anniversary",
+                "fr": "Anniversaire de mariage",
+                "de": "Hochzeitstag",
+                "es": "Aniversario de boda"
+              }
+            },
+            {
+              "value": "anniversary",
+              "label": {
+                "en": "Anniversary",
+                "fr": "Date anniversaire",
+                "de": "Jahrestag",
+                "es": "Aniversario"
+              }
+            },
+            {
+              "value": "memorial",
+              "label": {
+                "en": "Remembrance",
+                "fr": "Commémoration",
+                "de": "Gedenktag",
+                "es": "Conmemoración"
+              }
+            },
+            {
+              "value": "event",
+              "label": {
+                "en": "Event",
+                "fr": "Événement",
+                "de": "Ereignis",
+                "es": "Evento"
+              }
+            },
+            {
+              "value": "other",
+              "label": {
+                "en": "Other",
+                "fr": "Autre",
+                "de": "Sonstiges",
+                "es": "Otro"
+              }
+            }
+          ],
+          "description": {
+            "en": "Empty: every kind.",
+            "fr": "Vide : tous les types.",
+            "de": "Leer: alle Arten.",
+            "es": "Vacío: todos los tipos."
+          }
+        }
+      ]
+    },
+    {
+      "key": "countdown",
+      "icon": "gift",
+      "label": {
+        "en": "Countdown",
+        "fr": "Compte à rebours",
+        "de": "Countdown",
+        "es": "Cuenta atrás"
+      },
+      "description": {
+        "en": "One date: days left, years, original date, reminder.",
+        "fr": "Une date : jours restants, années, date d’origine, rappel.",
+        "de": "Ein Datum: verbleibende Tage, Jahre, ursprüngliches Datum, Erinnerung.",
+        "es": "Una fecha: días restantes, años, fecha original, recordatorio."
+      },
+      "settings": [
+        {
+          "key": "anniversary",
+          "type": "select",
+          "source": "devices",
+          "required": true,
+          "label": {
+            "en": "Date",
+            "fr": "Date",
+            "de": "Datum",
+            "es": "Fecha"
+          },
+          "description": {
+            "en": "Among the dates added as devices.",
+            "fr": "Parmi les dates ajoutées comme appareils.",
+            "de": "Unter den als Geräte hinzugefügten Daten.",
+            "es": "Entre las fechas añadidas como dispositivos."
+          }
+        }
+      ]
+    }
+  ],
+  "scene_triggers": [
+    {
+      "key": "anniversary_today",
+      "label": {
+        "en": "A date is today",
+        "fr": "Une date est aujourd’hui",
+        "de": "Ein Datum ist heute",
+        "es": "Una fecha es hoy"
+      },
+      "description": {
+        "en": "Every day at the hour of the configuration, for each date of the day.",
+        "fr": "Chaque jour à l’heure de la configuration, pour chaque date du jour.",
+        "de": "Jeden Tag zur Stunde der Konfiguration, für jedes Datum des Tages.",
+        "es": "Cada día a la hora de la configuración, para cada fecha del día."
+      },
+      "fields": [
+        {
+          "key": "anniversary",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Date",
+            "fr": "Date",
+            "de": "Datum",
+            "es": "Fecha"
+          },
+          "description": {
+            "en": "Empty: every date.",
+            "fr": "Vide : toutes les dates.",
+            "de": "Leer: alle Daten.",
+            "es": "Vacío: todas las fechas."
+          }
+        },
+        {
+          "key": "kind",
+          "type": "multi_select",
+          "label": {
+            "en": "Kinds",
+            "fr": "Types",
+            "de": "Arten",
+            "es": "Tipos"
+          },
+          "options": [
+            {
+              "value": "birthday",
+              "label": {
+                "en": "Birthday",
+                "fr": "Anniversaire",
+                "de": "Geburtstag",
+                "es": "Cumpleaños"
+              }
+            },
+            {
+              "value": "wedding",
+              "label": {
+                "en": "Wedding anniversary",
+                "fr": "Anniversaire de mariage",
+                "de": "Hochzeitstag",
+                "es": "Aniversario de boda"
+              }
+            },
+            {
+              "value": "anniversary",
+              "label": {
+                "en": "Anniversary",
+                "fr": "Date anniversaire",
+                "de": "Jahrestag",
+                "es": "Aniversario"
+              }
+            },
+            {
+              "value": "memorial",
+              "label": {
+                "en": "Remembrance",
+                "fr": "Commémoration",
+                "de": "Gedenktag",
+                "es": "Conmemoración"
+              }
+            },
+            {
+              "value": "event",
+              "label": {
+                "en": "Event",
+                "fr": "Événement",
+                "de": "Ereignis",
+                "es": "Evento"
+              }
+            },
+            {
+              "value": "other",
+              "label": {
+                "en": "Other",
+                "fr": "Autre",
+                "de": "Sonstiges",
+                "es": "Otro"
+              }
+            }
+          ],
+          "description": {
+            "en": "Empty: every kind.",
+            "fr": "Vide : tous les types.",
+            "de": "Leer: alle Arten.",
+            "es": "Vacío: todos los tipos."
+          }
+        }
+      ],
+      "variables": [
+        {
+          "key": "name",
+          "type": "string",
+          "label": {
+            "en": "Name",
+            "fr": "Nom",
+            "de": "Name",
+            "es": "Nombre"
+          }
+        },
+        {
+          "key": "kind",
+          "type": "string",
+          "label": {
+            "en": "Kind",
+            "fr": "Type",
+            "de": "Art",
+            "es": "Tipo"
+          }
+        },
+        {
+          "key": "years",
+          "type": "number",
+          "label": {
+            "en": "Years reached",
+            "fr": "Années atteintes",
+            "de": "Erreichte Jahre",
+            "es": "Años cumplidos"
+          }
+        },
+        {
+          "key": "date",
+          "type": "string",
+          "label": {
+            "en": "Original date (YYYY-MM-DD)",
+            "fr": "Date d’origine (AAAA-MM-JJ)",
+            "de": "Ursprüngliches Datum (JJJJ-MM-TT)",
+            "es": "Fecha original (AAAA-MM-DD)"
+          }
+        },
+        {
+          "key": "next_date",
+          "type": "string",
+          "label": {
+            "en": "Day (YYYY-MM-DD)",
+            "fr": "Jour (AAAA-MM-JJ)",
+            "de": "Tag (JJJJ-MM-TT)",
+            "es": "Día (AAAA-MM-DD)"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary sentence",
+            "fr": "Phrase de résumé",
+            "de": "Zusammenfassung",
+            "es": "Frase de resumen"
+          }
+        }
+      ]
+    },
+    {
+      "key": "anniversary_upcoming",
+      "label": {
+        "en": "A date is in N days",
+        "fr": "Une date est dans N jours",
+        "de": "Ein Datum ist in N Tagen",
+        "es": "Una fecha es dentro de N días"
+      },
+      "description": {
+        "en": "Every day at the hour of the configuration, for each date 1 to 60 days away.",
+        "fr": "Chaque jour à l’heure de la configuration, pour chaque date à venir dans 1 à 60 jours.",
+        "de": "Jeden Tag zur Stunde der Konfiguration, für jedes Datum in 1 bis 60 Tagen.",
+        "es": "Cada día a la hora de la configuración, para cada fecha dentro de 1 a 60 días."
+      },
+      "fields": [
+        {
+          "key": "days_remaining",
+          "type": "number",
+          "required": true,
+          "min": 1,
+          "max": 60,
+          "label": {
+            "en": "In how many days",
+            "fr": "Dans combien de jours",
+            "de": "In wie vielen Tagen",
+            "es": "Dentro de cuántos días"
+          },
+          "placeholder": {
+            "en": "7",
+            "fr": "7",
+            "de": "7",
+            "es": "7"
+          }
+        },
+        {
+          "key": "anniversary",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Date",
+            "fr": "Date",
+            "de": "Datum",
+            "es": "Fecha"
+          },
+          "description": {
+            "en": "Empty: every date.",
+            "fr": "Vide : toutes les dates.",
+            "de": "Leer: alle Daten.",
+            "es": "Vacío: todas las fechas."
+          }
+        },
+        {
+          "key": "kind",
+          "type": "multi_select",
+          "label": {
+            "en": "Kinds",
+            "fr": "Types",
+            "de": "Arten",
+            "es": "Tipos"
+          },
+          "options": [
+            {
+              "value": "birthday",
+              "label": {
+                "en": "Birthday",
+                "fr": "Anniversaire",
+                "de": "Geburtstag",
+                "es": "Cumpleaños"
+              }
+            },
+            {
+              "value": "wedding",
+              "label": {
+                "en": "Wedding anniversary",
+                "fr": "Anniversaire de mariage",
+                "de": "Hochzeitstag",
+                "es": "Aniversario de boda"
+              }
+            },
+            {
+              "value": "anniversary",
+              "label": {
+                "en": "Anniversary",
+                "fr": "Date anniversaire",
+                "de": "Jahrestag",
+                "es": "Aniversario"
+              }
+            },
+            {
+              "value": "memorial",
+              "label": {
+                "en": "Remembrance",
+                "fr": "Commémoration",
+                "de": "Gedenktag",
+                "es": "Conmemoración"
+              }
+            },
+            {
+              "value": "event",
+              "label": {
+                "en": "Event",
+                "fr": "Événement",
+                "de": "Ereignis",
+                "es": "Evento"
+              }
+            },
+            {
+              "value": "other",
+              "label": {
+                "en": "Other",
+                "fr": "Autre",
+                "de": "Sonstiges",
+                "es": "Otro"
+              }
+            }
+          ],
+          "description": {
+            "en": "Empty: every kind.",
+            "fr": "Vide : tous les types.",
+            "de": "Leer: alle Arten.",
+            "es": "Vacío: todos los tipos."
+          }
+        }
+      ],
+      "variables": [
+        {
+          "key": "days_remaining",
+          "type": "number",
+          "label": {
+            "en": "Days remaining",
+            "fr": "Jours restants",
+            "de": "Verbleibende Tage",
+            "es": "Días restantes"
+          }
+        },
+        {
+          "key": "name",
+          "type": "string",
+          "label": {
+            "en": "Name",
+            "fr": "Nom",
+            "de": "Name",
+            "es": "Nombre"
+          }
+        },
+        {
+          "key": "kind",
+          "type": "string",
+          "label": {
+            "en": "Kind",
+            "fr": "Type",
+            "de": "Art",
+            "es": "Tipo"
+          }
+        },
+        {
+          "key": "years",
+          "type": "number",
+          "label": {
+            "en": "Years reached",
+            "fr": "Années atteintes",
+            "de": "Erreichte Jahre",
+            "es": "Años cumplidos"
+          }
+        },
+        {
+          "key": "date",
+          "type": "string",
+          "label": {
+            "en": "Original date (YYYY-MM-DD)",
+            "fr": "Date d’origine (AAAA-MM-JJ)",
+            "de": "Ursprüngliches Datum (JJJJ-MM-TT)",
+            "es": "Fecha original (AAAA-MM-DD)"
+          }
+        },
+        {
+          "key": "next_date",
+          "type": "string",
+          "label": {
+            "en": "Day (YYYY-MM-DD)",
+            "fr": "Jour (AAAA-MM-JJ)",
+            "de": "Tag (JJJJ-MM-TT)",
+            "es": "Día (AAAA-MM-DD)"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary sentence",
+            "fr": "Phrase de résumé",
+            "de": "Zusammenfassung",
+            "es": "Frase de resumen"
+          }
+        }
+      ]
+    },
+    {
+      "key": "anniversary_reminder",
+      "label": {
+        "en": "Reminder of a date",
+        "fr": "Rappel d’une date",
+        "de": "Erinnerung an ein Datum",
+        "es": "Recordatorio de una fecha"
+      },
+      "description": {
+        "en": "When a date is as many days away as its own reminder (or the default one).",
+        "fr": "Quand une date est à autant de jours que son propre rappel (ou celui par défaut).",
+        "de": "Wenn ein Datum so viele Tage entfernt ist wie seine eigene Erinnerung (oder die Standard-Erinnerung).",
+        "es": "Cuando una fecha está a tantos días como su propio recordatorio (o el predeterminado)."
+      },
+      "fields": [
+        {
+          "key": "anniversary",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Date",
+            "fr": "Date",
+            "de": "Datum",
+            "es": "Fecha"
+          },
+          "description": {
+            "en": "Empty: every date.",
+            "fr": "Vide : toutes les dates.",
+            "de": "Leer: alle Daten.",
+            "es": "Vacío: todas las fechas."
+          }
+        },
+        {
+          "key": "kind",
+          "type": "multi_select",
+          "label": {
+            "en": "Kinds",
+            "fr": "Types",
+            "de": "Arten",
+            "es": "Tipos"
+          },
+          "options": [
+            {
+              "value": "birthday",
+              "label": {
+                "en": "Birthday",
+                "fr": "Anniversaire",
+                "de": "Geburtstag",
+                "es": "Cumpleaños"
+              }
+            },
+            {
+              "value": "wedding",
+              "label": {
+                "en": "Wedding anniversary",
+                "fr": "Anniversaire de mariage",
+                "de": "Hochzeitstag",
+                "es": "Aniversario de boda"
+              }
+            },
+            {
+              "value": "anniversary",
+              "label": {
+                "en": "Anniversary",
+                "fr": "Date anniversaire",
+                "de": "Jahrestag",
+                "es": "Aniversario"
+              }
+            },
+            {
+              "value": "memorial",
+              "label": {
+                "en": "Remembrance",
+                "fr": "Commémoration",
+                "de": "Gedenktag",
+                "es": "Conmemoración"
+              }
+            },
+            {
+              "value": "event",
+              "label": {
+                "en": "Event",
+                "fr": "Événement",
+                "de": "Ereignis",
+                "es": "Evento"
+              }
+            },
+            {
+              "value": "other",
+              "label": {
+                "en": "Other",
+                "fr": "Autre",
+                "de": "Sonstiges",
+                "es": "Otro"
+              }
+            }
+          ],
+          "description": {
+            "en": "Empty: every kind.",
+            "fr": "Vide : tous les types.",
+            "de": "Leer: alle Arten.",
+            "es": "Vacío: todos los tipos."
+          }
+        }
+      ],
+      "variables": [
+        {
+          "key": "days_remaining",
+          "type": "number",
+          "label": {
+            "en": "Days remaining",
+            "fr": "Jours restants",
+            "de": "Verbleibende Tage",
+            "es": "Días restantes"
+          }
+        },
+        {
+          "key": "name",
+          "type": "string",
+          "label": {
+            "en": "Name",
+            "fr": "Nom",
+            "de": "Name",
+            "es": "Nombre"
+          }
+        },
+        {
+          "key": "kind",
+          "type": "string",
+          "label": {
+            "en": "Kind",
+            "fr": "Type",
+            "de": "Art",
+            "es": "Tipo"
+          }
+        },
+        {
+          "key": "years",
+          "type": "number",
+          "label": {
+            "en": "Years reached",
+            "fr": "Années atteintes",
+            "de": "Erreichte Jahre",
+            "es": "Años cumplidos"
+          }
+        },
+        {
+          "key": "date",
+          "type": "string",
+          "label": {
+            "en": "Original date (YYYY-MM-DD)",
+            "fr": "Date d’origine (AAAA-MM-JJ)",
+            "de": "Ursprüngliches Datum (JJJJ-MM-TT)",
+            "es": "Fecha original (AAAA-MM-DD)"
+          }
+        },
+        {
+          "key": "next_date",
+          "type": "string",
+          "label": {
+            "en": "Day (YYYY-MM-DD)",
+            "fr": "Jour (AAAA-MM-JJ)",
+            "de": "Tag (JJJJ-MM-TT)",
+            "es": "Día (AAAA-MM-DD)"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary sentence",
+            "fr": "Phrase de résumé",
+            "de": "Zusammenfassung",
+            "es": "Frase de resumen"
+          }
+        }
+      ]
+    }
+  ],
+  "scene_actions": [
+    {
+      "key": "get_upcoming",
+      "timeout_seconds": 10,
+      "label": {
+        "en": "Get the upcoming dates",
+        "fr": "Obtenir les prochaines dates",
+        "de": "Nächste Daten abrufen",
+        "es": "Obtener las próximas fechas"
+      },
+      "description": {
+        "en": "The dates of the next N days, as a text to send in a message.",
+        "fr": "Les dates des N prochains jours, en texte à envoyer dans un message.",
+        "de": "Die Daten der nächsten N Tage, als Text für eine Nachricht.",
+        "es": "Las fechas de los próximos N días, como texto para enviar en un mensaje."
+      },
+      "fields": [
+        {
+          "key": "days",
+          "type": "number",
+          "min": 0,
+          "max": 366,
+          "default": 7,
+          "label": {
+            "en": "Within (days)",
+            "fr": "Dans les (jours)",
+            "de": "Innerhalb von (Tagen)",
+            "es": "Dentro de (días)"
+          },
+          "description": {
+            "en": "0: today only.",
+            "fr": "0 : aujourd’hui seulement.",
+            "de": "0: nur heute.",
+            "es": "0: solo hoy."
+          }
+        },
+        {
+          "key": "kind",
+          "type": "multi_select",
+          "label": {
+            "en": "Kinds",
+            "fr": "Types",
+            "de": "Arten",
+            "es": "Tipos"
+          },
+          "options": [
+            {
+              "value": "birthday",
+              "label": {
+                "en": "Birthday",
+                "fr": "Anniversaire",
+                "de": "Geburtstag",
+                "es": "Cumpleaños"
+              }
+            },
+            {
+              "value": "wedding",
+              "label": {
+                "en": "Wedding anniversary",
+                "fr": "Anniversaire de mariage",
+                "de": "Hochzeitstag",
+                "es": "Aniversario de boda"
+              }
+            },
+            {
+              "value": "anniversary",
+              "label": {
+                "en": "Anniversary",
+                "fr": "Date anniversaire",
+                "de": "Jahrestag",
+                "es": "Aniversario"
+              }
+            },
+            {
+              "value": "memorial",
+              "label": {
+                "en": "Remembrance",
+                "fr": "Commémoration",
+                "de": "Gedenktag",
+                "es": "Conmemoración"
+              }
+            },
+            {
+              "value": "event",
+              "label": {
+                "en": "Event",
+                "fr": "Événement",
+                "de": "Ereignis",
+                "es": "Evento"
+              }
+            },
+            {
+              "value": "other",
+              "label": {
+                "en": "Other",
+                "fr": "Autre",
+                "de": "Sonstiges",
+                "es": "Otro"
+              }
+            }
+          ],
+          "description": {
+            "en": "Empty: every kind.",
+            "fr": "Vide : tous les types.",
+            "de": "Leer: alle Arten.",
+            "es": "Vacío: todos los tipos."
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "key": "count",
+          "type": "number",
+          "label": {
+            "en": "Number of dates",
+            "fr": "Nombre de dates",
+            "de": "Anzahl der Daten",
+            "es": "Número de fechas"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary (one line per date)",
+            "fr": "Résumé (une ligne par date)",
+            "de": "Zusammenfassung (eine Zeile pro Datum)",
+            "es": "Resumen (una línea por fecha)"
+          }
+        },
+        {
+          "key": "next_name",
+          "type": "string",
+          "label": {
+            "en": "Name of the nearest date",
+            "fr": "Nom de la date la plus proche",
+            "de": "Name des nächsten Datums",
+            "es": "Nombre de la fecha más cercana"
+          }
+        },
+        {
+          "key": "next_days",
+          "type": "number",
+          "label": {
+            "en": "Days to the nearest date",
+            "fr": "Jours avant la date la plus proche",
+            "de": "Tage bis zum nächsten Datum",
+            "es": "Días hasta la fecha más cercana"
+          }
+        },
+        {
+          "key": "next_date",
+          "type": "string",
+          "label": {
+            "en": "Day of the nearest date (YYYY-MM-DD)",
+            "fr": "Jour de la date la plus proche (AAAA-MM-JJ)",
+            "de": "Tag des nächsten Datums (JJJJ-MM-TT)",
+            "es": "Día de la fecha más cercana (AAAA-MM-DD)"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,323 @@
+{
+  "version": "0.1.0",
+  "devices": {
+    "yearly": {
+      "external_id": "ext:test-integration:anniversary:a1b2c3d4",
+      "should_poll": false,
+      "params": ["DATE", "KIND"],
+      "features": [
+        {
+          "external_id": "ext:test-integration:anniversary:a1b2c3d4:days_remaining",
+          "category": "duration",
+          "type": "integer",
+          "unit": "days",
+          "min": -36600,
+          "max": 36600,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:anniversary:a1b2c3d4:years_next",
+          "category": "duration",
+          "type": "integer",
+          "unit": "years",
+          "min": 0,
+          "max": 2000,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:anniversary:a1b2c3d4:years_current",
+          "category": "duration",
+          "type": "integer",
+          "unit": "years",
+          "min": 0,
+          "max": 2000,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:anniversary:a1b2c3d4:days_since",
+          "category": "duration",
+          "type": "integer",
+          "unit": "days",
+          "min": -36600,
+          "max": 36600,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:anniversary:a1b2c3d4:half_days_remaining",
+          "category": "duration",
+          "type": "integer",
+          "unit": "days",
+          "min": 0,
+          "max": 366,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:anniversary:a1b2c3d4:next_date",
+          "category": "text",
+          "type": "text",
+          "min": 0,
+          "max": 0,
+          "read_only": true,
+          "has_feedback": false
+        }
+      ]
+    },
+    "once": {
+      "external_id": "ext:test-integration:anniversary:b2c3d4e5",
+      "should_poll": false,
+      "params": ["DATE", "KIND"],
+      "features": [
+        {
+          "external_id": "ext:test-integration:anniversary:b2c3d4e5:days_remaining",
+          "category": "duration",
+          "type": "integer",
+          "unit": "days",
+          "min": -36600,
+          "max": 36600,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:anniversary:b2c3d4e5:days_since",
+          "category": "duration",
+          "type": "integer",
+          "unit": "days",
+          "min": -36600,
+          "max": 36600,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:anniversary:b2c3d4e5:next_date",
+          "category": "text",
+          "type": "text",
+          "min": 0,
+          "max": 0,
+          "read_only": true,
+          "has_feedback": false
+        }
+      ]
+    }
+  },
+  "manifest": {
+    "config_schema": [
+      {
+        "key": "intro",
+        "type": "section"
+      },
+      {
+        "key": "event_hour",
+        "type": "number"
+      },
+      {
+        "key": "reminder_days",
+        "type": "number"
+      },
+      {
+        "key": "language",
+        "type": "select"
+      }
+    ],
+    "action_fields": {
+      "add_date": [
+        "name",
+        "day",
+        "month",
+        "year",
+        "kind",
+        "recurrence",
+        "reminder_days",
+        "count_up",
+        "half_anniversary"
+      ],
+      "edit_date": [
+        "date",
+        "name",
+        "day",
+        "month",
+        "year",
+        "kind",
+        "recurrence",
+        "reminder_days",
+        "count_up",
+        "half_anniversary"
+      ],
+      "remove_date": ["date"],
+      "list_dates": []
+    },
+    "widgets": [
+      {
+        "key": "upcoming",
+        "settings": ["count", "days", "kinds"]
+      },
+      {
+        "key": "countdown",
+        "settings": ["anniversary"]
+      }
+    ],
+    "scene_triggers": [
+      {
+        "key": "anniversary_today",
+        "fields": [
+          {
+            "key": "anniversary",
+            "options": []
+          },
+          {
+            "key": "kind",
+            "options": ["birthday", "wedding", "anniversary", "memorial", "event", "other"]
+          }
+        ],
+        "variables": [
+          {
+            "key": "name",
+            "type": "string"
+          },
+          {
+            "key": "kind",
+            "type": "string"
+          },
+          {
+            "key": "years",
+            "type": "number"
+          },
+          {
+            "key": "date",
+            "type": "string"
+          },
+          {
+            "key": "next_date",
+            "type": "string"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "key": "anniversary_upcoming",
+        "fields": [
+          {
+            "key": "days_remaining",
+            "options": []
+          },
+          {
+            "key": "anniversary",
+            "options": []
+          },
+          {
+            "key": "kind",
+            "options": ["birthday", "wedding", "anniversary", "memorial", "event", "other"]
+          }
+        ],
+        "variables": [
+          {
+            "key": "days_remaining",
+            "type": "number"
+          },
+          {
+            "key": "name",
+            "type": "string"
+          },
+          {
+            "key": "kind",
+            "type": "string"
+          },
+          {
+            "key": "years",
+            "type": "number"
+          },
+          {
+            "key": "date",
+            "type": "string"
+          },
+          {
+            "key": "next_date",
+            "type": "string"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "key": "anniversary_reminder",
+        "fields": [
+          {
+            "key": "anniversary",
+            "options": []
+          },
+          {
+            "key": "kind",
+            "options": ["birthday", "wedding", "anniversary", "memorial", "event", "other"]
+          }
+        ],
+        "variables": [
+          {
+            "key": "days_remaining",
+            "type": "number"
+          },
+          {
+            "key": "name",
+            "type": "string"
+          },
+          {
+            "key": "kind",
+            "type": "string"
+          },
+          {
+            "key": "years",
+            "type": "number"
+          },
+          {
+            "key": "date",
+            "type": "string"
+          },
+          {
+            "key": "next_date",
+            "type": "string"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      }
+    ],
+    "scene_actions": [
+      {
+        "key": "get_upcoming",
+        "fields": ["days", "kind"],
+        "outputs": [
+          {
+            "key": "count",
+            "type": "number"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          },
+          {
+            "key": "next_name",
+            "type": "string"
+          },
+          {
+            "key": "next_days",
+            "type": "number"
+          },
+          {
+            "key": "next_date",
+            "type": "string"
+          }
+        ]
+      }
+    ]
+  }
+}
