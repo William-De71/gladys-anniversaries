@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, statSync } from 'node:fs';
 import { TRIGGERS, SCENE_ACTIONS, MAX_UPCOMING_DAYS, UPCOMING_DAYS } from '../src/events.js';
 import { ACTIONS } from '../src/app.js';
-import { WIDGETS, COUNT, WITHIN } from '../src/widgets.js';
+import { WIDGETS, WIDGET_ACTIONS, MONTHS, COUNT, WITHIN } from '../src/widgets.js';
 import { EVENT_HOUR, REMINDER_DAYS, AUTO_LANGUAGE } from '../src/config.js';
 import { KINDS, RECURRENCES, YEAR } from '../src/dates.js';
 import { KEEP } from '../src/registry.js';
@@ -31,7 +31,17 @@ test('a device integration, in lockstep with package.json, at 0.x until 1.0.0 is
 
 test('declares the local transport: no network call at all', () => {
   assert.deepEqual(manifest.transports, ['local']);
-  for (const file of ['app', 'registry', 'events', 'widgets', 'device', 'dates', 'fired', 'time']) {
+  for (const file of [
+    'app',
+    'registry',
+    'events',
+    'widgets',
+    'device',
+    'dates',
+    'fired',
+    'time',
+    'weddings',
+  ]) {
     assert.doesNotMatch(
       source(`../src/${file}.js`),
       /fetch\(|node:https?|node:net|node:dgram/,
@@ -41,15 +51,15 @@ test('declares the local transport: no network call at all', () => {
   assert.doesNotMatch(source('../src/app.js'), /publishTransports|GLADYS_PREFER_LOCAL/);
 });
 
-test('requires the first Gladys accepting widgets and scenes; no extra permission', () => {
-  assert.equal(manifest.gladys_version, '>=5.1.0');
+test('requires the first Gladys accepting widget buttons with a form; no extra permission', () => {
+  // The "Add a date" button of the widgets carries a form (Gladys 5.2.0).
+  assert.equal(manifest.gladys_version, '>=5.2.0');
+  assert.match(source('../src/widgets.js'), /type: 'button'/);
   assert.deepEqual(manifest.categories, ['services']);
   for (const key of ['location', 'network_wake', 'containers', 'network_discovery', 'webhooks']) {
     assert.equal(manifest[key], undefined, key);
   }
-  // No widget button with a form (Gladys 5.2.0), no houses source (5.2.0).
   assert.doesNotMatch(JSON.stringify(manifest), /"source":"houses"/);
-  assert.doesNotMatch(source('../src/widgets.js'), /type: 'button'/);
 });
 
 test('declares exactly the scene triggers, actions and widgets the code handles', () => {
@@ -69,6 +79,10 @@ test('declares exactly the scene triggers, actions and widgets the code handles'
   for (const key of Object.keys(WIDGETS)) {
     assert.match(app, new RegExp(`onWidgetGet\\(WIDGETS\\.${key}`), key);
   }
+  for (const key of ['UPCOMING', 'MONTH']) {
+    assert.match(app, new RegExp(`onWidgetAction\\(WIDGETS\\.${key}`), key);
+  }
+  assert.deepEqual(Object.values(WIDGET_ACTIONS), ['add_date']);
   for (const key of Object.keys(SCENE_ACTIONS)) {
     assert.match(app, new RegExp(`onSceneAction\\(SCENE_ACTIONS\\.${key}`), key);
   }
@@ -82,7 +96,10 @@ test('declares exactly the scene triggers, actions and widgets the code handles'
   // The trigger fields are keys of the event data (the core compares them).
   for (const trigger of manifest.scene_triggers) {
     for (const field of trigger.fields) {
-      assert.ok(['anniversary', 'kind', 'days_remaining'].includes(field.key), field.key);
+      assert.ok(
+        ['anniversary', 'kind', 'days_remaining', 'milestone'].includes(field.key),
+        field.key,
+      );
     }
   }
 });
@@ -113,6 +130,13 @@ test('mirrors the bounds and values of the code', () => {
   );
   assert.equal(upcoming.get('days').max, WITHIN.max);
   assert.deepEqual(values(upcoming.get('kinds')), KINDS);
+  const month = byKey(byKey(manifest.widgets).get('month').settings);
+  assert.deepEqual(values(month.get('month')), Object.values(MONTHS));
+  assert.equal(month.get('month').default, MONTHS.CURRENT);
+  assert.deepEqual(values(month.get('kinds')), KINDS);
+  for (const trigger of manifest.scene_triggers.slice(0, 3)) {
+    assert.deepEqual(values(byKey(trigger.fields).get('milestone')), ['yes'], trigger.key);
+  }
   const days = byKey(byKey(manifest.scene_triggers).get('anniversary_upcoming').fields).get(
     'days_remaining',
   );

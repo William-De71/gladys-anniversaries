@@ -11,6 +11,9 @@
 //   - "count up" gives the days since the last occurrence (yearly) or since
 //     the date (one time, negative before it);
 //   - the half anniversary is six months after the date, every year.
+// Added here: the "round" years (milestones), the days elapsed since the
+// original date (the 1,000-day milestones) and the occurrence of a date in a
+// given month (the month widget).
 // Days are calendar days: a YYYY-MM-DD "today" in the timezone of Gladys is
 // the only input, so the whole module is timezone-free.
 // -----------------------------------------------------------------------------
@@ -185,6 +188,79 @@ function computeOccurrence(entry, today) {
  */
 const addDays = (iso, days) => toIso(fromDayNumber(dayNumber(parseDay(iso)) + days));
 
+/**
+ * @description Days between two YYYY-MM-DD days (negative when `to` is before).
+ * @param {string} from - The first day.
+ * @param {string} to - The second day.
+ * @returns {number} The days.
+ * @example
+ * daysBetween('2026-10-16', '2026-10-23'); // -> 7
+ */
+const daysBetween = (from, to) => dayNumber(parseDay(to)) - dayNumber(parseDay(from));
+
+/**
+ * @description Whether years are a milestone: a multiple of 10 or of 25, and
+ * 18 for a birthday (coming of age).
+ * @param {number|null} years - The years reached.
+ * @param {string} kind - The kind of the date.
+ * @returns {boolean} True for a round year.
+ * @example
+ * isRoundYears(25, 'wedding'); // -> true
+ */
+function isRoundYears(years, kind) {
+  if (!Number.isInteger(years) || years < 1) {
+    return false;
+  }
+  return years % 10 === 0 || years % 25 === 0 || (kind === 'birthday' && years === 18);
+}
+
+/**
+ * @description The days elapsed since the original date, when its year is
+ * known and the date is passed (the day itself is 0).
+ * @param {object} entry - The date.
+ * @param {string} today - YYYY-MM-DD.
+ * @returns {number|null} The days, or null.
+ * @example
+ * daysSinceOrigin({ day: 1, month: 1, year: 2026 }, '2026-01-11'); // -> 10
+ */
+function daysSinceOrigin(entry, today) {
+  if (entry.year === null || entry.year === undefined) {
+    return null;
+  }
+  const days = dayNumber(parseDay(today)) - dayNumber(entry);
+  return days >= 0 ? days : null;
+}
+
+/**
+ * @description The occurrence of a date in a month, if it has one: a yearly
+ * date in its month (from its first year on), a one-time date in its own
+ * month.
+ * @param {object} entry - The date.
+ * @param {number} year - The year of the month.
+ * @param {number} month - 1-12.
+ * @returns {{ date: string, years: number|null }|null} The day and the years
+ * reached that day, or null.
+ * @example
+ * occurrenceInMonth({ day: 24, month: 12, year: 1995, recurrence: 'yearly' }, 2026, 12);
+ * // -> { date: '2026-12-24', years: 31 }
+ */
+function occurrenceInMonth(entry, year, month) {
+  if (entry.month !== month) {
+    return null;
+  }
+  const known = entry.year ?? null;
+  if (entry.recurrence === 'once') {
+    return known === year ? { date: toIso(entry), years: null } : null;
+  }
+  if (known !== null && year < known) {
+    return null;
+  }
+  return {
+    date: toIso(occurrenceIn(year, month, entry.day)),
+    years: known === null ? null : year - known,
+  };
+}
+
 export {
   KINDS,
   RECURRENCES,
@@ -196,4 +272,8 @@ export {
   toIso,
   computeOccurrence,
   addDays,
+  daysBetween,
+  isRoundYears,
+  daysSinceOrigin,
+  occurrenceInMonth,
 };

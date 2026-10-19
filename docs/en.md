@@ -5,16 +5,17 @@
 This integration counts down to the dates that matter: birthdays, wedding anniversaries, remembrance days, events. For each date it tells how many days are left, how old someone turns or how many years have passed, and it can start your scenes on the day, a few days before, or at the reminder of each date.
 
 - Each date becomes a **device**: days remaining, years at the next anniversary and years so far, days elapsed (option), days to the half anniversary (option), next date.
-- **Scene triggers**: a date is today, a date is in N days, reminder of a date. **Scene action**: get the upcoming dates as a text to send.
-- Two **dashboard widgets**: upcoming dates, countdown of one date.
+- **Scene triggers**: a date is today, a date is in N days, reminder of a date ("round years" filter), a date reaches 1,000 days. **Scene action**: get the upcoming dates as a text to send.
+- Three **dashboard widgets**: upcoming dates, countdown of one date, dates of the month. An **Add a date** button right on the dashboard.
+- The traditional names of **wedding anniversaries**: paper, china, golden…
 
-![The two widgets of the integration: upcoming dates and countdown of a wedding anniversary (generated illustration, not a screenshot)](https://raw.githubusercontent.com/William-De71/gladys-anniversaries/main/docs/assets/widgets.en.png)
+![The three widgets of the integration: upcoming dates, countdown of a wedding anniversary and dates of the month (generated illustration, not a screenshot)](https://raw.githubusercontent.com/William-De71/gladys-anniversaries/main/docs/assets/widgets.en.png)
 
 The image above is a generated illustration, not a screenshot.
 
 ## Prerequisites
 
-- Gladys Assistant 5.1.0 or later.
+- Gladys Assistant 5.2.0 or later.
 - The timezone of Gladys set correctly (**Settings > System**): the days change at its midnight.
 - Nothing else: no account, no device, no internet access.
 
@@ -42,6 +43,7 @@ The dates are stored in the configuration of the integration in Gladys: they fol
 - **Every year or one time only**: a one-time date (an event, a deadline) needs its year; once passed, its days remaining go negative and it leaves the widgets.
 - **29 February** falls on 28 February in the other years.
 - **Kind**: birthday, wedding anniversary, anniversary, remembrance, event or other. Scenes and widgets can filter on it.
+- A **wedding anniversary** with its year gets its traditional name (paper anniversary the 1st year, china at 20, golden at 50…: the US traditional list), in the widgets and the scenes. Each language follows its own tradition: in French, German or Spanish the names (and the years named) are not the same.
 
 ### Devices
 
@@ -58,7 +60,10 @@ The values change at midnight in the timezone of Gladys. When you change the opt
 ### Dashboard widgets
 
 - **Upcoming dates**: the next dates (1 to 8), with the years reached, the day and a badge (green today, orange within the reminder). Settings: how many, within how many days, which kinds. Tap a date for its details.
-- **Countdown**: one date among the added devices: days left, years, days elapsed, original date, half anniversary and reminder.
+- **Countdown**: one date among the added devices: days left, years, days elapsed, original date, half anniversary, traditional name and reminder.
+- **Dates of the month**: every date of the current month (or the next one), past days included, in the order of the days; 8 at most, the caption says how many there are. Settings: which month, which kinds.
+
+**Upcoming dates** and **Dates of the month** have an **Add a date** button: a small form with the name, the date (day first: 24/12/1995, or 24/12 without the year), the kind and the repeat. Its own reminder and the options are set afterwards with "Edit a date" in the configuration. As with the configuration button, then add the date from the Discover tab to get its device.
 
 ### Scenes
 
@@ -67,8 +72,11 @@ Triggers, fired once a day at the hour of the configuration (never twice for the
 - **A date is today**: filters on the date and the kinds.
 - **A date is in N days**: you choose N (1 to 60), for example 7 for "one week before".
 - **Reminder of a date**: when a date reaches its own reminder (or the default one).
+- **A date reaches 1,000 days**: every 1,000 days since the date, for the dates whose year is known (10,000 days old, 1,000 days since moving in). Variables: name, kind, number of days, original date, summary sentence.
 
-Variables: name, kind, years reached, original date, day, days remaining, and a ready-made summary sentence ("Marie: in 7 days, Thursday, December 24, 2026 (31 years)").
+The first three have a **Round years** filter: left empty, every year; "Round years only", the tens, 25, 75 and the other multiples of 25, and 18 for a birthday.
+
+Variables: name, kind, years reached, wedding anniversary name (empty for the other kinds), original date, day, days remaining, and a ready-made summary sentence ("Marie: in 7 days, Thursday, December 24, 2026 (31 years)", "Claire & Alex: today (25 years, silver anniversary)").
 
 Action **Get the upcoming dates**: within N days (0 for today only), optionally for some kinds; outputs the count, a summary (one line per date) and the nearest date.
 
@@ -76,6 +84,7 @@ Examples:
 
 - When a birthday is today → send "{{triggerEvent.data.summary}}" to the family and turn the living room light to a festive color.
 - When a date is in 7 days, kind wedding anniversary → send yourself a message to book the restaurant.
+- When a wedding anniversary is in 30 days, round years only → send yourself "The {{triggerEvent.data.wedding}} is coming!" to prepare a party.
 - Every Monday at 8:00 → get the upcoming dates within 7 days → send the summary by message.
 
 ### Transport

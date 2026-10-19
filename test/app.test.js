@@ -210,6 +210,67 @@ test('widgets and the scene action answer from the registry', async () => {
   assert.equal(out.count, 2);
 });
 
+test('the "Add a date" button of the widgets: added, explained, refused in a toast', async () => {
+  const { gladys } = await start();
+  const form = (values) => gladys.fake.widgetAction('upcoming', 'add_date', {}, { values });
+  const added = ok(
+    await form({ name: 'Marie', date: '24/12/1995', kind: 'birthday', recurrence: 'yearly' }),
+  );
+  assert.match(added.fr, /^Date ajoutée : Marie\. .*Découverte/);
+  assert.ok(Object.values(added).every((text) => text.length <= 200));
+  assert.deepEqual(
+    gladys.fake.config.anniversaries.map((e) => [e.name, e.day, e.month, e.year, e.kind]),
+    [['Marie', 24, 12, 1995, 'birthday']],
+  );
+  assert.deepEqual(
+    gladys.fake.discoveredDevices.map((device) => device.name),
+    ['Marie'],
+  );
+  // From the month widget too.
+  ok(
+    await gladys.fake.widgetAction(
+      'month',
+      'add_date',
+      {},
+      { values: { name: 'Us', date: '16.10.2010', kind: 'wedding', recurrence: 'yearly' } },
+    ),
+  );
+  assert.equal(gladys.fake.config.anniversaries.length, 2);
+  // A wrong date is answered in the toast, nothing is stored.
+  assert.match(ok(await form({ name: 'X', date: '31/04' })).en, /This day does not exist/);
+  assert.match(ok(await form({ name: 'X', date: 'soon' })).fr, /en commençant par le jour/);
+  // An older core sends the action without its form.
+  assert.match(
+    ok(await gladys.fake.widgetAction('upcoming', 'add_date', {})).en,
+    /does not send the form/,
+  );
+  assert.equal(gladys.fake.config.anniversaries.length, 2);
+});
+
+test('the month widget lists the dates of the month', async () => {
+  const { gladys } = await start({ config: { anniversaries: DATES } });
+  const content = ok(await gladys.fake.widgetGet('month', { settings: {}, language: 'de' }));
+  assert.equal(content.components[0].text, 'Oktober 2026');
+  assert.deepEqual(
+    content.components[2].items.map((item) => item.title),
+    ['Our wedding · 16 Jahre', 'Grandpa'],
+  );
+  const next = ok(await gladys.fake.widgetGet('month', { settings: { month: 'next' } }));
+  assert.equal(next.components[1].text, 'No date in November 2026.');
+});
+
+test('a date reaching 1,000 days fires its scene event at the event hour', async () => {
+  const tom = { ...MARIE, id: 'f0f0f0f0', name: 'Tom', day: 1, month: 1, year: 2000 };
+  const { gladys } = await start({
+    at: '2027-05-19T07:00:05Z',
+    config: { anniversaries: [tom] },
+  });
+  assert.deepEqual(
+    gladys.fake.sceneEvents.map((event) => [event.key, event.data.days]),
+    [[TRIGGERS.DAYS_MILESTONE, 10000]],
+  );
+});
+
 test('the automatic language follows the dashboard and is remembered', async () => {
   const { gladys } = await start({ config: { language: 'auto', anniversaries: [MARIE] } });
   assert.equal(gladys.fake.discoveredDevices[0].features[1].name, 'Age at next birthday');

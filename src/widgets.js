@@ -8,7 +8,12 @@
 //                  many days, which kinds;
 //   - `countdown`  one date, chosen among the created devices: days left,
 //                  years reached, days elapsed, original date, half
-//                  anniversary and reminder.
+//                  anniversary, name of a wedding anniversary and reminder;
+//   - `month`      the dates of the current (or next) month, past days
+//                  included; settings: which month, which kinds.
+// `upcoming` and `month` carry an "Add a date" button: a form of four fields
+// (the most a widget button takes): name, typed date, kind, repeat. The other
+// options stay in the configuration ("Edit a date").
 //
 // The contents change once a day: they are cached until the next midnight of
 // the Gladys timezone (one hour at most), and refreshed at midnight and on
@@ -17,11 +22,16 @@
 // 1 main one, 6 tiles, 2 texts, 1 status, 4 buttons.
 // -----------------------------------------------------------------------------
 
-import { t, formatDay, relativeDays, relativeInline } from './i18n.js';
-import { toIso } from './dates.js';
-import { snapshot, yearsOf } from './events.js';
+import { t, all, formatDay, formatMonth, relativeDays, relativeInline, yearsText } from './i18n.js';
+import { KINDS, RECURRENCES, toIso, parseDay, daysBetween, occurrenceInMonth } from './dates.js';
+import { snapshot, yearsOf, weddingOf } from './events.js';
+import { weddingName, capitalize } from './weddings.js';
 
-const WIDGETS = { UPCOMING: 'upcoming', COUNTDOWN: 'countdown' };
+const WIDGETS = { UPCOMING: 'upcoming', COUNTDOWN: 'countdown', MONTH: 'month' };
+const WIDGET_ACTIONS = { ADD: 'add_date' };
+const MONTHS = { CURRENT: 'current', NEXT: 'next' };
+// The rows of a card-list in list display.
+const MAX_ITEMS = 8;
 const COUNT = { min: 1, max: 8, default: 5 };
 const WITHIN = { min: 1, max: 366, default: 366 };
 const TTL = { min: 10, max: 3600 };
@@ -61,15 +71,76 @@ const ttlUntil = (secondsToMidnight) =>
   Math.min(TTL.max, Math.max(TTL.min, Math.round(secondsToMidnight) + 5));
 
 /**
- * @description A widget content made of one message.
+ * @description A widget content made of one message, and optional extra
+ * components (the "Add a date" button).
  * @param {string} message - The message.
  * @param {number} ttl - Its freshness.
+ * @param {object[]} [extra] - Components after the message.
  * @returns {object} The content.
  */
-const messageContent = (message, ttl) => ({
+const messageContent = (message, ttl, extra = []) => ({
   ttl_seconds: ttl,
-  components: [{ type: 'text', variant: 'body', text: clip(message, 300) }],
+  components: [{ type: 'text', variant: 'body', text: clip(message, 300) }, ...extra],
 });
+
+/**
+ * @description The "Add a date" button and its form, in a language. The
+ * fields of a form are multi-language objects (the core asks for "en").
+ * @param {string} language - The language of the button.
+ * @returns {object} The button component.
+ */
+function addButton(language) {
+  const text = (key, max) =>
+    Object.fromEntries(Object.entries(all(key)).map(([lang, value]) => [lang, clip(value, max)]));
+  return {
+    type: 'button',
+    label: clip(t('buttonAdd', language), 24),
+    icon: 'plus',
+    style: 'secondary',
+    action: {
+      key: WIDGET_ACTIONS.ADD,
+      fields: [
+        {
+          key: 'name',
+          type: 'string',
+          required: true,
+          label: text('formName', 40),
+          placeholder: text('formNamePlaceholder', 40),
+        },
+        {
+          key: 'date',
+          type: 'string',
+          required: true,
+          label: text('formDate', 40),
+          placeholder: text('formDatePlaceholder', 40),
+          description: text('formDateDescription', 200),
+        },
+        {
+          key: 'kind',
+          type: 'select',
+          default: 'birthday',
+          label: text('formKind', 40),
+          options: KINDS.map((value) => ({ value, label: text(`kind_${value}`, 40) })),
+        },
+        {
+          key: 'recurrence',
+          type: 'select',
+          default: 'yearly',
+          label: text('formRecurrence', 40),
+          options: RECURRENCES.map((value) => ({
+            value,
+            label: Object.fromEntries(
+              Object.entries(text(`recurrence_${value}`, 40)).map(([lang, v]) => [
+                lang,
+                capitalize(v),
+              ]),
+            ),
+          })),
+        },
+      ],
+    },
+  };
+}
 
 /**
  * @description The color of a date: today, within its reminder, later.
@@ -107,7 +178,7 @@ const originalOf = (entry, language) =>
  */
 function buildUpcomingWidget({ entries, today, language, settings = {}, ttl, defaultReminder }) {
   if (entries.length === 0) {
-    return messageContent(t('widgetEmpty', language), ttl);
+    return messageContent(t('widgetEmpty', language), ttl, [addButton(language)]);
   }
   const count = setting(settings.count, COUNT);
   const within = setting(settings.days, WITHIN);
@@ -119,7 +190,9 @@ function buildUpcomingWidget({ entries, today, language, settings = {}, ttl, def
       (kinds.length === 0 || kinds.includes(entry.kind)),
   );
   if (listed.length === 0) {
-    return messageContent(t('widgetNothingSoon', language, { days: within }), ttl);
+    return messageContent(t('widgetNothingSoon', language, { days: within }), ttl, [
+      addButton(language),
+    ]);
   }
   const components = [];
   if (within < WITHIN.max) {
@@ -143,21 +216,122 @@ function buildUpcomingWidget({ entries, today, language, settings = {}, ttl, def
           text: clip(relativeDays(occurrence.daysRemaining, language), 16),
           color: colorOf(entry, occurrence, defaultReminder),
         },
-        description: clip(
-          t('itemDescription', language, {
-            kind: t(`kind_${entry.kind}`, language),
-            recurrence: t(`recurrence_${entry.recurrence}`, language),
-            date: formatDay(occurrence.next, language),
-            relative: relativeInline(occurrence.daysRemaining, language),
-            years: years ? t('itemYears', language, { years }) : '',
-            original: originalOf(entry, language),
-          }),
-          2000,
-        ),
+        description: describeItem(entry, {
+          date: occurrence.next,
+          days: occurrence.daysRemaining,
+          years,
+          wedding: weddingOf(entry, occurrence, language),
+          language,
+        }),
       };
     }),
   });
+  components.push(addButton(language));
   return { ttl_seconds: ttl, components };
+}
+
+/**
+ * @description The detail panel of a date in a card-list.
+ * @param {object} entry - The date.
+ * @param {object} at - The occurrence shown.
+ * @param {string} at.date - Its day, YYYY-MM-DD.
+ * @param {number} at.days - Days from today (negative in the past).
+ * @param {string} at.years - The years reached that day, as text, or ''.
+ * @param {string} at.wedding - The name of a wedding anniversary, or ''.
+ * @param {string} at.language - The language.
+ * @returns {string} The description.
+ */
+function describeItem(entry, { date, days, years, wedding, language }) {
+  const text = t('itemDescription', language, {
+    kind: t(`kind_${entry.kind}`, language),
+    recurrence: t(`recurrence_${entry.recurrence}`, language),
+    date: formatDay(date, language),
+    relative: relativeInline(days, language),
+    years: years ? t('itemYears', language, { years }) : '',
+    original: originalOf(entry, language),
+  });
+  return clip(wedding ? `${text} ${capitalize(wedding)}.` : text, 2000);
+}
+
+/**
+ * @description The "month" widget: the dates of a month, past days included.
+ * @param {object} options - Options.
+ * @param {object[]} options.entries - The dates.
+ * @param {string} options.today - YYYY-MM-DD.
+ * @param {string} options.language - The language.
+ * @param {object} [options.settings] - `{ month: 'current'|'next', kinds }`.
+ * @param {number} options.ttl - Cache duration.
+ * @param {number} options.defaultReminder - Default reminder, in days.
+ * @returns {object} The content.
+ */
+function buildMonthWidget({ entries, today, language, settings = {}, ttl, defaultReminder }) {
+  if (entries.length === 0) {
+    return messageContent(t('widgetEmpty', language), ttl, [addButton(language)]);
+  }
+  const now = parseDay(today);
+  const next = settings.month === MONTHS.NEXT;
+  const year = next && now.month === 12 ? now.year + 1 : now.year;
+  const month = next ? (now.month % 12) + 1 : now.month;
+  const kinds = [].concat(settings.kinds ?? []).filter(Boolean);
+  const listed = entries
+    .filter((entry) => kinds.length === 0 || kinds.includes(entry.kind))
+    .map((entry) => ({ entry, at: occurrenceInMonth(entry, year, month) }))
+    .filter(({ at }) => at !== null)
+    .sort((a, b) => a.at.date.localeCompare(b.at.date) || a.entry.name.localeCompare(b.entry.name));
+  const title = formatMonth(year, month, language);
+  if (listed.length === 0) {
+    return {
+      ttl_seconds: ttl,
+      components: [
+        { type: 'text', variant: 'heading', text: clip(title, 40) },
+        {
+          type: 'text',
+          variant: 'body',
+          text: clip(t('monthNothing', language, { month: title }), 300),
+        },
+        addButton(language),
+      ],
+    };
+  }
+  const shown = listed.slice(0, MAX_ITEMS);
+  return {
+    ttl_seconds: ttl,
+    components: [
+      { type: 'text', variant: 'heading', text: clip(title, 40) },
+      {
+        type: 'text',
+        variant: 'caption',
+        text: clip(
+          listed.length > shown.length
+            ? t('monthCaptionMore', language, { shown: shown.length, count: listed.length })
+            : t('monthCaption', language, { count: listed.length }),
+          80,
+        ),
+      },
+      {
+        type: 'card-list',
+        display: 'list',
+        items: shown.map(({ entry, at }) => {
+          const days = daysBetween(today, at.date);
+          const years = at.years !== null && at.years > 0 ? yearsText(at.years, language) : '';
+          const wedding =
+            entry.kind === 'wedding' && entry.recurrence === 'yearly'
+              ? weddingName(at.years, language)
+              : '';
+          return {
+            title: clip(years ? `${entry.name} · ${years}` : entry.name, 60),
+            date: `${at.date}T00:00:00.000Z`,
+            badge: {
+              text: clip(relativeDays(days, language), 16),
+              color: colorOf(entry, { daysRemaining: days, passed: days < 0 }, defaultReminder),
+            },
+            description: describeItem(entry, { date: at.date, days, years, wedding, language }),
+          };
+        }),
+      },
+      addButton(language),
+    ],
+  };
 }
 
 /**
@@ -257,6 +431,10 @@ function buildCountdownWidget({
       ),
     });
   }
+  const wedding = weddingOf(entry, occurrence, language);
+  if (wedding) {
+    items.push({ label: t('statusWedding', language), value: clip(capitalize(wedding), 40) });
+  }
   if (entry.recurrence === 'yearly' || !occurrence.passed) {
     items.push({
       label: t('statusReminder', language),
@@ -270,6 +448,8 @@ function buildCountdownWidget({
 
 export {
   WIDGETS,
+  WIDGET_ACTIONS,
+  MONTHS,
   COUNT,
   WITHIN,
   TTL,
@@ -277,6 +457,8 @@ export {
   ttlUntil,
   messageContent,
   colorOf,
+  addButton,
   buildUpcomingWidget,
   buildCountdownWidget,
+  buildMonthWidget,
 };

@@ -5,7 +5,7 @@
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 [![Latest release](https://img.shields.io/github/v/release/William-De71/gladys-anniversaries?sort=semver)](https://github.com/William-De71/gladys-anniversaries/releases)
 [![CI](https://img.shields.io/github/actions/workflow/status/William-De71/gladys-anniversaries/release.yml?branch=main&label=CI)](https://github.com/William-De71/gladys-anniversaries/actions/workflows/release.yml)
-[![Gladys](https://img.shields.io/badge/Gladys-%E2%89%A5%205.1.0-2f6fb5)](https://gladysassistant.com)
+[![Gladys](https://img.shields.io/badge/Gladys-%E2%89%A5%205.2.0-2f6fb5)](https://gladysassistant.com)
 
 ![Anniversaries for Gladys Assistant](cover.jpg)
 
@@ -17,7 +17,8 @@ User documentation: [English](docs/en.md) · [Français](docs/fr.md) · [Deutsch
 
 - Dates typed in **plain forms** of the configuration (no JSON): with or without the year, every year or one time only, kind, own reminder, "count up" and "half anniversary" options (the options of the Home Assistant [Anniversaries](https://github.com/pinkywafer/Anniversaries) integration).
 - **One device per date**: days remaining, years at the next anniversary, years so far, days elapsed, days to the half anniversary, next date.
-- **3 scene triggers**, **1 scene action** and **2 dashboard widgets** (below).
+- **4 scene triggers**, **1 scene action** and **3 dashboard widgets**, with an **Add a date** button on the dashboard (below).
+- The traditional names of **wedding anniversaries** (paper, china, golden…), each language following its own tradition.
 - Days computed in the **timezone of Gladys**, changing at its midnight; 29 February falls on 28 February in the other years.
 - Four languages everywhere: English, French, German, Spanish.
 
@@ -68,11 +69,11 @@ External ids rest on a random identifier given to each date when it is added and
 
 ## Scene triggers, actions and widgets
 
-![The two widgets: upcoming dates and countdown of a wedding anniversary (generated illustration, not a screenshot)](docs/assets/widgets.en.png)
+![The three widgets: upcoming dates, countdown of a wedding anniversary and dates of the month (generated illustration, not a screenshot)](docs/assets/widgets.en.png)
 
-**Widgets**: Upcoming dates (1 to 8, with years, day and a badge; filters on kinds and on a number of days), Countdown (one date: days left, years, days elapsed, original date, half anniversary, reminder).
+**Widgets**: Upcoming dates (1 to 8, with years, day and a badge; filters on kinds and on a number of days), Countdown (one date: days left, years, days elapsed, original date, half anniversary, traditional name, reminder), Dates of the month (this month or the next one, past days included). Upcoming dates and Dates of the month carry an **Add a date** button: name, date typed day first, kind, repeat.
 
-**Triggers** (once a day at a configurable hour, never twice for the same date and day): a date is today; a date is in N days (N from 1 to 60); reminder of a date (its own number of days, or the default one). Filters: the date, the kinds. Variables: name, kind, years, original date, day, days remaining, summary sentence.
+**Triggers** (once a day at a configurable hour, never twice for the same date and day): a date is today; a date is in N days (N from 1 to 60); reminder of a date (its own number of days, or the default one); a date reaches 1,000 days (every 1,000 days since a date with its year). Filters: the date, the kinds, round years only (10, 20, 25, 30… and 18 for a birthday). Variables: name, kind, years, wedding anniversary name, original date, day, days remaining, summary sentence.
 
 **Action**: get the upcoming dates within N days: count, summary (one line per date), nearest date.
 
@@ -84,7 +85,7 @@ Examples:
 
 ## Requirements
 
-- Gladys Assistant **5.1.0** or later (widgets and scenes): older instances cannot install the integration.
+- Gladys Assistant **5.2.0** or later (widget buttons with a form): older instances cannot install the integration.
 - The timezone of Gladys set correctly (Settings > System).
 
 ## Installation

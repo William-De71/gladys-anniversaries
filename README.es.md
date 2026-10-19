@@ -5,7 +5,7 @@
 [![Licencia: Apache-2.0](https://img.shields.io/badge/licencia-Apache--2.0-blue.svg)](LICENSE)
 [![Última versión](https://img.shields.io/github/v/release/William-De71/gladys-anniversaries?sort=semver)](https://github.com/William-De71/gladys-anniversaries/releases)
 [![CI](https://img.shields.io/github/actions/workflow/status/William-De71/gladys-anniversaries/release.yml?branch=main&label=CI)](https://github.com/William-De71/gladys-anniversaries/actions/workflows/release.yml)
-[![Gladys](https://img.shields.io/badge/Gladys-%E2%89%A5%205.1.0-2f6fb5)](https://gladysassistant.com)
+[![Gladys](https://img.shields.io/badge/Gladys-%E2%89%A5%205.2.0-2f6fb5)](https://gladysassistant.com)
 
 ![Anniversaries para Gladys Assistant](cover.jpg)
 
@@ -17,7 +17,8 @@ Documentación de usuario: [English](docs/en.md) · [Français](docs/fr.md) · [
 
 - Fechas introducidas en **formularios sencillos** de la configuración (sin JSON): con o sin año, cada año o una sola vez, tipo, recordatorio propio, opciones «contar los días pasados» y «medio aniversario» (las opciones de la integración de Home Assistant [Anniversaries](https://github.com/pinkywafer/Anniversaries)).
 - **Un dispositivo por fecha**: días restantes, años en el próximo aniversario, años transcurridos, días pasados, días hasta el medio aniversario, próxima fecha.
-- **3 disparadores de escena**, **1 acción de escena** y **2 widgets** (abajo).
+- **4 disparadores de escena**, **1 acción de escena** y **3 widgets**, con un botón **Añadir fecha** en el panel (abajo).
+- El nombre tradicional de los **aniversarios de boda** (bodas de papel, de porcelana, de oro…), cada idioma con su propia tradición.
 - Días calculados en la **zona horaria de Gladys**, que cambian a su medianoche; el 29 de febrero cae el 28 de febrero los demás años.
 - Cuatro idiomas en todas partes: inglés, francés, alemán, español.
 
@@ -68,11 +69,11 @@ Los external_id se basan en un identificador aleatorio dado a cada fecha al aña
 
 ## Disparadores, acciones de escena y widgets
 
-![Los dos widgets: próximas fechas y cuenta atrás de un aniversario de boda (ilustración generada, no una captura de pantalla)](docs/assets/widgets.es.png)
+![Los tres widgets: próximas fechas, cuenta atrás de un aniversario de boda y fechas del mes (ilustración generada, no una captura de pantalla)](docs/assets/widgets.es.png)
 
-**Widgets**: Próximas fechas (1 a 8, con años, día e insignia; filtros por tipos y por un número de días), Cuenta atrás (una fecha: días restantes, años, días pasados, fecha original, medio aniversario, recordatorio).
+**Widgets**: Próximas fechas (1 a 8, con años, día e insignia; filtros por tipos y por un número de días), Cuenta atrás (una fecha: días restantes, años, días pasados, fecha original, medio aniversario, bodas, recordatorio), Fechas del mes (este mes o el siguiente, días pasados incluidos). Próximas fechas y Fechas del mes tienen un botón **Añadir fecha**: nombre, fecha escrita empezando por el día, tipo, repetición.
 
-**Disparadores** (una vez al día a una hora configurable, nunca dos veces para la misma fecha el mismo día): una fecha es hoy; una fecha es dentro de N días (N de 1 a 60); recordatorio de una fecha (su propio número de días o el predeterminado). Filtros: la fecha, los tipos. Variables: nombre, tipo, años, fecha original, día, días restantes, frase de resumen.
+**Disparadores** (una vez al día a una hora configurable, nunca dos veces para la misma fecha el mismo día): una fecha es hoy; una fecha es dentro de N días (N de 1 a 60); recordatorio de una fecha (su propio número de días o el predeterminado); una fecha alcanza 1000 días (cada 1000 días desde una fecha con año conocido). Filtros: la fecha, los tipos, solo años redondos (10, 20, 25, 30… y 18 en un cumpleaños). Variables: nombre, tipo, años, nombre de las bodas, fecha original, día, días restantes, frase de resumen.
 
 **Acción**: obtener las próximas fechas dentro de N días: número, resumen (una línea por fecha), fecha más cercana.
 
@@ -84,7 +85,7 @@ Ejemplos:
 
 ## Requisitos
 
-- Gladys Assistant **5.1.0** o posterior (widgets y escenas): las instancias más antiguas no pueden instalar la integración.
+- Gladys Assistant **5.2.0** o posterior (botones de widget con formulario): las instancias más antiguas no pueden instalar la integración.
 - La zona horaria de Gladys bien configurada (Ajustes > Sistema).
 
 ## Instalación

@@ -7,10 +7,11 @@
 //   - one device per date (device.js): days remaining, years, days elapsed,
 //     half anniversary, next date — refreshed at midnight in the timezone of
 //     Gladys (TZ, given to the container by the supervisor);
-//   - scene triggers (events.js): a date today, in N days, at its reminder —
-//     fired once a day at the hour of the configuration;
+//   - scene triggers (events.js): a date today, in N days, at its reminder,
+//     every 1,000 days — fired once a day at the hour of the configuration;
 //   - scene action: the dates of the next N days, as a text to send;
-//   - dashboard widgets (widgets.js): upcoming dates, countdown of one date.
+//   - dashboard widgets (widgets.js): upcoming dates, countdown of one date,
+//     dates of the month; an "Add a date" button on the lists.
 //
 // Transport: local. The integration calls no network service at all.
 //
@@ -20,13 +21,20 @@
 
 import { logger as sdkLogger } from '@gladysassistant/integration-sdk';
 import { normalizeConfig, readLanguage, INTERNAL_KEYS, AUTO_LANGUAGE } from './config.js';
-import { createRegistry, RegistryError } from './registry.js';
+import { createRegistry, RegistryError, fieldsFromWidget } from './registry.js';
 import { createFired, DEFAULT_PATH } from './fired.js';
 import { resolveTimezone, localDay, wallClock, secondsUntilMidnight } from './time.js';
 import { computeOccurrence, toIso } from './dates.js';
 import { buildDevice, buildStates, idFromExternalId, featureSignature } from './device.js';
 import { SCENE_ACTIONS, eventsOfDay, eventData, upcomingOutputs, yearsOf } from './events.js';
-import { WIDGETS, ttlUntil, buildUpcomingWidget, buildCountdownWidget } from './widgets.js';
+import {
+  WIDGETS,
+  WIDGET_ACTIONS,
+  ttlUntil,
+  buildUpcomingWidget,
+  buildCountdownWidget,
+  buildMonthWidget,
+} from './widgets.js';
 import { t, all, formatDay, relativeInline, isLanguage } from './i18n.js';
 
 const ACTIONS = {
@@ -319,6 +327,51 @@ function createApp(
       defaultReminder: config.reminderDays,
     });
   });
+
+  gladys.onWidgetGet(WIDGETS.MONTH, async ({ settings = {}, language: lang } = {}) => {
+    rememberLanguage(lang);
+    return buildMonthWidget({
+      entries: registry.list(),
+      today: today(),
+      language: isLanguage(lang) ? lang : textLanguage(),
+      settings,
+      ttl: ttl(),
+      defaultReminder: config.reminderDays,
+    });
+  });
+
+  /**
+   * @description The "Add a date" button of the lists. The answer is a toast
+   * (200 characters at most), a refused form included: the user reads why,
+   * in their language.
+   * @param {string} actionKey - The action of the button.
+   * @param {object} params - Its params (none).
+   * @param {object} [context] - `{ values }`, the typed form.
+   * @returns {Promise<object>} The toast, in every language.
+   */
+  async function widgetAction(actionKey, params, { values } = {}) {
+    if (actionKey !== WIDGET_ACTIONS.ADD) {
+      throw new Error(`Unknown widget action ${actionKey}`);
+    }
+    // An older core drops the form and sends the action alone.
+    if (!values) {
+      return all('toastNoForm');
+    }
+    try {
+      const entry = await registry.add(fieldsFromWidget(values));
+      logger.info(`Date ${entry.id} added from a widget`);
+      await datesChanged();
+      return all((lang) => t('toastAdded', lang, { name: entry.name }).slice(0, 200));
+    } catch (err) {
+      if (err instanceof RegistryError) {
+        return all((lang) => t(err.key, lang, err.params).slice(0, 200));
+      }
+      logger.error('Unable to add a date from a widget', err);
+      return all((lang) => t('errorSave', lang, { message: err.message }).slice(0, 200));
+    }
+  }
+  gladys.onWidgetAction(WIDGETS.UPCOMING, widgetAction);
+  gladys.onWidgetAction(WIDGETS.MONTH, widgetAction);
 
   gladys.onWidgetGet(WIDGETS.COUNTDOWN, async ({ settings = {}, language: lang } = {}) => {
     rememberLanguage(lang);

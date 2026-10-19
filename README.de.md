@@ -5,7 +5,7 @@
 [![Lizenz: Apache-2.0](https://img.shields.io/badge/Lizenz-Apache--2.0-blue.svg)](LICENSE)
 [![Neueste Version](https://img.shields.io/github/v/release/William-De71/gladys-anniversaries?sort=semver)](https://github.com/William-De71/gladys-anniversaries/releases)
 [![CI](https://img.shields.io/github/actions/workflow/status/William-De71/gladys-anniversaries/release.yml?branch=main&label=CI)](https://github.com/William-De71/gladys-anniversaries/actions/workflows/release.yml)
-[![Gladys](https://img.shields.io/badge/Gladys-%E2%89%A5%205.1.0-2f6fb5)](https://gladysassistant.com)
+[![Gladys](https://img.shields.io/badge/Gladys-%E2%89%A5%205.2.0-2f6fb5)](https://gladysassistant.com)
 
 ![Anniversaries für Gladys Assistant](cover.jpg)
 
@@ -17,7 +17,8 @@ Benutzerdokumentation: [English](docs/en.md) · [Français](docs/fr.md) · [Deut
 
 - Daten in **einfachen Formularen** der Konfiguration eingegeben (kein JSON): mit oder ohne Jahr, jedes Jahr oder nur einmal, Art, eigene Erinnerung, Optionen „vergangene Tage zählen“ und „halber Jahrestag“ (die Optionen der Home-Assistant-Integration [Anniversaries](https://github.com/pinkywafer/Anniversaries)).
 - **Ein Gerät pro Datum**: verbleibende Tage, Jahre am nächsten Jahrestag, bisherige Jahre, vergangene Tage, Tage bis zum halben Jahrestag, nächstes Datum.
-- **3 Szenen-Auslöser**, **1 Szenen-Aktion** und **2 Dashboard-Widgets** (unten).
+- **4 Szenen-Auslöser**, **1 Szenen-Aktion** und **3 Dashboard-Widgets**, mit einer Schaltfläche **Datum hinzufügen** im Dashboard (unten).
+- Die traditionellen Namen der **Hochzeitstage** (Papier-, Porzellan-, Goldene Hochzeit …), jede Sprache mit ihrer eigenen Tradition.
 - Tage in der **Zeitzone von Gladys** berechnet, Wechsel um ihre Mitternacht; der 29. Februar fällt in den anderen Jahren auf den 28. Februar.
 - Vier Sprachen überall: Englisch, Französisch, Deutsch, Spanisch.
 
@@ -68,11 +69,11 @@ Die External-IDs beruhen auf einer zufälligen Kennung, die jedes Datum beim Hin
 
 ## Szenen-Auslöser, Aktionen und Widgets
 
-![Die zwei Widgets: nächste Daten und Countdown eines Hochzeitstags (generierte Illustration, kein Screenshot)](docs/assets/widgets.de.png)
+![Die drei Widgets: nächste Daten, Countdown eines Hochzeitstags und Daten des Monats (generierte Illustration, kein Screenshot)](docs/assets/widgets.de.png)
 
-**Widgets**: Nächste Daten (1 bis 8, mit Jahren, Tag und Badge; Filter nach Arten und einer Anzahl von Tagen), Countdown (ein Datum: verbleibende Tage, Jahre, vergangene Tage, ursprüngliches Datum, halber Jahrestag, Erinnerung).
+**Widgets**: Nächste Daten (1 bis 8, mit Jahren, Tag und Badge; Filter nach Arten und einer Anzahl von Tagen), Countdown (ein Datum: verbleibende Tage, Jahre, vergangene Tage, ursprüngliches Datum, halber Jahrestag, Bezeichnung, Erinnerung), Daten des Monats (dieser oder nächster Monat, vergangene Tage inbegriffen). Nächste Daten und Daten des Monats haben eine Schaltfläche **Datum hinzufügen**: Name, Datum mit dem Tag zuerst, Art, Wiederholung.
 
-**Auslöser** (einmal am Tag zu einer einstellbaren Stunde, nie zweimal für dasselbe Datum am selben Tag): ein Datum ist heute; ein Datum ist in N Tagen (N von 1 bis 60); Erinnerung an ein Datum (seine eigene Anzahl Tage oder die Standard-Erinnerung). Filter: das Datum, die Arten. Variablen: Name, Art, Jahre, ursprüngliches Datum, Tag, verbleibende Tage, Zusammenfassungssatz.
+**Auslöser** (einmal am Tag zu einer einstellbaren Stunde, nie zweimal für dasselbe Datum am selben Tag): ein Datum ist heute; ein Datum ist in N Tagen (N von 1 bis 60); Erinnerung an ein Datum (seine eigene Anzahl Tage oder die Standard-Erinnerung); ein Datum erreicht 1.000 Tage (alle 1.000 Tage seit einem Datum mit bekanntem Jahr). Filter: das Datum, die Arten, nur runde Jahre (10, 20, 25, 30 … und 18 bei einem Geburtstag). Variablen: Name, Art, Jahre, Name der Hochzeit, ursprüngliches Datum, Tag, verbleibende Tage, Zusammenfassungssatz.
 
 **Aktion**: die nächsten Daten innerhalb von N Tagen abrufen: Anzahl, Zusammenfassung (eine Zeile pro Datum), nächstes Datum.
 
@@ -84,7 +85,7 @@ Beispiele:
 
 ## Voraussetzungen
 
-- Gladys Assistant **5.1.0** oder neuer (Widgets und Szenen): Ältere Instanzen können die Integration nicht installieren.
+- Gladys Assistant **5.2.0** oder neuer (Widget-Schaltflächen mit Formular): Ältere Instanzen können die Integration nicht installieren.
 - Die Zeitzone von Gladys richtig eingestellt (Einstellungen > System).
 
 ## Installation

@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # -----------------------------------------------------------------------------
 # Generated illustrations of the widgets, in the four languages:
-#   docs/assets/widgets.<lang>.png   the two Anniversaries cards: upcoming
-#                                    dates and countdown of one date
+#   docs/assets/widgets.<lang>.png   the three Anniversaries cards: upcoming
+#                                    dates, countdown of one date and dates of
+#                                    the month
 #
 # They are NOT screenshots of a running Gladys: the contents come from the
 # integration's own code (gen.mjs, on the made-up dates of a family), and render.js
@@ -68,7 +69,7 @@ shot() {
 }
 
 for language in en fr de es; do
-  shot "$out/widgets.$language.png" 880,900 "lang=$language&cards=upcoming,countdown"
+  shot "$out/widgets.$language.png" 880,1600 "lang=$language&cards=upcoming,countdown,month"
 done
 
 # 256 colors keep the small colored dots and values exact.

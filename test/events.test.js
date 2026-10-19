@@ -14,6 +14,7 @@ import {
   MAX_UPCOMING_DAYS,
 } from '../src/events.js';
 import { computeOccurrence } from '../src/dates.js';
+import { entry } from './helpers/fixtures.js';
 import { LANGUAGES } from '../src/i18n.js';
 import { fakeGladys, DATES, MARIE, WEDDING, GRANDPA, MOVE, TODAY } from './helpers/fixtures.js';
 
@@ -60,13 +61,86 @@ test('event data: flat scalars the scene can filter on and use', () => {
   assert.deepEqual(eventData(fakeGladys, today, 'en'), {
     anniversary: 'ext:test-integration:anniversary:a1b2c3d4',
     kind: 'birthday',
+    milestone: 'no',
     name: 'Marie',
     days_remaining: 0,
     years: 31,
+    wedding: '',
     date: '1995-12-24',
     next_date: '2026-12-24',
     summary: 'Marie: today (31 years)',
   });
+});
+
+test('wedding anniversaries: their traditional name, in the language of each tradition', () => {
+  const [today] = eventsOfDay([WEDDING], TODAY, 7);
+  assert.equal(eventData(fakeGladys, today, 'fr').wedding, 'noces de saphir');
+  assert.equal(eventData(fakeGladys, today, 'de').wedding, 'Saphirhochzeit');
+  assert.equal(eventData(fakeGladys, today, 'es').wedding, 'bodas de hiedra');
+  // The US tradition does not name the 16th year.
+  assert.equal(eventData(fakeGladys, today, 'en').wedding, '');
+  assert.equal(
+    eventData(fakeGladys, today, 'fr').summary,
+    'Our wedding : aujourd’hui (16 ans, noces de saphir)',
+  );
+  const silver = entry({ ...WEDDING, year: 2001 });
+  assert.equal(
+    summaryLine(silver, computeOccurrence(silver, TODAY), 'en'),
+    'Our wedding: today (25 years, silver anniversary)',
+  );
+  // A birthday has no wedding name.
+  const [birthday] = eventsOfDay([MARIE], '2026-12-24', 7);
+  assert.equal(eventData(fakeGladys, birthday, 'fr').wedding, '');
+});
+
+test('round years: a filter value on the three daily triggers', () => {
+  const milestone = (values, day) =>
+    eventsOfDay([entry(values)], day, 7).map((event) => [
+      event.key,
+      eventData(fakeGladys, event, 'en').milestone,
+    ]);
+  assert.deepEqual(milestone({ id: 'a', name: 'A', day: 1, month: 11, year: 1976 }, '2026-11-01'), [
+    [TRIGGERS.TODAY, 'yes'],
+  ]);
+  assert.deepEqual(milestone({ id: 'a', name: 'A', day: 1, month: 11, year: 2008 }, '2026-11-01'), [
+    [TRIGGERS.TODAY, 'yes'],
+  ]);
+  assert.deepEqual(
+    milestone({ id: 'a', name: 'A', day: 1, month: 11, year: 2008, kind: 'wedding' }, '2026-11-01'),
+    [[TRIGGERS.TODAY, 'no']],
+    '18 years is round for a birthday only',
+  );
+  assert.deepEqual(milestone({ id: 'a', name: 'A', day: 1, month: 11 }, '2026-11-01'), [
+    [TRIGGERS.TODAY, 'no'],
+  ]);
+});
+
+test('every 1,000 days since a date with its year', () => {
+  const tom = entry({ id: 'f0f0f0f0', name: 'Tom', day: 1, month: 1, year: 2000 });
+  // 1 January 2000 + 10,000 days = 19 May 2027.
+  const events = eventsOfDay([tom], '2027-05-19', 7);
+  assert.deepEqual(
+    events.map((event) => event.key),
+    [TRIGGERS.DAYS_MILESTONE],
+  );
+  assert.deepEqual(eventData(fakeGladys, events[0], 'fr'), {
+    anniversary: 'ext:test-integration:anniversary:f0f0f0f0',
+    kind: 'birthday',
+    name: 'Tom',
+    days: 10000,
+    date: '2000-01-01',
+    summary: 'Tom : 10\u202f000 jours aujourd’hui',
+  });
+  assert.equal(eventsOfDay([tom], '2027-05-18', 7).length, 0);
+  // The day itself is not a milestone, nor a date without its year.
+  assert.equal(eventsOfDay([entry({ ...tom, year: 2027 })], '2027-01-01', 7).length, 1);
+  assert.equal(eventsOfDay([entry({ ...tom, year: null })], '2027-05-19', 7).length, 0);
+  // A one-time date counts too, once passed.
+  const move = eventsOfDay([MOVE], '2029-11-25', 7);
+  assert.deepEqual(
+    move.map((event) => event.key),
+    [TRIGGERS.DAYS_MILESTONE],
+  );
 });
 
 test('summaries in the four languages', () => {

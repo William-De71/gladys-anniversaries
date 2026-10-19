@@ -5,7 +5,16 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { computeOccurrence, daysInMonth, toIso, addDays } from '../src/dates.js';
+import {
+  computeOccurrence,
+  daysInMonth,
+  toIso,
+  addDays,
+  daysBetween,
+  isRoundYears,
+  daysSinceOrigin,
+  occurrenceInMonth,
+} from '../src/dates.js';
 import { entry } from './helpers/fixtures.js';
 
 const birthday = entry({ day: 24, month: 12, year: 1995 });
@@ -89,4 +98,39 @@ test('helpers: days in a month, ISO texts, day arithmetic', () => {
   assert.equal(toIso({ year: null, month: 3, day: 7 }), '--03-07');
   assert.equal(toIso({ year: 1564, month: 4, day: 23 }), '1564-04-23');
   assert.equal(addDays('2026-12-31', 1), '2027-01-01');
+});
+
+test('round years: tens, multiples of 25, 18 for a birthday', () => {
+  assert.deepEqual(
+    [10, 20, 25, 30, 50, 75, 100].map((n) => isRoundYears(n, 'wedding')),
+    [true, true, true, true, true, true, true],
+  );
+  assert.deepEqual(
+    [1, 15, 18, 31, 45].map((n) => isRoundYears(n, 'wedding')),
+    [false, false, false, false, false],
+  );
+  assert.equal(isRoundYears(18, 'birthday'), true);
+  assert.equal(isRoundYears(null, 'birthday'), false);
+  assert.equal(isRoundYears(0, 'birthday'), false);
+});
+
+test('days since the original date, and between two days', () => {
+  assert.equal(daysSinceOrigin(entry({ day: 1, month: 1, year: 2000 }), '2027-05-19'), 10000);
+  assert.equal(daysSinceOrigin(entry({ day: 1, month: 1, year: 2030 }), '2027-05-19'), null);
+  assert.equal(daysSinceOrigin(entry({ day: 1, month: 1 }), '2027-05-19'), null);
+  assert.equal(daysBetween('2026-10-16', '2026-10-02'), -14);
+  assert.equal(daysBetween('2026-12-31', '2027-01-01'), 1);
+});
+
+test('the occurrence of a date in a month', () => {
+  assert.deepEqual(occurrenceInMonth(birthday, 2026, 12), { date: '2026-12-24', years: 31 });
+  assert.equal(occurrenceInMonth(birthday, 2026, 11), null);
+  assert.equal(occurrenceInMonth(birthday, 1994, 12), null, 'before the first one');
+  assert.deepEqual(occurrenceInMonth(birthday, 1995, 12), { date: '1995-12-24', years: 0 });
+  const leap = entry({ day: 29, month: 2 });
+  assert.deepEqual(occurrenceInMonth(leap, 2027, 2), { date: '2027-02-28', years: null });
+  assert.deepEqual(occurrenceInMonth(leap, 2028, 2), { date: '2028-02-29', years: null });
+  const once = entry({ day: 1, month: 3, year: 2027, recurrence: 'once' });
+  assert.deepEqual(occurrenceInMonth(once, 2027, 3), { date: '2027-03-01', years: null });
+  assert.equal(occurrenceInMonth(once, 2028, 3), null);
 });

@@ -1,15 +1,17 @@
 // Builds the widget contents of the illustrations with the integration's own
 // code: node gen.mjs <repo> <out.json> (run by render.sh)
 //
-// The two widgets on the made-up dates of a family, on a fixed day (Friday
-// 16 October 2026): the upcoming dates, and the countdown of a wedding
-// anniversary with the "count up" and "half anniversary" options.
+// The three widgets on the made-up dates of a family, on a fixed day (Friday
+// 16 October 2026): the upcoming dates, the countdown of a wedding
+// anniversary with the "count up" and "half anniversary" options, and the
+// dates of October.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 
 const [repo, out] = process.argv.slice(2);
 const load = (path) => import(pathToFileURL(`${repo}/${path}`).href);
-const { buildUpcomingWidget, buildCountdownWidget } = await load('src/widgets.js');
+const { buildUpcomingWidget, buildCountdownWidget, buildMonthWidget } =
+  await load('src/widgets.js');
 const { computeOccurrence } = await load('src/dates.js');
 const { LANGUAGES } = await load('src/i18n.js');
 const manifest = JSON.parse(readFileSync(`${repo}/gladys-assistant-integration.json`, 'utf8'));
@@ -50,6 +52,7 @@ const entries = [
     recurrence: 'once',
   }),
   entry({ id: 'f6a7b8c9', name: 'Grandma Jeanne', day: 8, month: 1, kind: 'memorial' }),
+  entry({ id: 'a7b8c9d0', name: 'Léa', day: 5, month: 10, year: 2001 }),
 ];
 
 const contents = {};
@@ -67,6 +70,14 @@ for (const language of LANGUAGES) {
       entry: wedding,
       occurrence: computeOccurrence(wedding, '2026-10-09'),
       language,
+      ttl: 3600,
+      defaultReminder: 7,
+    }),
+    month: buildMonthWidget({
+      entries,
+      today: TODAY,
+      language,
+      settings: {},
       ttl: 3600,
       defaultReminder: 7,
     }),

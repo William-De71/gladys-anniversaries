@@ -5,16 +5,17 @@
 Esta integración hace la cuenta atrás de las fechas que importan: cumpleaños, aniversarios de boda, conmemoraciones, eventos. Para cada fecha indica los días restantes, la edad que se cumple o los años transcurridos, y puede iniciar sus escenas el mismo día, unos días antes o en el recordatorio propio de cada fecha.
 
 - Cada fecha se convierte en un **dispositivo**: días restantes, años en el próximo aniversario y años transcurridos, días pasados (opción), días hasta el medio aniversario (opción), próxima fecha.
-- **Disparadores de escena**: una fecha es hoy, una fecha es dentro de N días, recordatorio de una fecha. **Acción de escena**: obtener las próximas fechas como texto para enviar.
-- Dos **widgets del panel**: próximas fechas, cuenta atrás de una fecha.
+- **Disparadores de escena**: una fecha es hoy, una fecha es dentro de N días, recordatorio de una fecha (filtro «años redondos»), una fecha alcanza 1000 días. **Acción de escena**: obtener las próximas fechas como texto para enviar.
+- Tres **widgets del panel**: próximas fechas, cuenta atrás de una fecha, fechas del mes. Un botón **Añadir fecha** directamente en el panel.
+- Los nombres tradicionales de los **aniversarios de boda**: bodas de papel, de porcelana, de oro…
 
-![Los dos widgets de la integración: próximas fechas y cuenta atrás de un aniversario de boda (ilustración generada, no una captura de pantalla)](https://raw.githubusercontent.com/William-De71/gladys-anniversaries/main/docs/assets/widgets.es.png)
+![Los tres widgets de la integración: próximas fechas, cuenta atrás de un aniversario de boda y fechas del mes (ilustración generada, no una captura de pantalla)](https://raw.githubusercontent.com/William-De71/gladys-anniversaries/main/docs/assets/widgets.es.png)
 
 La imagen de arriba es una ilustración generada, no una captura de pantalla.
 
 ## Requisitos previos
 
-- Gladys Assistant 5.1.0 o posterior.
+- Gladys Assistant 5.2.0 o posterior.
 - La zona horaria de Gladys bien configurada (**Ajustes > Sistema**): los días cambian a su medianoche.
 - Nada más: ni cuenta, ni dispositivo, ni acceso a Internet.
 
@@ -42,6 +43,7 @@ Las fechas se guardan en la configuración de la integración en Gladys: siguen 
 - **Cada año o una sola vez**: una fecha única (un evento, un plazo) necesita su año; una vez pasada, sus días restantes se vuelven negativos y sale de los widgets.
 - El **29 de febrero** cae el 28 de febrero los demás años.
 - **Tipo**: cumpleaños, aniversario de boda, aniversario, conmemoración, evento u otro. Las escenas y los widgets pueden filtrar por él.
+- Un **aniversario de boda** con su año recibe su nombre tradicional (bodas de papel el 1.er año, de porcelana a los 20, de oro a los 50…: los regalos tradicionales, de 1 a 50 años y luego cada 5 años), en los widgets y las escenas. Cada idioma sigue su propia tradición: en francés, inglés o alemán, los nombres (y los años con nombre) no son los mismos.
 
 ### Dispositivos
 
@@ -58,7 +60,10 @@ Los valores cambian a medianoche en la zona horaria de Gladys. Si cambia las opc
 ### Widgets del panel
 
 - **Próximas fechas**: las próximas fechas (1 a 8), con los años cumplidos, el día y una insignia (verde el mismo día, naranja dentro del recordatorio). Ajustes: cuántas, dentro de cuántos días, qué tipos. Toque una fecha para ver sus detalles.
-- **Cuenta atrás**: una fecha entre los dispositivos añadidos: días restantes, años, días pasados, fecha original, medio aniversario y recordatorio.
+- **Cuenta atrás**: una fecha entre los dispositivos añadidos: días restantes, años, días pasados, fecha original, medio aniversario, nombre de las bodas y recordatorio.
+- **Fechas del mes**: todas las fechas del mes en curso (o del siguiente), días pasados incluidos, en el orden de los días; 8 como máximo, la leyenda indica cuántas hay. Ajustes: qué mes, qué tipos.
+
+**Próximas fechas** y **Fechas del mes** tienen un botón **Añadir fecha**: un pequeño formulario con el nombre, la fecha (primero el día: 24/12/1995, o 24/12 sin el año), el tipo y la repetición. El recordatorio propio y las opciones se ajustan después con «Modificar una fecha» en la configuración. Como con el botón de la configuración, añada luego la fecha desde la pestaña Descubrir para obtener su dispositivo.
 
 ### Escenas
 
@@ -67,8 +72,11 @@ Disparadores, enviados una vez al día a la hora de la configuración (nunca dos
 - **Una fecha es hoy**: filtros por fecha y tipos.
 - **Una fecha es dentro de N días**: usted elige N (1 a 60), por ejemplo 7 para «una semana antes».
 - **Recordatorio de una fecha**: cuando una fecha alcanza su propio recordatorio (o el predeterminado).
+- **Una fecha alcanza 1000 días**: cada 1000 días desde la fecha, para las fechas con año conocido (10 000 días de vida, 1000 días desde la mudanza). Variables: nombre, tipo, número de días, fecha original, frase de resumen.
 
-Variables: nombre, tipo, años cumplidos, fecha original, día, días restantes y una frase de resumen lista («Marie: en 7 días, jueves, 24 de diciembre de 2026 (31 años)»).
+Los tres primeros tienen un filtro **Años redondos**: vacío, todos los años; «Solo años redondos», las decenas, 25, 75 y los demás múltiplos de 25, y 18 en un cumpleaños.
+
+Variables: nombre, tipo, años cumplidos, nombre de las bodas (vacío para los demás tipos), fecha original, día, días restantes y una frase de resumen lista («Marie: en 7 días, jueves, 24 de diciembre de 2026 (31 años)», «Claire & Alex: hoy (25 años, bodas de plata)»).
 
 Acción **Obtener las próximas fechas**: dentro de N días (0 solo hoy), opcionalmente para algunos tipos; devuelve el número, un resumen (una línea por fecha) y la fecha más cercana.
 
@@ -76,6 +84,7 @@ Ejemplos:
 
 - Cuando un cumpleaños es hoy → enviar «{{triggerEvent.data.summary}}» a la familia y poner la luz del salón en un color festivo.
 - Cuando una fecha es dentro de 7 días, tipo aniversario de boda → enviarse un mensaje para reservar el restaurante.
+- Cuando un aniversario de boda es dentro de 30 días, solo años redondos → enviarse «¡Pronto las {{triggerEvent.data.wedding}}!» para preparar una fiesta.
 - Cada lunes a las 8:00 → obtener las próximas fechas en 7 días → enviar el resumen por mensaje.
 
 ### Transporte

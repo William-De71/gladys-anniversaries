@@ -8,6 +8,8 @@ import {
   entryFromFields,
   editedEntry,
   parseRegistry,
+  parseTypedDate,
+  fieldsFromWidget,
   RegistryError,
   MAX_DATES,
 } from '../src/registry.js';
@@ -181,4 +183,24 @@ test(`at most ${MAX_DATES} dates`, async () => {
     })),
   });
   await assert.rejects(registry.add(fields), (err) => err.key === 'errorFull');
+});
+
+test('the date typed in the form of the widgets, day first', () => {
+  assert.deepEqual(parseTypedDate('24/12/1995'), { day: 24, month: 12, year: 1995 });
+  assert.deepEqual(parseTypedDate(' 24.12.1995 '), { day: 24, month: 12, year: 1995 });
+  assert.deepEqual(parseTypedDate('24.12.'), { day: 24, month: 12, year: null });
+  assert.deepEqual(parseTypedDate('3-5'), { day: 3, month: 5, year: null });
+  assert.deepEqual(parseTypedDate('1995-12-24'), { day: 24, month: 12, year: 1995 });
+  for (const text of ['', 'tomorrow', '24/12/95', '24 12 1995', '12/24/1995/1', null]) {
+    assert.throws(() => parseTypedDate(text), RegistryError, String(text));
+  }
+  assert.deepEqual(
+    fieldsFromWidget({ name: 'Marie', date: '24/12', kind: 'birthday', recurrence: 'yearly' }),
+    { name: 'Marie', day: 24, month: 12, year: null, kind: 'birthday', recurrence: 'yearly' },
+  );
+  assert.throws(() => fieldsFromWidget({ name: 'X', date: '12/24/1995' }), { key: 'errorMonth' });
+  // The other checks are those of the configuration form.
+  assert.throws(() => entryFromFields(fieldsFromWidget({ name: 'X', date: '31/4' }), 'a'), {
+    key: 'errorNoSuchDay',
+  });
 });

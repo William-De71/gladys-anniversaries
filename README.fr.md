@@ -5,7 +5,7 @@
 [![Licence : Apache-2.0](https://img.shields.io/badge/licence-Apache--2.0-blue.svg)](LICENSE)
 [![Dernière version](https://img.shields.io/github/v/release/William-De71/gladys-anniversaries?sort=semver)](https://github.com/William-De71/gladys-anniversaries/releases)
 [![CI](https://img.shields.io/github/actions/workflow/status/William-De71/gladys-anniversaries/release.yml?branch=main&label=CI)](https://github.com/William-De71/gladys-anniversaries/actions/workflows/release.yml)
-[![Gladys](https://img.shields.io/badge/Gladys-%E2%89%A5%205.1.0-2f6fb5)](https://gladysassistant.com)
+[![Gladys](https://img.shields.io/badge/Gladys-%E2%89%A5%205.2.0-2f6fb5)](https://gladysassistant.com)
 
 ![Anniversaries pour Gladys Assistant](cover.jpg)
 
@@ -17,7 +17,8 @@ Documentation utilisateur : [English](docs/en.md) · [Français](docs/fr.md) · 
 
 - Dates saisies dans de **simples formulaires** de la configuration (pas de JSON) : avec ou sans l’année, chaque année ou une seule fois, type, rappel propre, options « compter les jours écoulés » et « demi-anniversaire » (les options de l’intégration Home Assistant [Anniversaries](https://github.com/pinkywafer/Anniversaries)).
 - **Un appareil par date** : jours restants, années au prochain anniversaire, années écoulées, jours écoulés, jours avant le demi-anniversaire, prochaine date.
-- **3 déclencheurs de scène**, **1 action de scène** et **2 widgets** (ci-dessous).
+- **4 déclencheurs de scène**, **1 action de scène** et **3 widgets**, avec un bouton **Ajouter une date** sur le tableau de bord (ci-dessous).
+- Le nom traditionnel des **noces** (coton, porcelaine, or…), chaque langue suivant sa propre tradition.
 - Jours calculés dans le **fuseau horaire de Gladys**, qui changent à son minuit ; le 29 février tombe le 28 février les autres années.
 - Quatre langues partout : anglais, français, allemand, espagnol.
 
@@ -68,11 +69,11 @@ Les external_id reposent sur un identifiant aléatoire donné à chaque date à 
 
 ## Déclencheurs, actions de scène et widgets
 
-![Les deux widgets : prochaines dates et compte à rebours d’un anniversaire de mariage (illustration générée, pas une capture d’écran)](docs/assets/widgets.fr.png)
+![Les trois widgets : prochaines dates, compte à rebours d’un anniversaire de mariage et dates du mois (illustration générée, pas une capture d’écran)](docs/assets/widgets.fr.png)
 
-**Widgets** : Prochaines dates (1 à 8, avec années, jour et badge ; filtres sur les types et un nombre de jours), Compte à rebours (une date : jours restants, années, jours écoulés, date d’origine, demi-anniversaire, rappel).
+**Widgets** : Prochaines dates (1 à 8, avec années, jour et badge ; filtres sur les types et un nombre de jours), Compte à rebours (une date : jours restants, années, jours écoulés, date d’origine, demi-anniversaire, noces, rappel), Dates du mois (ce mois-ci ou le suivant, jours passés compris). Prochaines dates et Dates du mois ont un bouton **Ajouter une date** : nom, date saisie en commençant par le jour, type, répétition.
 
-**Déclencheurs** (une fois par jour à une heure réglable, jamais deux fois pour la même date le même jour) : une date est aujourd’hui ; une date est dans N jours (N de 1 à 60) ; rappel d’une date (son propre nombre de jours, ou celui par défaut). Filtres : la date, les types. Variables : nom, type, années, date d’origine, jour, jours restants, phrase de résumé.
+**Déclencheurs** (une fois par jour à une heure réglable, jamais deux fois pour la même date le même jour) : une date est aujourd’hui ; une date est dans N jours (N de 1 à 60) ; rappel d’une date (son propre nombre de jours, ou celui par défaut) ; une date atteint un millier de jours (tous les 1 000 jours depuis une date dont l’année est connue). Filtres : la date, les types, années rondes seulement (10, 20, 25, 30… et 18 ans pour un anniversaire). Variables : nom, type, années, noces, date d’origine, jour, jours restants, phrase de résumé.
 
 **Action** : obtenir les prochaines dates dans les N jours : nombre, résumé (une ligne par date), date la plus proche.
 
@@ -84,7 +85,7 @@ Exemples :
 
 ## Prérequis
 
-- Gladys Assistant **5.1.0** ou plus récent (widgets et scènes) : les instances plus anciennes ne peuvent pas installer l’intégration.
+- Gladys Assistant **5.2.0** ou plus récent (boutons de widget avec formulaire) : les instances plus anciennes ne peuvent pas installer l’intégration.
 - Le fuseau horaire de Gladys correctement réglé (Paramètres > Système).
 
 ## Installation

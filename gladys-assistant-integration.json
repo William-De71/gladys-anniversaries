@@ -10,7 +10,7 @@
   },
   "version": "0.1.0",
   "docker_image": "ghcr.io/william-de71/gladys-anniversaries:0.1.0",
-  "gladys_version": ">=5.1.0",
+  "gladys_version": ">=5.2.0",
   "categories": ["services"],
   "cover_image": "https://raw.githubusercontent.com/William-De71/gladys-anniversaries/main/cover.jpg",
   "transports": ["local"],
@@ -1027,10 +1027,10 @@
         "es": "Próximas fechas"
       },
       "description": {
-        "en": "The next birthdays and dates, with the days left.",
-        "fr": "Les prochains anniversaires et dates, avec les jours restants.",
-        "de": "Die nächsten Geburtstage und Daten, mit den verbleibenden Tagen.",
-        "es": "Los próximos cumpleaños y fechas, con los días restantes."
+        "en": "The next birthdays and dates, with the days left, and a button to add one.",
+        "fr": "Les prochains anniversaires et dates, avec les jours restants, et un bouton pour en ajouter.",
+        "de": "Die nächsten Geburtstage und Daten mit den verbleibenden Tagen, und eine Taste zum Hinzufügen.",
+        "es": "Los próximos cumpleaños y fechas, con los días restantes, y un botón para añadir."
       },
       "settings": [
         {
@@ -1168,6 +1168,127 @@
           }
         }
       ]
+    },
+    {
+      "key": "month",
+      "icon": "calendar",
+      "label": {
+        "en": "Dates of the month",
+        "fr": "Dates du mois",
+        "de": "Daten des Monats",
+        "es": "Fechas del mes"
+      },
+      "description": {
+        "en": "Every date of this month (or the next one), past days included, and a button to add one.",
+        "fr": "Toutes les dates du mois (ou du suivant), jours passés compris, et un bouton pour en ajouter.",
+        "de": "Alle Daten dieses (oder des nächsten) Monats, vergangene Tage inbegriffen, mit Taste zum Hinzufügen.",
+        "es": "Todas las fechas de este mes (o del siguiente), días pasados incluidos, y un botón para añadir."
+      },
+      "settings": [
+        {
+          "key": "month",
+          "type": "select",
+          "default": "current",
+          "label": {
+            "en": "Month",
+            "fr": "Mois",
+            "de": "Monat",
+            "es": "Mes"
+          },
+          "options": [
+            {
+              "value": "current",
+              "label": {
+                "en": "This month",
+                "fr": "Ce mois-ci",
+                "de": "Dieser Monat",
+                "es": "Este mes"
+              }
+            },
+            {
+              "value": "next",
+              "label": {
+                "en": "Next month",
+                "fr": "Le mois prochain",
+                "de": "Nächster Monat",
+                "es": "El mes que viene"
+              }
+            }
+          ]
+        },
+        {
+          "key": "kinds",
+          "type": "multi_select",
+          "label": {
+            "en": "Kinds",
+            "fr": "Types",
+            "de": "Arten",
+            "es": "Tipos"
+          },
+          "options": [
+            {
+              "value": "birthday",
+              "label": {
+                "en": "Birthday",
+                "fr": "Anniversaire",
+                "de": "Geburtstag",
+                "es": "Cumpleaños"
+              }
+            },
+            {
+              "value": "wedding",
+              "label": {
+                "en": "Wedding anniversary",
+                "fr": "Anniversaire de mariage",
+                "de": "Hochzeitstag",
+                "es": "Aniversario de boda"
+              }
+            },
+            {
+              "value": "anniversary",
+              "label": {
+                "en": "Anniversary",
+                "fr": "Date anniversaire",
+                "de": "Jahrestag",
+                "es": "Aniversario"
+              }
+            },
+            {
+              "value": "memorial",
+              "label": {
+                "en": "Remembrance",
+                "fr": "Commémoration",
+                "de": "Gedenktag",
+                "es": "Conmemoración"
+              }
+            },
+            {
+              "value": "event",
+              "label": {
+                "en": "Event",
+                "fr": "Événement",
+                "de": "Ereignis",
+                "es": "Evento"
+              }
+            },
+            {
+              "value": "other",
+              "label": {
+                "en": "Other",
+                "fr": "Autre",
+                "de": "Sonstiges",
+                "es": "Otro"
+              }
+            }
+          ],
+          "description": {
+            "en": "Empty: every kind.",
+            "fr": "Vide : tous les types.",
+            "de": "Leer: alle Arten.",
+            "es": "Vacío: todos los tipos."
+          }
+        }
+      ]
     }
   ],
   "scene_triggers": [
@@ -1274,6 +1395,33 @@
             "de": "Leer: alle Arten.",
             "es": "Vacío: todos los tipos."
           }
+        },
+        {
+          "key": "milestone",
+          "type": "select",
+          "label": {
+            "en": "Round years",
+            "fr": "Années rondes",
+            "de": "Runde Jahre",
+            "es": "Años redondos"
+          },
+          "options": [
+            {
+              "value": "yes",
+              "label": {
+                "en": "Round years only",
+                "fr": "Années rondes seulement",
+                "de": "Nur runde Jahre",
+                "es": "Solo años redondos"
+              }
+            }
+          ],
+          "description": {
+            "en": "Empty: every year. Round: 10, 20, 25, 30… and 18 for a birthday.",
+            "fr": "Vide : toutes les années. Rondes : 10, 20, 25, 30… et 18 ans pour un anniversaire.",
+            "de": "Leer: alle Jahre. Rund: 10, 20, 25, 30 … und 18 bei einem Geburtstag.",
+            "es": "Vacío: todos los años. Redondos: 10, 20, 25, 30… y 18 en un cumpleaños."
+          }
         }
       ],
       "variables": [
@@ -1305,6 +1453,16 @@
             "fr": "Années atteintes",
             "de": "Erreichte Jahre",
             "es": "Años cumplidos"
+          }
+        },
+        {
+          "key": "wedding",
+          "type": "string",
+          "label": {
+            "en": "Wedding anniversary name",
+            "fr": "Nom des noces",
+            "de": "Name der Hochzeit",
+            "es": "Nombre de las bodas"
           }
         },
         {
@@ -1461,6 +1619,33 @@
             "de": "Leer: alle Arten.",
             "es": "Vacío: todos los tipos."
           }
+        },
+        {
+          "key": "milestone",
+          "type": "select",
+          "label": {
+            "en": "Round years",
+            "fr": "Années rondes",
+            "de": "Runde Jahre",
+            "es": "Años redondos"
+          },
+          "options": [
+            {
+              "value": "yes",
+              "label": {
+                "en": "Round years only",
+                "fr": "Années rondes seulement",
+                "de": "Nur runde Jahre",
+                "es": "Solo años redondos"
+              }
+            }
+          ],
+          "description": {
+            "en": "Empty: every year. Round: 10, 20, 25, 30… and 18 for a birthday.",
+            "fr": "Vide : toutes les années. Rondes : 10, 20, 25, 30… et 18 ans pour un anniversaire.",
+            "de": "Leer: alle Jahre. Rund: 10, 20, 25, 30 … und 18 bei einem Geburtstag.",
+            "es": "Vacío: todos los años. Redondos: 10, 20, 25, 30… y 18 en un cumpleaños."
+          }
         }
       ],
       "variables": [
@@ -1502,6 +1687,16 @@
             "fr": "Années atteintes",
             "de": "Erreichte Jahre",
             "es": "Años cumplidos"
+          }
+        },
+        {
+          "key": "wedding",
+          "type": "string",
+          "label": {
+            "en": "Wedding anniversary name",
+            "fr": "Nom des noces",
+            "de": "Name der Hochzeit",
+            "es": "Nombre de las bodas"
           }
         },
         {
@@ -1639,6 +1834,33 @@
             "de": "Leer: alle Arten.",
             "es": "Vacío: todos los tipos."
           }
+        },
+        {
+          "key": "milestone",
+          "type": "select",
+          "label": {
+            "en": "Round years",
+            "fr": "Années rondes",
+            "de": "Runde Jahre",
+            "es": "Años redondos"
+          },
+          "options": [
+            {
+              "value": "yes",
+              "label": {
+                "en": "Round years only",
+                "fr": "Années rondes seulement",
+                "de": "Nur runde Jahre",
+                "es": "Solo años redondos"
+              }
+            }
+          ],
+          "description": {
+            "en": "Empty: every year. Round: 10, 20, 25, 30… and 18 for a birthday.",
+            "fr": "Vide : toutes les années. Rondes : 10, 20, 25, 30… et 18 ans pour un anniversaire.",
+            "de": "Leer: alle Jahre. Rund: 10, 20, 25, 30 … und 18 bei einem Geburtstag.",
+            "es": "Vacío: todos los años. Redondos: 10, 20, 25, 30… y 18 en un cumpleaños."
+          }
         }
       ],
       "variables": [
@@ -1683,6 +1905,16 @@
           }
         },
         {
+          "key": "wedding",
+          "type": "string",
+          "label": {
+            "en": "Wedding anniversary name",
+            "fr": "Nom des noces",
+            "de": "Name der Hochzeit",
+            "es": "Nombre de las bodas"
+          }
+        },
+        {
           "key": "date",
           "type": "string",
           "label": {
@@ -1700,6 +1932,164 @@
             "fr": "Jour (AAAA-MM-JJ)",
             "de": "Tag (JJJJ-MM-TT)",
             "es": "Día (AAAA-MM-DD)"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary sentence",
+            "fr": "Phrase de résumé",
+            "de": "Zusammenfassung",
+            "es": "Frase de resumen"
+          }
+        }
+      ]
+    },
+    {
+      "key": "anniversary_days_milestone",
+      "label": {
+        "en": "A date reaches 1,000 days",
+        "fr": "Une date atteint un millier de jours",
+        "de": "Ein Datum erreicht 1.000 Tage",
+        "es": "Una fecha alcanza 1000 días"
+      },
+      "description": {
+        "en": "Every 1,000 days since the date (10,000 days old), for the dates with their year, at the hour of the configuration.",
+        "fr": "Tous les 1 000 jours depuis la date (10 000 jours de vie), pour les dates avec leur année, à l’heure de la configuration.",
+        "de": "Alle 1.000 Tage seit dem Datum (10.000 Tage alt), für Daten mit Jahr, zur Stunde der Konfiguration.",
+        "es": "Cada 1000 días desde la fecha (10 000 días de vida), para las fechas con su año, a la hora de la configuración."
+      },
+      "fields": [
+        {
+          "key": "anniversary",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Date",
+            "fr": "Date",
+            "de": "Datum",
+            "es": "Fecha"
+          },
+          "description": {
+            "en": "Empty: every date.",
+            "fr": "Vide : toutes les dates.",
+            "de": "Leer: alle Daten.",
+            "es": "Vacío: todas las fechas."
+          }
+        },
+        {
+          "key": "kind",
+          "type": "multi_select",
+          "label": {
+            "en": "Kinds",
+            "fr": "Types",
+            "de": "Arten",
+            "es": "Tipos"
+          },
+          "options": [
+            {
+              "value": "birthday",
+              "label": {
+                "en": "Birthday",
+                "fr": "Anniversaire",
+                "de": "Geburtstag",
+                "es": "Cumpleaños"
+              }
+            },
+            {
+              "value": "wedding",
+              "label": {
+                "en": "Wedding anniversary",
+                "fr": "Anniversaire de mariage",
+                "de": "Hochzeitstag",
+                "es": "Aniversario de boda"
+              }
+            },
+            {
+              "value": "anniversary",
+              "label": {
+                "en": "Anniversary",
+                "fr": "Date anniversaire",
+                "de": "Jahrestag",
+                "es": "Aniversario"
+              }
+            },
+            {
+              "value": "memorial",
+              "label": {
+                "en": "Remembrance",
+                "fr": "Commémoration",
+                "de": "Gedenktag",
+                "es": "Conmemoración"
+              }
+            },
+            {
+              "value": "event",
+              "label": {
+                "en": "Event",
+                "fr": "Événement",
+                "de": "Ereignis",
+                "es": "Evento"
+              }
+            },
+            {
+              "value": "other",
+              "label": {
+                "en": "Other",
+                "fr": "Autre",
+                "de": "Sonstiges",
+                "es": "Otro"
+              }
+            }
+          ],
+          "description": {
+            "en": "Empty: every kind.",
+            "fr": "Vide : tous les types.",
+            "de": "Leer: alle Arten.",
+            "es": "Vacío: todos los tipos."
+          }
+        }
+      ],
+      "variables": [
+        {
+          "key": "days",
+          "type": "number",
+          "label": {
+            "en": "Days since the date",
+            "fr": "Jours depuis la date",
+            "de": "Tage seit dem Datum",
+            "es": "Días desde la fecha"
+          }
+        },
+        {
+          "key": "name",
+          "type": "string",
+          "label": {
+            "en": "Name",
+            "fr": "Nom",
+            "de": "Name",
+            "es": "Nombre"
+          }
+        },
+        {
+          "key": "kind",
+          "type": "string",
+          "label": {
+            "en": "Kind",
+            "fr": "Type",
+            "de": "Art",
+            "es": "Tipo"
+          }
+        },
+        {
+          "key": "date",
+          "type": "string",
+          "label": {
+            "en": "Original date (YYYY-MM-DD)",
+            "fr": "Date d’origine (AAAA-MM-JJ)",
+            "de": "Ursprüngliches Datum (JJJJ-MM-TT)",
+            "es": "Fecha original (AAAA-MM-DD)"
           }
         },
         {

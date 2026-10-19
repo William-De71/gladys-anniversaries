@@ -36,13 +36,15 @@ node .github/scripts/release.mjs next     # the version the next release would g
 ```
 index.js                SDK wiring only (new GladysIntegration + createApp)
 src/app.js              every handler, registered before connect(); the clock (tick)
-src/dates.js            calendar arithmetic, pure (years, 29 February, half anniversary)
+src/dates.js            calendar arithmetic, pure (years, 29 February, half anniversary,
+                        round years, 1,000-day milestones, a date in a month)
+src/weddings.js         traditional names of the wedding anniversaries, one tradition per language
 src/time.js             timezone helpers (TZ given by the supervisor)
 src/registry.js         the dates: forms -> entries, checks, serialized setConfig writes
 src/fired.js            scene events fired today, in /data/fired.json
 src/events.js           scene trigger payloads and the get_upcoming outputs
 src/device.js           one device per date, its features and states
-src/widgets.js          upcoming and countdown dashboard widgets
+src/widgets.js          upcoming, countdown and month dashboard widgets, "Add a date" button
 src/config.js           configuration (event hour, default reminder, language)
 src/i18n.js             runtime texts, en / fr / de / es, date formatting
 gladys-assistant-integration.json   manifest
@@ -99,8 +101,9 @@ docs/illustrations/     generated widget images (render.sh, gen.mjs, render.js)
   `description` holds 10 to 100 characters per language; the file stays under
   100 KB; at most 10 configuration actions. A field older cores do not know
   needs a higher `gladys_version` minimum (see `src/constants.js` of the
-  integration-store): a widget button with a form, or a `houses` source, would
-  need 5.2.0. Transport: `["local"]`.
+  integration-store): the "Add a date" button of the widgets carries a form,
+  hence `>=5.2.0`. A widget button form holds 4 fields at most. Transport:
+  `["local"]`.
 - **Forum drafts** (`.github/forum-*.md`) are never committed.
 - **Style.** Prettier formats, ESLint catches mistakes. Comments explain why,
   in English. Tests never touch the network.

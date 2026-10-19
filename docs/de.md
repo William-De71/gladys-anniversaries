@@ -5,16 +5,17 @@
 Diese Integration zählt die Tage bis zu den wichtigen Daten: Geburtstage, Hochzeitstage, Gedenktage, Ereignisse. Für jedes Datum zeigt sie die verbleibenden Tage, das erreichte Alter oder die vergangenen Jahre, und sie kann Ihre Szenen am Tag selbst, einige Tage vorher oder zur eigenen Erinnerung jedes Datums starten.
 
 - Jedes Datum wird ein **Gerät**: verbleibende Tage, Jahre am nächsten Jahrestag und bisherige Jahre, vergangene Tage (Option), Tage bis zum halben Jahrestag (Option), nächstes Datum.
-- **Szenen-Auslöser**: ein Datum ist heute, ein Datum ist in N Tagen, Erinnerung an ein Datum. **Szenen-Aktion**: die nächsten Daten als Text zum Versenden abrufen.
-- Zwei **Dashboard-Widgets**: nächste Daten, Countdown eines Datums.
+- **Szenen-Auslöser**: ein Datum ist heute, ein Datum ist in N Tagen, Erinnerung an ein Datum (Filter „runde Jahre“), ein Datum erreicht 1.000 Tage. **Szenen-Aktion**: die nächsten Daten als Text zum Versenden abrufen.
+- Drei **Dashboard-Widgets**: nächste Daten, Countdown eines Datums, Daten des Monats. Eine Schaltfläche **Datum hinzufügen** direkt im Dashboard.
+- Die traditionellen Namen der **Hochzeitstage**: Papierhochzeit, Porzellanhochzeit, Goldene Hochzeit …
 
-![Die zwei Widgets der Integration: nächste Daten und Countdown eines Hochzeitstags (generierte Illustration, kein Screenshot)](https://raw.githubusercontent.com/William-De71/gladys-anniversaries/main/docs/assets/widgets.de.png)
+![Die drei Widgets der Integration: nächste Daten, Countdown eines Hochzeitstags und Daten des Monats (generierte Illustration, kein Screenshot)](https://raw.githubusercontent.com/William-De71/gladys-anniversaries/main/docs/assets/widgets.de.png)
 
 Das Bild oben ist eine generierte Illustration, kein Screenshot.
 
 ## Voraussetzungen
 
-- Gladys Assistant 5.1.0 oder neuer.
+- Gladys Assistant 5.2.0 oder neuer.
 - Die Zeitzone von Gladys richtig eingestellt (**Einstellungen > System**): Die Tage wechseln um ihre Mitternacht.
 - Sonst nichts: kein Konto, kein Gerät, kein Internetzugang.
 
@@ -42,6 +43,7 @@ Die Daten werden in der Konfiguration der Integration in Gladys gespeichert: Sie
 - **Jedes Jahr oder nur einmal**: Ein einmaliges Datum (ein Ereignis, eine Frist) braucht sein Jahr; danach werden seine verbleibenden Tage negativ und es verschwindet aus den Widgets.
 - Der **29. Februar** fällt in den anderen Jahren auf den 28. Februar.
 - **Art**: Geburtstag, Hochzeitstag, Jahrestag, Gedenktag, Ereignis oder Sonstiges. Szenen und Widgets können danach filtern.
+- Ein **Hochzeitstag** mit Jahr erhält seinen traditionellen Namen (Papierhochzeit im 1. Jahr, Porzellanhochzeit nach 20, Goldene Hochzeit nach 50 Jahren …: die in Deutschland gebräuchlichen Namen), in den Widgets und den Szenen. Jede Sprache folgt ihrer eigenen Tradition: Auf Französisch, Englisch oder Spanisch sind die Namen (und die benannten Jahre) andere.
 
 ### Geräte
 
@@ -58,7 +60,10 @@ Die Werte wechseln um Mitternacht in der Zeitzone von Gladys. Wenn Sie die Optio
 ### Dashboard-Widgets
 
 - **Nächste Daten**: die nächsten Daten (1 bis 8), mit den erreichten Jahren, dem Tag und einem Badge (grün am Tag selbst, orange innerhalb der Erinnerung). Einstellungen: wie viele, innerhalb wie vieler Tage, welche Arten. Tippen Sie auf ein Datum für die Details.
-- **Countdown**: ein Datum unter den hinzugefügten Geräten: verbleibende Tage, Jahre, vergangene Tage, ursprüngliches Datum, halber Jahrestag und Erinnerung.
+- **Countdown**: ein Datum unter den hinzugefügten Geräten: verbleibende Tage, Jahre, vergangene Tage, ursprüngliches Datum, halber Jahrestag, Bezeichnung des Hochzeitstags und Erinnerung.
+- **Daten des Monats**: alle Daten des laufenden (oder des nächsten) Monats, vergangene Tage inbegriffen, in der Reihenfolge der Tage; höchstens 8, die Beschriftung nennt ihre Anzahl. Einstellungen: welcher Monat, welche Arten.
+
+**Nächste Daten** und **Daten des Monats** haben eine Schaltfläche **Datum hinzufügen**: ein kleines Formular mit Name, Datum (Tag zuerst: 24.12.1995, oder 24.12. ohne Jahr), Art und Wiederholung. Die eigene Erinnerung und die Optionen stellen Sie danach mit „Datum ändern“ in der Konfiguration ein. Wie bei der Schaltfläche der Konfiguration fügen Sie das Datum danach im Tab Entdecken hinzu, um sein Gerät zu erhalten.
 
 ### Szenen
 
@@ -67,8 +72,11 @@ Auslöser, einmal am Tag zur Stunde der Konfiguration (nie zweimal für dasselbe
 - **Ein Datum ist heute**: Filter nach Datum und Arten.
 - **Ein Datum ist in N Tagen**: Sie wählen N (1 bis 60), zum Beispiel 7 für „eine Woche vorher“.
 - **Erinnerung an ein Datum**: wenn ein Datum seine eigene Erinnerung (oder die Standard-Erinnerung) erreicht.
+- **Ein Datum erreicht 1.000 Tage**: alle 1.000 Tage seit dem Datum, für Daten mit bekanntem Jahr (10.000 Tage alt, 1.000 Tage seit dem Einzug). Variablen: Name, Art, Anzahl der Tage, ursprüngliches Datum, Zusammenfassungssatz.
 
-Variablen: Name, Art, erreichte Jahre, ursprüngliches Datum, Tag, verbleibende Tage und ein fertiger Zusammenfassungssatz („Marie: in 7 Tagen, Donnerstag, 24. Dezember 2026 (31 Jahre)“).
+Die ersten drei haben einen Filter **Runde Jahre**: leer, alle Jahre; „Nur runde Jahre“, die Zehner, 25, 75 und die anderen Vielfachen von 25, sowie 18 bei einem Geburtstag.
+
+Variablen: Name, Art, erreichte Jahre, Name der Hochzeit (bei den anderen Arten leer), ursprüngliches Datum, Tag, verbleibende Tage und ein fertiger Zusammenfassungssatz („Marie: in 7 Tagen, Donnerstag, 24. Dezember 2026 (31 Jahre)“, „Claire & Alex: heute (25 Jahre, Silberhochzeit)“).
 
 Aktion **Nächste Daten abrufen**: innerhalb von N Tagen (0 nur für heute), optional für bestimmte Arten; liefert die Anzahl, eine Zusammenfassung (eine Zeile pro Datum) und das nächste Datum.
 
@@ -76,6 +84,7 @@ Beispiele:
 
 - Wenn heute ein Geburtstag ist → „{{triggerEvent.data.summary}}“ an die Familie senden und das Wohnzimmerlicht in eine festliche Farbe schalten.
 - Wenn ein Datum in 7 Tagen ist, Art Hochzeitstag → sich selbst eine Nachricht senden, um das Restaurant zu reservieren.
+- Wenn ein Hochzeitstag in 30 Tagen ist, nur runde Jahre → sich selbst „Bald ist {{triggerEvent.data.wedding}}!“ senden, um ein Fest vorzubereiten.
 - Jeden Montag um 8:00 → die nächsten Daten innerhalb von 7 Tagen abrufen → die Zusammenfassung per Nachricht senden.
 
 ### Transport

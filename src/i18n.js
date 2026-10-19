@@ -118,6 +118,12 @@ const TEXTS = {
     de: 'Kein Datum in den nächsten {n} Tagen.',
     es: 'Ninguna fecha en los próximos {n} días.',
   },
+  summaryDaysMilestone: {
+    en: '{name}: {n} days today',
+    fr: '{name} : {n} jours aujourd’hui',
+    de: '{name}: heute {n} Tage',
+    es: '{name}: {n} días hoy',
+  },
   summaryNoneToday: {
     en: 'No date today.',
     fr: 'Aucune date aujourd’hui.',
@@ -146,6 +152,7 @@ const TEXTS = {
     es: 'Medio aniversario',
   },
   statusReminder: { en: 'Reminder', fr: 'Rappel', de: 'Erinnerung', es: 'Recordatorio' },
+  statusWedding: { en: 'Tradition', fr: 'Noces', de: 'Bezeichnung', es: 'Bodas' },
   reminderDays: {
     en: '{n} days before',
     fr: '{n} jours avant',
@@ -188,6 +195,61 @@ const TEXTS = {
     fr: 'Aucune date dans les {days} prochains jours.',
     de: 'Kein Datum in den nächsten {days} Tagen.',
     es: 'Ninguna fecha en los próximos {days} días.',
+  },
+  monthCaption: {
+    en: '{count} date(s) this month',
+    fr: '{count} date(s) ce mois-ci',
+    de: '{count} Datum/Daten in diesem Monat',
+    es: '{count} fecha(s) este mes',
+  },
+  monthCaptionMore: {
+    en: '{shown} of {count} dates this month',
+    fr: '{shown} dates sur {count} ce mois-ci',
+    de: '{shown} von {count} Daten in diesem Monat',
+    es: '{shown} de {count} fechas este mes',
+  },
+  monthNothing: {
+    en: 'No date in {month}.',
+    fr: 'Aucune date en {month}.',
+    de: 'Kein Datum im {month}.',
+    es: 'Ninguna fecha en {month}.',
+  },
+
+  // the "Add a date" button of the widgets and its form
+  buttonAdd: {
+    en: 'Add a date',
+    fr: 'Ajouter une date',
+    de: 'Datum hinzufügen',
+    es: 'Añadir fecha',
+  },
+  formName: { en: 'Name', fr: 'Nom', de: 'Name', es: 'Nombre' },
+  formNamePlaceholder: { en: 'Marie', fr: 'Marie', de: 'Marie', es: 'María' },
+  formDate: {
+    en: 'Date (day/month/year)',
+    fr: 'Date (jour/mois/année)',
+    de: 'Datum (Tag.Monat.Jahr)',
+    es: 'Fecha (día/mes/año)',
+  },
+  formDatePlaceholder: { en: '24/12/1995', fr: '24/12/1995', de: '24.12.1995', es: '24/12/1995' },
+  formDateDescription: {
+    en: 'Day first. The year is optional (24/12) for a yearly date.',
+    fr: 'Le jour d’abord. L’année est facultative (24/12) pour une date annuelle.',
+    de: 'Der Tag zuerst. Das Jahr ist bei einem jährlichen Datum optional (24.12.).',
+    es: 'Primero el día. El año es opcional (24/12) en una fecha anual.',
+  },
+  formKind: { en: 'Kind', fr: 'Type', de: 'Art', es: 'Tipo' },
+  formRecurrence: { en: 'Repeat', fr: 'Répétition', de: 'Wiederholung', es: 'Repetición' },
+  toastAdded: {
+    en: 'Date added: {name}. Add its device from the Discover tab of the integration.',
+    fr: 'Date ajoutée : {name}. Ajoutez son appareil depuis l’onglet Découverte de l’intégration.',
+    de: 'Datum hinzugefügt: {name}. Fügen Sie sein Gerät im Tab Entdecken der Integration hinzu.',
+    es: 'Fecha añadida: {name}. Añada su dispositivo desde la pestaña Descubrir de la integración.',
+  },
+  toastNoForm: {
+    en: 'This version of Gladys does not send the form: update Gladys, or use the configuration of the integration.',
+    fr: 'Cette version de Gladys n’envoie pas le formulaire : mettez Gladys à jour, ou passez par la configuration de l’intégration.',
+    de: 'Diese Gladys-Version sendet das Formular nicht: Aktualisieren Sie Gladys oder nutzen Sie die Konfiguration der Integration.',
+    es: 'Esta versión de Gladys no envía el formulario: actualice Gladys o use la configuración de la integración.',
   },
   widgetChooseDate: {
     en: 'Choose a date in the settings of this widget.',
@@ -319,6 +381,12 @@ const TEXTS = {
     de: 'Die Erinnerung muss eine ganze Zahl von Tagen von 0 bis {max} sein.',
     es: 'El recordatorio debe ser un número entero de días de 0 a {max}.',
   },
+  errorTypedDate: {
+    en: 'Type the date day first: 24/12/1995, or 24/12 without the year.',
+    fr: 'Saisissez la date en commençant par le jour : 24/12/1995, ou 24/12 sans l’année.',
+    de: 'Geben Sie das Datum mit dem Tag zuerst ein: 24.12.1995, oder 24.12. ohne Jahr.',
+    es: 'Escriba la fecha empezando por el día: 24/12/1995, o 24/12 sin el año.',
+  },
   errorChoice: {
     en: 'Unknown value: {value}.',
     fr: 'Valeur inconnue : {value}.',
@@ -432,6 +500,32 @@ function formatDay(iso, language, style = 'long') {
 }
 
 /**
+ * @description The month of a day, as a title: "October 2026", "Oktober 2026".
+ * @param {number} year - The year.
+ * @param {number} month - 1-12.
+ * @param {string} language - The language.
+ * @returns {string} The text, first letter in upper case.
+ * @example
+ * formatMonth(2026, 10, 'fr'); // -> 'Octobre 2026'
+ */
+function formatMonth(year, month, language) {
+  const text = new Intl.DateTimeFormat(locale(language), {
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(new Date(Date.UTC(year, month - 1, 1)));
+  return text.charAt(0).toLocaleUpperCase(locale(language)) + text.slice(1);
+}
+
+/**
+ * @description A whole number written in a language ("10 000", "10,000").
+ * @param {number} n - The number.
+ * @param {string} language - The language.
+ * @returns {string} The text.
+ */
+const formatNumber = (n, language) => new Intl.NumberFormat(locale(language)).format(n);
+
+/**
  * @description "Today", "Tomorrow", "In 3 days", "Yesterday", "5 days ago".
  * @param {number} days - Days from today (negative in the past).
  * @param {string} language - The language.
@@ -464,4 +558,16 @@ function relativeInline(days, language) {
  */
 const yearsText = (n, language) => (n === 1 ? t('oneYear', language) : t('years', language, { n }));
 
-export { LANGUAGES, TEXTS, isLanguage, t, all, formatDay, relativeDays, relativeInline, yearsText };
+export {
+  LANGUAGES,
+  TEXTS,
+  isLanguage,
+  t,
+  all,
+  formatDay,
+  formatMonth,
+  formatNumber,
+  relativeDays,
+  relativeInline,
+  yearsText,
+};

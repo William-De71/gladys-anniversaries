@@ -151,6 +151,56 @@ function entryFromFields(fields, id) {
 }
 
 /**
+ * @description Read a date typed day first, as in the form of the widgets:
+ * 24/12/1995, 24.12.1995, 24-12-1995, 24/12 (no year), or 1995-12-24.
+ * Whether the day exists is checked later, with the other fields.
+ * @param {unknown} raw - The typed text.
+ * @returns {{ day: number, month: number, year: number|null }} The date.
+ * @throws {RegistryError} When the text is not a date.
+ * @example
+ * parseTypedDate('24/12/1995'); // -> { day: 24, month: 12, year: 1995 }
+ */
+function parseTypedDate(raw) {
+  const text = String(raw ?? '').trim();
+  const iso = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(text);
+  if (iso) {
+    return { day: Number(iso[3]), month: Number(iso[2]), year: Number(iso[1]) };
+  }
+  const dayFirst = /^(\d{1,2})\s*[/.-]\s*(\d{1,2})(?:\s*[/.-]\s*(\d{4}))?\s*\.?$/.exec(text);
+  if (!dayFirst) {
+    throw new RegistryError('errorTypedDate');
+  }
+  return {
+    day: Number(dayFirst[1]),
+    month: Number(dayFirst[2]),
+    year: dayFirst[3] === undefined ? null : Number(dayFirst[3]),
+  };
+}
+
+/**
+ * @description The fields of the "Add a date" form from the form of the
+ * widgets (name, typed date, kind, repeat): the options left out take their
+ * defaults.
+ * @param {object} values - The typed values.
+ * @returns {object} The fields of entryFromFields.
+ * @throws {RegistryError} When the date is not a date.
+ */
+function fieldsFromWidget(values) {
+  const { day, month, year } = parseTypedDate(values?.date);
+  if (month < 1 || month > 12) {
+    throw new RegistryError('errorMonth');
+  }
+  return {
+    name: values?.name,
+    day,
+    month,
+    year,
+    kind: values?.kind,
+    recurrence: values?.recurrence,
+  };
+}
+
+/**
  * @description A date changed by the fields of the "Edit a date" form: an
  * empty field (or "Unchanged") keeps the current value, a year of 0 removes
  * the year.
@@ -350,6 +400,8 @@ export {
   RegistryError,
   validateEntry,
   entryFromFields,
+  parseTypedDate,
+  fieldsFromWidget,
   editedEntry,
   parseRegistry,
   createRegistry,
