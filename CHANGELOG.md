@@ -5,6 +5,16 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions
 follow [Semantic Versioning](https://semver.org/). This file is generated at
 each release from the Conventional Commits: do not edit it by hand.
 
+## [0.2.0] - 2026-10-19
+
+### Added
+
+- add wedding anniversary names, round years, 1,000-day milestones, month widget and an add button on the dashboard ([bab4de8](https://github.com/William-De71/gladys-anniversaries/commit/bab4de884cd02c563de903cfc9439d1b1b0eee99))
+
+### Fixed
+
+- name the features in the user's language, clearer labels and a step-by-step configuration page ([d10a550](https://github.com/William-De71/gladys-anniversaries/commit/d10a5501e6f8f358ca04f0f8254c4368ca50e29f))
+
 ## [0.1.0] - 2026-10-16
 
 ### Added
@@ -17,4 +27,5 @@ each release from the Conventional Commits: do not edit it by hand.
 - Local only: the integration calls no online service.
 - English, French, German and Spanish everywhere: settings, devices, widgets, scenes and documentation.
 
+[0.2.0]: https://github.com/William-De71/gladys-anniversaries/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/William-De71/gladys-anniversaries/releases/tag/v0.1.0
