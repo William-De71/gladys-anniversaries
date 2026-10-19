@@ -273,11 +273,16 @@ test('a date reaching 1,000 days fires its scene event at the event hour', async
 
 test('the automatic language follows the dashboard and is remembered', async () => {
   const { gladys } = await start({ config: { language: 'auto', anniversaries: [MARIE] } });
-  assert.equal(gladys.fake.discoveredDevices[0].features[1].name, 'Age at next birthday');
-  await gladys.fake.widgetGet('upcoming', { language: 'fr' });
-  assert.equal(gladys.fake.config.last_language, 'fr');
-  await new Promise((resolve) => setImmediate(resolve));
+  // No widget shown yet: guessed from the timezone (Europe/Paris).
   assert.equal(gladys.fake.discoveredDevices[0].features[1].name, 'Âge au prochain anniversaire');
+  assert.deepEqual(gladys.fake.discoveredDevices[0].params, [
+    { name: 'DATE', value: '1995-12-24' },
+    { name: 'KIND', value: 'Anniversaire' },
+  ]);
+  await gladys.fake.widgetGet('upcoming', { language: 'de' });
+  assert.equal(gladys.fake.config.last_language, 'de');
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(gladys.fake.discoveredDevices[0].features[1].name, 'Alter am nächsten Geburtstag');
 });
 
 test('a configuration change applies the new event hour at once', async () => {

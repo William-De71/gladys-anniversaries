@@ -111,7 +111,7 @@ test('countdown: days left, years, days elapsed, original date and reminder', ()
   assert.deepEqual([days.value, days.color, years.value, since.value], [6, 'warning', 16, 359]);
   assert.deepEqual(
     status.items.map((item) => item.label),
-    ['Original date', 'Half anniversary', 'Reminder'],
+    ['Wedding date', 'Half anniversary', 'Reminder'],
   );
   assert.equal(countdown(MARIE, 'de', '2026-12-24').components[2].value, 'Heute');
   assert.equal(countdown(GRANDPA, 'en').components.length, 4, 'no year: no years tile');
@@ -200,12 +200,26 @@ test('countdown: the traditional name of a wedding anniversary', () => {
   assert.deepEqual(
     status.items.map((item) => [item.label, item.value]),
     [
-      ['Date d’origine', '16 oct. 2010'],
+      ['Date du mariage', '16 oct. 2010'],
       ['Demi-anniversaire', '16 avr. 2027 · dans 188 jours'],
       ['Noces', 'Noces de saphir'],
       ['Rappel', '7 jours avant'],
     ],
   );
+});
+
+test('the labels read naturally: next age, date of birth, wedding date', () => {
+  const [, , , years] = countdown(MARIE, 'fr').components;
+  assert.deepEqual([years.value, years.unit, years.label], [31, 'ans', 'Prochain âge']);
+  assert.equal(countdown(WEDDING, 'fr', '2026-10-10').components[4].label, 'Jours écoulés');
+  assert.equal(countdown(MOVE, 'fr', '2027-04-01').components[2].label, 'Jours écoulés');
+  const status = (entry) => countdown(entry, 'fr').components.at(-1).items[0].label;
+  assert.deepEqual(
+    [status(MARIE), status(WEDDING), status(MOVE)],
+    ['Date de naissance', 'Date du mariage', 'Date de l’événement'],
+  );
+  const [list] = upcoming('en', { count: 3 }).components;
+  assert.match(list.items[2].description, /Date of birth: Dec 24, 1995\.$/);
 });
 
 test('the cache lasts until midnight, one hour at most', () => {

@@ -133,17 +133,35 @@ const TEXTS = {
 
   // widgets
   tileDays: { en: 'Days left', fr: 'Jours restants', de: 'Tage übrig', es: 'Días restantes' },
-  tileYearsNext_birthday: { en: 'Turns', fr: 'Aura', de: 'Wird', es: 'Cumplirá' },
+  tileYearsNext_birthday: {
+    en: 'Next age',
+    fr: 'Prochain âge',
+    de: 'Nächstes Alter',
+    es: 'Próxima edad',
+  },
   tileYearsNext: { en: 'Years', fr: 'Années', de: 'Jahre', es: 'Años' },
   tileDaysSince: { en: 'Days elapsed', fr: 'Jours écoulés', de: 'Tage vorbei', es: 'Días pasados' },
   unitDays: { en: 'd', fr: 'j', de: 'T', es: 'd' },
   unitYears: { en: 'yrs', fr: 'ans', de: 'J.', es: 'años' },
   statusKind: { en: 'Kind', fr: 'Type', de: 'Art', es: 'Tipo' },
+  // the date the anniversary counts from, named after its kind
   statusOriginal: {
-    en: 'Original date',
-    fr: 'Date d’origine',
-    de: 'Ursprüngliches Datum',
-    es: 'Fecha original',
+    en: 'Date of the event',
+    fr: 'Date de l’événement',
+    de: 'Datum des Ereignisses',
+    es: 'Fecha del evento',
+  },
+  statusOriginal_birthday: {
+    en: 'Date of birth',
+    fr: 'Date de naissance',
+    de: 'Geburtsdatum',
+    es: 'Fecha de nacimiento',
+  },
+  statusOriginal_wedding: {
+    en: 'Wedding date',
+    fr: 'Date du mariage',
+    de: 'Hochzeitsdatum',
+    es: 'Fecha de la boda',
   },
   statusHalf: {
     en: 'Half anniversary',
@@ -173,10 +191,10 @@ const TEXTS = {
     es: '{count} fecha(s) en los próximos {days} días',
   },
   itemDescription: {
-    en: '{kind}, {recurrence}. Next: {date} ({relative}).{years} Original date: {original}.',
-    fr: '{kind}, {recurrence}. Prochaine : {date} ({relative}).{years} Date d’origine : {original}.',
-    de: '{kind}, {recurrence}. Nächstes: {date} ({relative}).{years} Ursprüngliches Datum: {original}.',
-    es: '{kind}, {recurrence}. Próxima: {date} ({relative}).{years} Fecha original: {original}.',
+    en: '{kind}, {recurrence}. Next: {date} ({relative}).{years} {originalLabel}: {original}.',
+    fr: '{kind}, {recurrence}. Prochaine : {date} ({relative}).{years} {originalLabel} : {original}.',
+    de: '{kind}, {recurrence}. Nächstes: {date} ({relative}).{years} {originalLabel}: {original}.',
+    es: '{kind}, {recurrence}. Próxima: {date} ({relative}).{years} {originalLabel}: {original}.',
   },
   itemYears: {
     en: ' {years} on that day.',

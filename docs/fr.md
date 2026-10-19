@@ -23,15 +23,15 @@ L’image ci-dessus est une illustration générée, pas une capture d’écran.
 
 Les dates ne se saisissent pas en JSON : chacune est un petit formulaire, derrière les boutons en bas de la page de configuration.
 
-| Champ ou bouton               | Description                                                                                                                                                          |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Heure des événements de scène | L’heure (0 à 23) à laquelle les scènes « aujourd’hui », « dans N jours » et de rappel démarrent chaque jour. 9 par défaut.                                           |
-| Rappel par défaut             | Jours avant une date pour ses scènes « Rappel d’une date », pour les dates sans rappel propre. 7 par défaut, 0 pour aucun.                                           |
-| Langue des textes             | Noms des fonctionnalités, prochaine date, résumés des scènes, messages des boutons. Automatique : la langue de votre tableau de bord dès qu’un widget a été affiché. |
-| Ajouter une date              | Nom, jour, mois, année (vide si inconnue), type, chaque année ou une seule fois, rappel propre, « compter les jours écoulés », « demi-anniversaire ».                |
-| Modifier une date             | Le nom ou le numéro de la date (tel que « Lister les dates » l’affiche), puis seulement les champs à changer. Une année à 0 retire l’année.                          |
-| Supprimer une date            | Son nom ou son numéro. Son appareil reste dans Gladys jusqu’à ce que vous le supprimiez.                                                                             |
-| Lister les dates              | Toutes les dates avec leur numéro, leur prochaine occurrence, leurs années et options, ainsi que le jour et le fuseau horaire utilisés par l’intégration.            |
+| Champ ou bouton               | Description                                                                                                                                                                                                                                                                                                                                               |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Heure des événements de scène | L’heure (0 à 23) à laquelle les scènes « aujourd’hui », « dans N jours » et de rappel démarrent chaque jour. 9 par défaut.                                                                                                                                                                                                                                |
+| Rappel par défaut             | Jours avant une date pour ses scènes « Rappel d’une date », pour les dates sans rappel propre. 7 par défaut, 0 pour aucun.                                                                                                                                                                                                                                |
+| Langue des textes             | Noms des fonctionnalités, prochaine date, résumés des scènes, messages des boutons. Automatique : la langue de votre tableau de bord dès qu’un widget a été affiché, devinée d’après le fuseau horaire de Gladys avant cela. **Choisissez-la avant d’ajouter vos appareils** : un appareil garde les noms de fonctionnalités avec lesquels il a été créé. |
+| Ajouter une date              | Nom, jour, mois, année (vide si inconnue), type, chaque année ou une seule fois, rappel propre, « compter les jours écoulés », « demi-anniversaire ».                                                                                                                                                                                                     |
+| Modifier une date             | Le nom ou le numéro de la date (tel que « Lister les dates » l’affiche), puis seulement les champs à changer. Une année à 0 retire l’année.                                                                                                                                                                                                               |
+| Supprimer une date            | Son nom ou son numéro. Son appareil reste dans Gladys jusqu’à ce que vous le supprimiez.                                                                                                                                                                                                                                                                  |
+| Lister les dates              | Toutes les dates avec leur numéro, leur prochaine occurrence, leurs années et options, ainsi que le jour et le fuseau horaire utilisés par l’intégration.                                                                                                                                                                                                 |
 
 Les dates sont enregistrées dans la configuration de l’intégration dans Gladys : elles suivent vos sauvegardes de Gladys.
 
@@ -60,7 +60,7 @@ Les valeurs changent à minuit dans le fuseau horaire de Gladys. Quand vous chan
 ### Widgets du tableau de bord
 
 - **Prochaines dates** : les prochaines dates (1 à 8), avec les années atteintes, le jour et un badge (vert le jour J, orange dans la période de rappel). Réglages : combien, dans combien de jours, quels types. Touchez une date pour ses détails.
-- **Compte à rebours** : une date parmi les appareils ajoutés : jours restants, années, jours écoulés, date d’origine, demi-anniversaire, noces et rappel.
+- **Compte à rebours** : une date parmi les appareils ajoutés : jours restants, années, jours écoulés, date de naissance (ou du mariage, ou de l’événement), demi-anniversaire, noces et rappel. « Prochain âge » est l’âge atteint au prochain anniversaire, « Jours écoulés » les jours depuis la dernière occurrence.
 - **Dates du mois** : toutes les dates du mois en cours (ou du mois suivant), jours passés compris, dans l’ordre des jours ; 8 au maximum, la légende indique combien il y en a. Réglages : quel mois, quels types.
 
 **Prochaines dates** et **Dates du mois** ont un bouton **Ajouter une date** : un petit formulaire avec le nom, la date (le jour d’abord : 24/12/1995, ou 24/12 sans l’année), le type et la répétition. Le rappel propre et les options se règlent ensuite avec « Modifier une date » dans la configuration. Comme pour le bouton de la configuration, ajoutez ensuite la date depuis l’onglet Découverte pour obtenir son appareil.
@@ -72,11 +72,11 @@ Déclencheurs, envoyés une fois par jour à l’heure de la configuration (jama
 - **Une date est aujourd’hui** : filtres sur la date et les types.
 - **Une date est dans N jours** : vous choisissez N (1 à 60), par exemple 7 pour « une semaine avant ».
 - **Rappel d’une date** : quand une date atteint son propre rappel (ou celui par défaut).
-- **Une date atteint un millier de jours** : tous les 1 000 jours depuis la date, pour les dates dont l’année est connue (10 000 jours de vie, 1 000 jours depuis l’emménagement). Variables : nom, type, nombre de jours, date d’origine, phrase de résumé.
+- **Une date atteint un millier de jours** : tous les 1 000 jours depuis la date, pour les dates dont l’année est connue (10 000 jours de vie, 1 000 jours depuis l’emménagement). Variables : nom, type, nombre de jours, date de naissance ou de l’événement, phrase de résumé.
 
 Les trois premiers ont un filtre **Années rondes** : laissé vide, toutes les années ; « Années rondes seulement », les dizaines, 25, 75 et les autres multiples de 25, et 18 ans pour un anniversaire.
 
-Variables : nom, type, années atteintes, noces (pour un anniversaire de mariage, vide sinon), date d’origine, jour, jours restants et une phrase de résumé toute prête (« Marie : dans 7 jours, jeudi 24 décembre 2026 (31 ans) », « Claire & Alex : aujourd’hui (20 ans, noces de porcelaine) »).
+Variables : nom, type, années atteintes, noces (pour un anniversaire de mariage, vide sinon), date de naissance ou de l’événement (celle que vous avez saisie), jour de la prochaine occurrence, jours restants et une phrase de résumé toute prête (« Marie : dans 7 jours, jeudi 24 décembre 2026 (31 ans) », « Claire & Alex : aujourd’hui (20 ans, noces de porcelaine) »).
 
 Action **Obtenir les prochaines dates** : dans les N jours (0 pour aujourd’hui seulement), éventuellement pour certains types ; renvoie le nombre, un résumé (une ligne par date) et la date la plus proche.
 
@@ -93,6 +93,7 @@ Local : l’intégration n’appelle aucun service en ligne, rien ne quitte votr
 
 ## Dépannage
 
+- **Les fonctionnalités d’un appareil sont en anglais** : l’appareil a été créé avant que l’intégration connaisse votre langue, et Gladys ne renomme jamais les fonctionnalités d’un appareil existant. Choisissez la « Langue des textes » dans la configuration, supprimez l’appareil (onglet Appareils) et ajoutez-le de nouveau depuis l’onglet Découverte. La date elle-même n’est pas perdue.
 - **Une date est décalée d’un jour** : vérifiez le fuseau horaire de Gladys (Paramètres > Système) ; « Lister les dates » affiche le jour et le fuseau utilisés par l’intégration.
 - **Une scène n’a pas démarré** : les événements arrivent à l’heure de la configuration, pas à minuit. Une date ajoutée après cette heure envoie tout de suite ses événements du jour ; une date n’envoie jamais deux fois le même événement le même jour.
 - **Une fonctionnalité manque après une modification** : cliquez sur **Mettre à jour** sur l’appareil dans l’onglet Découverte.

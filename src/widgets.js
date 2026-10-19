@@ -166,6 +166,18 @@ const originalOf = (entry, language) =>
   formatDay(toIso(entry), language, entry.year === null ? 'long' : 'short');
 
 /**
+ * @description The name of the date an anniversary counts from: date of
+ * birth, wedding date, date of the event ("original date" said nothing).
+ * @param {object} entry - The date.
+ * @param {string} language - The language.
+ * @returns {string} The label.
+ */
+const originalLabelOf = (entry, language) =>
+  ['birthday', 'wedding'].includes(entry.kind)
+    ? t(`statusOriginal_${entry.kind}`, language)
+    : t('statusOriginal', language);
+
+/**
  * @description The "upcoming" widget.
  * @param {object} options - Options.
  * @param {object[]} options.entries - The dates.
@@ -249,6 +261,7 @@ function describeItem(entry, { date, days, years, wedding, language }) {
     relative: relativeInline(days, language),
     years: years ? t('itemYears', language, { years }) : '',
     original: originalOf(entry, language),
+    originalLabel: originalLabelOf(entry, language),
   });
   return clip(wedding ? `${text} ${capitalize(wedding)}.` : text, 2000);
 }
@@ -420,7 +433,7 @@ function buildCountdownWidget({
   }
   const reminder = entry.reminder ?? defaultReminder;
   const items = [
-    { label: t('statusOriginal', language), value: clip(originalOf(entry, language), 40) },
+    { label: originalLabelOf(entry, language), value: clip(originalOf(entry, language), 40) },
   ];
   if (entry.half && occurrence.halfDaysRemaining !== null) {
     items.push({

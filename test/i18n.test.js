@@ -181,3 +181,18 @@ test('README: one per language, same structure, each linking to the three others
     }
   }
 });
+
+test('the automatic language is guessed from the timezone before any widget', async () => {
+  const { guessLanguage } = await import('../src/config.js');
+  assert.deepEqual(
+    [
+      'Europe/Paris',
+      'Europe/Berlin',
+      'Europe/Madrid',
+      'America/Argentina/Cordoba',
+      'Asia/Tokyo',
+      '',
+    ].map(guessLanguage),
+    ['fr', 'de', 'es', 'es', 'en', 'en'],
+  );
+});

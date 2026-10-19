@@ -23,15 +23,15 @@ La imagen de arriba es una ilustración generada, no una captura de pantalla.
 
 Las fechas no se escriben en JSON: cada una es un pequeño formulario, tras los botones al final de la página de configuración.
 
-| Campo o botón                 | Descripción                                                                                                                                                 |
-| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Hora de los eventos de escena | La hora (0 a 23) a la que las escenas «hoy», «dentro de N días» y de recordatorio empiezan cada día. 9 por defecto.                                         |
-| Recordatorio por defecto      | Días antes de una fecha para sus escenas «Recordatorio de una fecha», para las fechas sin recordatorio propio. 7 por defecto, 0 para ninguno.               |
-| Idioma de los textos          | Nombres de funciones, próxima fecha, resúmenes de escenas, mensajes de los botones. Automático: el idioma de su panel en cuanto se haya mostrado un widget. |
-| Añadir una fecha              | Nombre, día, mes, año (vacío si se desconoce), tipo, cada año o una sola vez, recordatorio propio, «contar los días pasados», «medio aniversario».          |
-| Modificar una fecha           | El nombre o número de la fecha (como lo muestra «Listar las fechas») y solo los campos que cambian. Un año 0 quita el año.                                  |
-| Eliminar una fecha            | Su nombre o número. Su dispositivo permanece en Gladys hasta que lo elimine.                                                                                |
-| Listar las fechas             | Todas las fechas con su número, próxima vez, años y opciones, y el día y la zona horaria que usa la integración.                                            |
+| Campo o botón                 | Descripción                                                                                                                                                                                                                                                                                                                         |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Hora de los eventos de escena | La hora (0 a 23) a la que las escenas «hoy», «dentro de N días» y de recordatorio empiezan cada día. 9 por defecto.                                                                                                                                                                                                                 |
+| Recordatorio por defecto      | Días antes de una fecha para sus escenas «Recordatorio de una fecha», para las fechas sin recordatorio propio. 7 por defecto, 0 para ninguno.                                                                                                                                                                                       |
+| Idioma de los textos          | Nombres de funciones, próxima fecha, resúmenes de escenas, mensajes de los botones. Automático: el idioma de su panel en cuanto se haya mostrado un widget, deducido de la zona horaria de Gladys antes de eso. **Elíjalo antes de añadir sus dispositivos**: un dispositivo conserva los nombres de funciones con los que se creó. |
+| Añadir una fecha              | Nombre, día, mes, año (vacío si se desconoce), tipo, cada año o una sola vez, recordatorio propio, «contar los días pasados», «medio aniversario».                                                                                                                                                                                  |
+| Modificar una fecha           | El nombre o número de la fecha (como lo muestra «Listar las fechas») y solo los campos que cambian. Un año 0 quita el año.                                                                                                                                                                                                          |
+| Eliminar una fecha            | Su nombre o número. Su dispositivo permanece en Gladys hasta que lo elimine.                                                                                                                                                                                                                                                        |
+| Listar las fechas             | Todas las fechas con su número, próxima vez, años y opciones, y el día y la zona horaria que usa la integración.                                                                                                                                                                                                                    |
 
 Las fechas se guardan en la configuración de la integración en Gladys: siguen sus copias de seguridad de Gladys.
 
@@ -60,7 +60,7 @@ Los valores cambian a medianoche en la zona horaria de Gladys. Si cambia las opc
 ### Widgets del panel
 
 - **Próximas fechas**: las próximas fechas (1 a 8), con los años cumplidos, el día y una insignia (verde el mismo día, naranja dentro del recordatorio). Ajustes: cuántas, dentro de cuántos días, qué tipos. Toque una fecha para ver sus detalles.
-- **Cuenta atrás**: una fecha entre los dispositivos añadidos: días restantes, años, días pasados, fecha original, medio aniversario, nombre de las bodas y recordatorio.
+- **Cuenta atrás**: una fecha entre los dispositivos añadidos: días restantes, años, días pasados, fecha de nacimiento (o de la boda, o del evento), medio aniversario, nombre de las bodas y recordatorio. «Próxima edad» es la edad que se cumplirá, «Días pasados» los días desde la última vez.
 - **Fechas del mes**: todas las fechas del mes en curso (o del siguiente), días pasados incluidos, en el orden de los días; 8 como máximo, la leyenda indica cuántas hay. Ajustes: qué mes, qué tipos.
 
 **Próximas fechas** y **Fechas del mes** tienen un botón **Añadir fecha**: un pequeño formulario con el nombre, la fecha (primero el día: 24/12/1995, o 24/12 sin el año), el tipo y la repetición. El recordatorio propio y las opciones se ajustan después con «Modificar una fecha» en la configuración. Como con el botón de la configuración, añada luego la fecha desde la pestaña Descubrir para obtener su dispositivo.
@@ -72,11 +72,11 @@ Disparadores, enviados una vez al día a la hora de la configuración (nunca dos
 - **Una fecha es hoy**: filtros por fecha y tipos.
 - **Una fecha es dentro de N días**: usted elige N (1 a 60), por ejemplo 7 para «una semana antes».
 - **Recordatorio de una fecha**: cuando una fecha alcanza su propio recordatorio (o el predeterminado).
-- **Una fecha alcanza 1000 días**: cada 1000 días desde la fecha, para las fechas con año conocido (10 000 días de vida, 1000 días desde la mudanza). Variables: nombre, tipo, número de días, fecha original, frase de resumen.
+- **Una fecha alcanza 1000 días**: cada 1000 días desde la fecha, para las fechas con año conocido (10 000 días de vida, 1000 días desde la mudanza). Variables: nombre, tipo, número de días, fecha de nacimiento o del evento, frase de resumen.
 
 Los tres primeros tienen un filtro **Años redondos**: vacío, todos los años; «Solo años redondos», las decenas, 25, 75 y los demás múltiplos de 25, y 18 en un cumpleaños.
 
-Variables: nombre, tipo, años cumplidos, nombre de las bodas (vacío para los demás tipos), fecha original, día, días restantes y una frase de resumen lista («Marie: en 7 días, jueves, 24 de diciembre de 2026 (31 años)», «Claire & Alex: hoy (25 años, bodas de plata)»).
+Variables: nombre, tipo, años cumplidos, nombre de las bodas (vacío para los demás tipos), fecha de nacimiento o del evento (la que escribió), día de la próxima vez, días restantes y una frase de resumen lista («Marie: en 7 días, jueves, 24 de diciembre de 2026 (31 años)», «Claire & Alex: hoy (25 años, bodas de plata)»).
 
 Acción **Obtener las próximas fechas**: dentro de N días (0 solo hoy), opcionalmente para algunos tipos; devuelve el número, un resumen (una línea por fecha) y la fecha más cercana.
 
@@ -93,6 +93,7 @@ Local: la integración no llama a ningún servicio en línea, nada sale de su Gl
 
 ## Solución de problemas
 
+- **Las funciones de un dispositivo están en inglés**: el dispositivo se creó antes de que la integración conociera su idioma, y Gladys nunca renombra las funciones de un dispositivo existente. Elija el «Idioma de los textos» en la configuración, elimine el dispositivo (pestaña Dispositivos) y añádalo de nuevo desde la pestaña Descubrir. La fecha en sí no se pierde.
 - **Una fecha aparece desplazada un día**: compruebe la zona horaria de Gladys (Ajustes > Sistema); «Listar las fechas» muestra el día y la zona horaria que usa la integración.
 - **Una escena no se ha iniciado**: los eventos llegan a la hora de la configuración, no a medianoche. Una fecha añadida después de esa hora envía enseguida sus eventos del día; una fecha nunca envía dos veces el mismo evento el mismo día.
 - **Falta una función tras una modificación**: pulse **Actualizar** en el dispositivo en la pestaña Descubrir.

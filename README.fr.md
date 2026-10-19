@@ -71,9 +71,9 @@ Les external_id reposent sur un identifiant aléatoire donné à chaque date à 
 
 ![Les trois widgets : prochaines dates, compte à rebours d’un anniversaire de mariage et dates du mois (illustration générée, pas une capture d’écran)](docs/assets/widgets.fr.png)
 
-**Widgets** : Prochaines dates (1 à 8, avec années, jour et badge ; filtres sur les types et un nombre de jours), Compte à rebours (une date : jours restants, années, jours écoulés, date d’origine, demi-anniversaire, noces, rappel), Dates du mois (ce mois-ci ou le suivant, jours passés compris). Prochaines dates et Dates du mois ont un bouton **Ajouter une date** : nom, date saisie en commençant par le jour, type, répétition.
+**Widgets** : Prochaines dates (1 à 8, avec années, jour et badge ; filtres sur les types et un nombre de jours), Compte à rebours (une date : jours restants, années, jours écoulés, date de naissance, demi-anniversaire, noces, rappel), Dates du mois (ce mois-ci ou le suivant, jours passés compris). Prochaines dates et Dates du mois ont un bouton **Ajouter une date** : nom, date saisie en commençant par le jour, type, répétition.
 
-**Déclencheurs** (une fois par jour à une heure réglable, jamais deux fois pour la même date le même jour) : une date est aujourd’hui ; une date est dans N jours (N de 1 à 60) ; rappel d’une date (son propre nombre de jours, ou celui par défaut) ; une date atteint un millier de jours (tous les 1 000 jours depuis une date dont l’année est connue). Filtres : la date, les types, années rondes seulement (10, 20, 25, 30… et 18 ans pour un anniversaire). Variables : nom, type, années, noces, date d’origine, jour, jours restants, phrase de résumé.
+**Déclencheurs** (une fois par jour à une heure réglable, jamais deux fois pour la même date le même jour) : une date est aujourd’hui ; une date est dans N jours (N de 1 à 60) ; rappel d’une date (son propre nombre de jours, ou celui par défaut) ; une date atteint un millier de jours (tous les 1 000 jours depuis une date dont l’année est connue). Filtres : la date, les types, années rondes seulement (10, 20, 25, 30… et 18 ans pour un anniversaire). Variables : nom, type, années, noces, date de naissance ou de l’événement, jour, jours restants, phrase de résumé.
 
 **Action** : obtenir les prochaines dates dans les N jours : nombre, résumé (une ligne par date), date la plus proche.
 

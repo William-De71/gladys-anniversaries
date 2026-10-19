@@ -144,7 +144,9 @@ function buildDevice(gladys, entry, language = 'en') {
     should_poll: false,
     params: [
       { name: 'DATE', value: toIso(entry) },
-      { name: 'KIND', value: entry.kind },
+      // Shown as is under "Technical parameters": in the language of the
+      // texts, like the model. Nothing reads it back.
+      { name: 'KIND', value: t(`kind_${entry.kind}`, language) },
     ],
     features: specsOf(entry).map((spec) => ({
       name: t(spec.name(entry), language),

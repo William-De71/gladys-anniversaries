@@ -23,15 +23,15 @@ The image above is a generated illustration, not a screenshot.
 
 The dates are not typed as JSON: each one is a small form, behind the buttons at the bottom of the configuration page.
 
-| Field or button       | Description                                                                                                                                     |
-| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| Hour of scene events  | The hour (0 to 23) the "today", "in N days" and reminder scenes start every day. 9 by default.                                                  |
-| Default reminder      | Days before a date for its "Reminder of a date" scenes, for the dates without their own. 7 by default, 0 for none.                              |
-| Language of the texts | Feature names, next date, scene summaries, messages of the buttons. Automatic: the language of your dashboard once a widget has been displayed. |
-| Add a date            | Name, day, month, year (empty when unknown), kind, every year or one time only, own reminder, "count the days elapsed", "half anniversary".     |
-| Edit a date           | The name or number of the date (as "List the dates" shows it), then only the fields to change. A year of 0 removes the year.                    |
-| Remove a date         | Its name or number. Its device stays in Gladys until you delete it.                                                                             |
-| List the dates        | Every date with its number, next occurrence, years and options, and the day and timezone the integration uses.                                  |
+| Field or button       | Description                                                                                                                                                                                                                                                                                 |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Hour of scene events  | The hour (0 to 23) the "today", "in N days" and reminder scenes start every day. 9 by default.                                                                                                                                                                                              |
+| Default reminder      | Days before a date for its "Reminder of a date" scenes, for the dates without their own. 7 by default, 0 for none.                                                                                                                                                                          |
+| Language of the texts | Feature names, next date, scene summaries, messages of the buttons. Automatic: the language of your dashboard once a widget has been shown, guessed from the timezone of Gladys before that. **Choose it before adding your devices**: a device keeps the feature names it is created with. |
+| Add a date            | Name, day, month, year (empty when unknown), kind, every year or one time only, own reminder, "count the days elapsed", "half anniversary".                                                                                                                                                 |
+| Edit a date           | The name or number of the date (as "List the dates" shows it), then only the fields to change. A year of 0 removes the year.                                                                                                                                                                |
+| Remove a date         | Its name or number. Its device stays in Gladys until you delete it.                                                                                                                                                                                                                         |
+| List the dates        | Every date with its number, next occurrence, years and options, and the day and timezone the integration uses.                                                                                                                                                                              |
 
 The dates are stored in the configuration of the integration in Gladys: they follow your Gladys backups.
 
@@ -60,7 +60,7 @@ The values change at midnight in the timezone of Gladys. When you change the opt
 ### Dashboard widgets
 
 - **Upcoming dates**: the next dates (1 to 8), with the years reached, the day and a badge (green today, orange within the reminder). Settings: how many, within how many days, which kinds. Tap a date for its details.
-- **Countdown**: one date among the added devices: days left, years, days elapsed, original date, half anniversary, traditional name and reminder.
+- **Countdown**: one date among the added devices: days left, years, days elapsed, date of birth (or of the wedding, or of the event), half anniversary, traditional name and reminder. "Next age" is the age reached on the next birthday, "Days elapsed" the days since the last occurrence.
 - **Dates of the month**: every date of the current month (or the next one), past days included, in the order of the days; 8 at most, the caption says how many there are. Settings: which month, which kinds.
 
 **Upcoming dates** and **Dates of the month** have an **Add a date** button: a small form with the name, the date (day first: 24/12/1995, or 24/12 without the year), the kind and the repeat. Its own reminder and the options are set afterwards with "Edit a date" in the configuration. As with the configuration button, then add the date from the Discover tab to get its device.
@@ -72,11 +72,11 @@ Triggers, fired once a day at the hour of the configuration (never twice for the
 - **A date is today**: filters on the date and the kinds.
 - **A date is in N days**: you choose N (1 to 60), for example 7 for "one week before".
 - **Reminder of a date**: when a date reaches its own reminder (or the default one).
-- **A date reaches 1,000 days**: every 1,000 days since the date, for the dates whose year is known (10,000 days old, 1,000 days since moving in). Variables: name, kind, number of days, original date, summary sentence.
+- **A date reaches 1,000 days**: every 1,000 days since the date, for the dates whose year is known (10,000 days old, 1,000 days since moving in). Variables: name, kind, number of days, date of birth or of the event, summary sentence.
 
 The first three have a **Round years** filter: left empty, every year; "Round years only", the tens, 25, 75 and the other multiples of 25, and 18 for a birthday.
 
-Variables: name, kind, years reached, wedding anniversary name (empty for the other kinds), original date, day, days remaining, and a ready-made summary sentence ("Marie: in 7 days, Thursday, December 24, 2026 (31 years)", "Claire & Alex: today (25 years, silver anniversary)").
+Variables: name, kind, years reached, wedding anniversary name (empty for the other kinds), date of birth or of the event (the one you typed), day of the next occurrence, days remaining, and a ready-made summary sentence ("Marie: in 7 days, Thursday, December 24, 2026 (31 years)", "Claire & Alex: today (25 years, silver anniversary)").
 
 Action **Get the upcoming dates**: within N days (0 for today only), optionally for some kinds; outputs the count, a summary (one line per date) and the nearest date.
 
@@ -93,6 +93,7 @@ Local: the integration calls no online service, nothing leaves your Gladys. Its 
 
 ## Troubleshooting
 
+- **The features of a device are in English**: the device was created before the integration knew your language, and Gladys never renames the features of an existing device. Choose the "Language of the texts" in the configuration, delete the device (Devices tab) and add it again from the Discover tab. The date itself is not lost.
 - **A date shows one day off**: check the timezone of Gladys (Settings > System); "List the dates" shows the day and the timezone the integration uses.
 - **A scene did not start**: the events come at the hour of the configuration, not at midnight. A date added after that hour fires its events of the day right away; a date never fires the same event twice in a day.
 - **A feature is missing after an edit**: click **Update** on the device in the Discover tab.

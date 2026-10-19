@@ -23,15 +23,15 @@ Das Bild oben ist eine generierte Illustration, kein Screenshot.
 
 Die Daten werden nicht als JSON eingegeben: Jedes ist ein kleines Formular hinter den Schaltflächen unten auf der Konfigurationsseite.
 
-| Feld oder Schaltfläche       | Beschreibung                                                                                                                                                         |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Uhrzeit der Szenenereignisse | Die Stunde (0 bis 23), zu der die Szenen „heute“, „in N Tagen“ und Erinnerung jeden Tag starten. Standardmäßig 9.                                                    |
-| Standard-Erinnerung          | Tage vor einem Datum für seine Szenen „Erinnerung an ein Datum“, für Daten ohne eigene Erinnerung. Standardmäßig 7, 0 für keine.                                     |
-| Sprache der Texte            | Funktionsnamen, nächstes Datum, Szenen-Zusammenfassungen, Meldungen der Schaltflächen. Automatisch: die Sprache Ihres Dashboards, sobald ein Widget angezeigt wurde. |
-| Datum hinzufügen             | Name, Tag, Monat, Jahr (leer, wenn unbekannt), Art, jedes Jahr oder nur einmal, eigene Erinnerung, „vergangene Tage zählen“, „halber Jahrestag“.                     |
-| Datum ändern                 | Name oder Nummer des Datums (wie „Daten auflisten“ sie anzeigt), dann nur die zu ändernden Felder. Ein Jahr 0 entfernt das Jahr.                                     |
-| Datum entfernen              | Sein Name oder seine Nummer. Sein Gerät bleibt in Gladys, bis Sie es löschen.                                                                                        |
-| Daten auflisten              | Alle Daten mit Nummer, nächstem Termin, Jahren und Optionen sowie dem Tag und der Zeitzone, die die Integration verwendet.                                           |
+| Feld oder Schaltfläche       | Beschreibung                                                                                                                                                                                                                                                                                                                                |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Uhrzeit der Szenenereignisse | Die Stunde (0 bis 23), zu der die Szenen „heute“, „in N Tagen“ und Erinnerung jeden Tag starten. Standardmäßig 9.                                                                                                                                                                                                                           |
+| Standard-Erinnerung          | Tage vor einem Datum für seine Szenen „Erinnerung an ein Datum“, für Daten ohne eigene Erinnerung. Standardmäßig 7, 0 für keine.                                                                                                                                                                                                            |
+| Sprache der Texte            | Funktionsnamen, nächstes Datum, Szenen-Zusammenfassungen, Meldungen der Schaltflächen. Automatisch: die Sprache Ihres Dashboards, sobald ein Widget angezeigt wurde, vorher aus der Zeitzone von Gladys abgeleitet. **Wählen Sie sie, bevor Sie Ihre Geräte hinzufügen**: Ein Gerät behält die Funktionsnamen, mit denen es erstellt wurde. |
+| Datum hinzufügen             | Name, Tag, Monat, Jahr (leer, wenn unbekannt), Art, jedes Jahr oder nur einmal, eigene Erinnerung, „vergangene Tage zählen“, „halber Jahrestag“.                                                                                                                                                                                            |
+| Datum ändern                 | Name oder Nummer des Datums (wie „Daten auflisten“ sie anzeigt), dann nur die zu ändernden Felder. Ein Jahr 0 entfernt das Jahr.                                                                                                                                                                                                            |
+| Datum entfernen              | Sein Name oder seine Nummer. Sein Gerät bleibt in Gladys, bis Sie es löschen.                                                                                                                                                                                                                                                               |
+| Daten auflisten              | Alle Daten mit Nummer, nächstem Termin, Jahren und Optionen sowie dem Tag und der Zeitzone, die die Integration verwendet.                                                                                                                                                                                                                  |
 
 Die Daten werden in der Konfiguration der Integration in Gladys gespeichert: Sie sind in Ihren Gladys-Sicherungen enthalten.
 
@@ -60,7 +60,7 @@ Die Werte wechseln um Mitternacht in der Zeitzone von Gladys. Wenn Sie die Optio
 ### Dashboard-Widgets
 
 - **Nächste Daten**: die nächsten Daten (1 bis 8), mit den erreichten Jahren, dem Tag und einem Badge (grün am Tag selbst, orange innerhalb der Erinnerung). Einstellungen: wie viele, innerhalb wie vieler Tage, welche Arten. Tippen Sie auf ein Datum für die Details.
-- **Countdown**: ein Datum unter den hinzugefügten Geräten: verbleibende Tage, Jahre, vergangene Tage, ursprüngliches Datum, halber Jahrestag, Bezeichnung des Hochzeitstags und Erinnerung.
+- **Countdown**: ein Datum unter den hinzugefügten Geräten: verbleibende Tage, Jahre, vergangene Tage, Geburtsdatum (oder Hochzeits- bzw. Ereignisdatum), halber Jahrestag, Bezeichnung des Hochzeitstags und Erinnerung. „Nächstes Alter“ ist das Alter am nächsten Geburtstag, „Tage vorbei“ die Tage seit dem letzten Termin.
 - **Daten des Monats**: alle Daten des laufenden (oder des nächsten) Monats, vergangene Tage inbegriffen, in der Reihenfolge der Tage; höchstens 8, die Beschriftung nennt ihre Anzahl. Einstellungen: welcher Monat, welche Arten.
 
 **Nächste Daten** und **Daten des Monats** haben eine Schaltfläche **Datum hinzufügen**: ein kleines Formular mit Name, Datum (Tag zuerst: 24.12.1995, oder 24.12. ohne Jahr), Art und Wiederholung. Die eigene Erinnerung und die Optionen stellen Sie danach mit „Datum ändern“ in der Konfiguration ein. Wie bei der Schaltfläche der Konfiguration fügen Sie das Datum danach im Tab Entdecken hinzu, um sein Gerät zu erhalten.
@@ -72,11 +72,11 @@ Auslöser, einmal am Tag zur Stunde der Konfiguration (nie zweimal für dasselbe
 - **Ein Datum ist heute**: Filter nach Datum und Arten.
 - **Ein Datum ist in N Tagen**: Sie wählen N (1 bis 60), zum Beispiel 7 für „eine Woche vorher“.
 - **Erinnerung an ein Datum**: wenn ein Datum seine eigene Erinnerung (oder die Standard-Erinnerung) erreicht.
-- **Ein Datum erreicht 1.000 Tage**: alle 1.000 Tage seit dem Datum, für Daten mit bekanntem Jahr (10.000 Tage alt, 1.000 Tage seit dem Einzug). Variablen: Name, Art, Anzahl der Tage, ursprüngliches Datum, Zusammenfassungssatz.
+- **Ein Datum erreicht 1.000 Tage**: alle 1.000 Tage seit dem Datum, für Daten mit bekanntem Jahr (10.000 Tage alt, 1.000 Tage seit dem Einzug). Variablen: Name, Art, Anzahl der Tage, Geburts- oder Ereignisdatum, Zusammenfassungssatz.
 
 Die ersten drei haben einen Filter **Runde Jahre**: leer, alle Jahre; „Nur runde Jahre“, die Zehner, 25, 75 und die anderen Vielfachen von 25, sowie 18 bei einem Geburtstag.
 
-Variablen: Name, Art, erreichte Jahre, Name der Hochzeit (bei den anderen Arten leer), ursprüngliches Datum, Tag, verbleibende Tage und ein fertiger Zusammenfassungssatz („Marie: in 7 Tagen, Donnerstag, 24. Dezember 2026 (31 Jahre)“, „Claire & Alex: heute (25 Jahre, Silberhochzeit)“).
+Variablen: Name, Art, erreichte Jahre, Name der Hochzeit (bei den anderen Arten leer), Geburts- oder Ereignisdatum (das eingegebene), Tag des nächsten Termins, verbleibende Tage und ein fertiger Zusammenfassungssatz („Marie: in 7 Tagen, Donnerstag, 24. Dezember 2026 (31 Jahre)“, „Claire & Alex: heute (25 Jahre, Silberhochzeit)“).
 
 Aktion **Nächste Daten abrufen**: innerhalb von N Tagen (0 nur für heute), optional für bestimmte Arten; liefert die Anzahl, eine Zusammenfassung (eine Zeile pro Datum) und das nächste Datum.
 
@@ -93,6 +93,7 @@ Lokal: Die Integration ruft keinen Onlinedienst auf, nichts verlässt Ihr Gladys
 
 ## Fehlerbehebung
 
+- **Die Funktionen eines Geräts sind auf Englisch**: Das Gerät wurde erstellt, bevor die Integration Ihre Sprache kannte, und Gladys benennt die Funktionen eines bestehenden Geräts nie um. Wählen Sie die „Sprache der Texte“ in der Konfiguration, löschen Sie das Gerät (Tab Geräte) und fügen Sie es im Tab Entdecken erneut hinzu. Das Datum selbst geht nicht verloren.
 - **Ein Datum ist um einen Tag verschoben**: Prüfen Sie die Zeitzone von Gladys (Einstellungen > System); „Daten auflisten“ zeigt den Tag und die Zeitzone der Integration.
 - **Eine Szene ist nicht gestartet**: Die Ereignisse kommen zur Stunde der Konfiguration, nicht um Mitternacht. Ein nach dieser Stunde hinzugefügtes Datum sendet seine Ereignisse des Tages sofort; ein Datum sendet nie zweimal dasselbe Ereignis am selben Tag.
 - **Nach einer Änderung fehlt eine Funktion**: Klicken Sie im Tab Entdecken beim Gerät auf **Aktualisieren**.

@@ -20,7 +20,13 @@
 // -----------------------------------------------------------------------------
 
 import { logger as sdkLogger } from '@gladysassistant/integration-sdk';
-import { normalizeConfig, readLanguage, INTERNAL_KEYS, AUTO_LANGUAGE } from './config.js';
+import {
+  normalizeConfig,
+  readLanguage,
+  guessLanguage,
+  INTERNAL_KEYS,
+  AUTO_LANGUAGE,
+} from './config.js';
 import { createRegistry, RegistryError, fieldsFromWidget } from './registry.js';
 import { createFired, DEFAULT_PATH } from './fired.js';
 import { resolveTimezone, localDay, wallClock, secondsUntilMidnight } from './time.js';
@@ -79,7 +85,9 @@ function createApp(
   let config = normalizeConfig();
   // Language of the last widget request: the language of the texts Gladys
   // does not ask for in a language, when the `language` setting is `auto`.
-  let language = 'en';
+  // Guessed from the timezone until a widget is shown: the devices keep the
+  // feature names they are created with.
+  let language = guessLanguage(timezone);
   let lastDay = null;
   let timer = null;
   let running = Promise.resolve();

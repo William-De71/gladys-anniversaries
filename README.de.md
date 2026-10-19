@@ -71,9 +71,9 @@ Die External-IDs beruhen auf einer zufälligen Kennung, die jedes Datum beim Hin
 
 ![Die drei Widgets: nächste Daten, Countdown eines Hochzeitstags und Daten des Monats (generierte Illustration, kein Screenshot)](docs/assets/widgets.de.png)
 
-**Widgets**: Nächste Daten (1 bis 8, mit Jahren, Tag und Badge; Filter nach Arten und einer Anzahl von Tagen), Countdown (ein Datum: verbleibende Tage, Jahre, vergangene Tage, ursprüngliches Datum, halber Jahrestag, Bezeichnung, Erinnerung), Daten des Monats (dieser oder nächster Monat, vergangene Tage inbegriffen). Nächste Daten und Daten des Monats haben eine Schaltfläche **Datum hinzufügen**: Name, Datum mit dem Tag zuerst, Art, Wiederholung.
+**Widgets**: Nächste Daten (1 bis 8, mit Jahren, Tag und Badge; Filter nach Arten und einer Anzahl von Tagen), Countdown (ein Datum: verbleibende Tage, Jahre, vergangene Tage, Geburtsdatum, halber Jahrestag, Bezeichnung, Erinnerung), Daten des Monats (dieser oder nächster Monat, vergangene Tage inbegriffen). Nächste Daten und Daten des Monats haben eine Schaltfläche **Datum hinzufügen**: Name, Datum mit dem Tag zuerst, Art, Wiederholung.
 
-**Auslöser** (einmal am Tag zu einer einstellbaren Stunde, nie zweimal für dasselbe Datum am selben Tag): ein Datum ist heute; ein Datum ist in N Tagen (N von 1 bis 60); Erinnerung an ein Datum (seine eigene Anzahl Tage oder die Standard-Erinnerung); ein Datum erreicht 1.000 Tage (alle 1.000 Tage seit einem Datum mit bekanntem Jahr). Filter: das Datum, die Arten, nur runde Jahre (10, 20, 25, 30 … und 18 bei einem Geburtstag). Variablen: Name, Art, Jahre, Name der Hochzeit, ursprüngliches Datum, Tag, verbleibende Tage, Zusammenfassungssatz.
+**Auslöser** (einmal am Tag zu einer einstellbaren Stunde, nie zweimal für dasselbe Datum am selben Tag): ein Datum ist heute; ein Datum ist in N Tagen (N von 1 bis 60); Erinnerung an ein Datum (seine eigene Anzahl Tage oder die Standard-Erinnerung); ein Datum erreicht 1.000 Tage (alle 1.000 Tage seit einem Datum mit bekanntem Jahr). Filter: das Datum, die Arten, nur runde Jahre (10, 20, 25, 30 … und 18 bei einem Geburtstag). Variablen: Name, Art, Jahre, Name der Hochzeit, Geburts- oder Ereignisdatum, Tag, verbleibende Tage, Zusammenfassungssatz.
 
 **Aktion**: die nächsten Daten innerhalb von N Tagen abrufen: Anzahl, Zusammenfassung (eine Zeile pro Datum), nächstes Datum.
 
