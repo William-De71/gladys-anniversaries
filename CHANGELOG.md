@@ -5,6 +5,12 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions
 follow [Semantic Versioning](https://semver.org/). This file is generated at
 each release from the Conventional Commits: do not edit it by hand.
 
+## [0.3.1] - 2026-10-20
+
+### Fixed
+
+- lay out the date lists across the whole card, without repeating the kind and the day ([32ac465](https://github.com/William-De71/gladys-anniversaries/commit/32ac4653c21d7c2090b3d8cc5ed07ef512031301))
+
 ## [0.3.0] - 2026-10-20
 
 ### Added
@@ -33,6 +39,7 @@ each release from the Conventional Commits: do not edit it by hand.
 - Local only: the integration calls no online service.
 - English, French, German and Spanish everywhere: settings, devices, widgets, scenes and documentation.
 
+[0.3.1]: https://github.com/William-De71/gladys-anniversaries/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/William-De71/gladys-anniversaries/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/William-De71/gladys-anniversaries/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/William-De71/gladys-anniversaries/releases/tag/v0.1.0
