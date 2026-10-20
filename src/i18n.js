@@ -89,6 +89,8 @@ const TEXTS = {
     es: 'Hace {n} días',
   },
   yesterday: { en: 'Yesterday', fr: 'Hier', de: 'Gestern', es: 'Ayer' },
+  // the right of a list row ("Oct 2 · 14 d ago")
+  daysAgoShort: { en: '{n} d ago', fr: 'il y a {n} j', de: 'vor {n} T', es: 'hace {n} d' },
   years: { en: '{n} years', fr: '{n} ans', de: '{n} Jahre', es: '{n} años' },
   oneYear: { en: '1 year', fr: '1 an', de: '1 Jahr', es: '1 año' },
 
@@ -175,18 +177,6 @@ const TEXTS = {
     fr: 'Passée : {date}',
     de: 'Vorbei: {date}',
     es: 'Pasada: {date}',
-  },
-  itemDescription: {
-    en: '{kind}, {recurrence}. Next: {date} ({relative}).{years} {originalLabel}: {original}.',
-    fr: '{kind}, {recurrence}. Prochaine : {date} ({relative}).{years} {originalLabel} : {original}.',
-    de: '{kind}, {recurrence}. Nächstes: {date} ({relative}).{years} {originalLabel}: {original}.',
-    es: '{kind}, {recurrence}. Próxima: {date} ({relative}).{years} {originalLabel}: {original}.',
-  },
-  itemYears: {
-    en: ' {years} on that day.',
-    fr: ' {years} ce jour-là.',
-    de: ' {years} an diesem Tag.',
-    es: ' {years} ese día.',
   },
   widgetEmpty: {
     en: 'No date yet. Add them in the configuration of the integration (“Add a date” button).',
@@ -562,6 +552,20 @@ function relativeDays(days, language) {
 }
 
 /**
+ * @description The days of a list row, short: "Today", "Tomorrow", "38 d",
+ * "Yesterday", "14 d ago".
+ * @param {number} days - Days from today.
+ * @param {string} language - The language.
+ * @returns {string} The text.
+ */
+function shortDays(days, language) {
+  if (days >= -1 && days <= 1) return relativeDays(days, language);
+  return days > 0
+    ? `${days} ${t('unitDays', language)}`
+    : t('daysAgoShort', language, { n: -days });
+}
+
+/**
  * @description relativeDays in the middle of a sentence: only the first
  * letter is lowered ("in 3 Tagen", never "in 3 tagen").
  * @param {number} days - Days from today.
@@ -592,5 +596,6 @@ export {
   formatNumber,
   relativeDays,
   relativeInline,
+  shortDays,
   yearsText,
 };

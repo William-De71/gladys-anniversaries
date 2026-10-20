@@ -3,9 +3,9 @@
 //
 //   - `upcoming`   the nearest date put forward (its name, kind and day, a
 //                  colored tile of the days left and one of the years), then
-//                  the next ones as a list: name, a subtitle (day, kind,
-//                  years, wedding anniversary), a badge ("Today", "In 3
-//                  days") and a detail panel; settings: how many, within how many days, which
+//                  the next ones as rows: an icon of the kind, the name and
+//                  the years on the left, the day and the days left on the
+//                  right ("Today" alone on the day); settings: how many, within how many days, which
 //                  kinds, whether to show the button;
 //   - `countdown`  one date, chosen among the created devices: days left,
 //                  years reached, days elapsed, original date (not for a
@@ -27,7 +27,7 @@
 // 1 main one, 6 tiles, 2 texts, 1 status, 4 buttons.
 // -----------------------------------------------------------------------------
 
-import { t, all, formatDay, formatMonth, relativeDays, relativeInline, yearsText } from './i18n.js';
+import { t, all, formatDay, formatMonth, relativeInline, shortDays, yearsText } from './i18n.js';
 import {
   KINDS,
   RECURRENCES,
@@ -38,13 +38,22 @@ import {
   isRoundYears,
 } from './dates.js';
 import { snapshot, yearsOf, weddingOf } from './events.js';
-import { weddingName, capitalize } from './weddings.js';
+import { capitalize } from './weddings.js';
 
 const WIDGETS = { UPCOMING: 'upcoming', COUNTDOWN: 'countdown', MONTH: 'month' };
 const WIDGET_ACTIONS = { ADD: 'add_date' };
 const MONTHS = { CURRENT: 'current', NEXT: 'next' };
-// The rows of a card-list in list display.
+// The rows of a list (a status component takes 10).
 const MAX_ITEMS = 8;
+// The icon of a kind, at the left of a row: the kind is not written.
+const KIND_ICONS = {
+  birthday: 'gift',
+  wedding: 'heart',
+  anniversary: 'star',
+  memorial: 'feather',
+  event: 'calendar',
+  other: 'bookmark',
+};
 const COUNT = { min: 1, max: 8, default: 5 };
 const WITHIN = { min: 1, max: 366, default: 366 };
 const TTL = { min: 10, max: 3600 };
@@ -167,8 +176,8 @@ const addButtonIf = (settings, language) =>
 
 /**
  * @description The color of a date: today, within its reminder, round years
- * (10, 25, 18 for a birthday...), later. The light blue badges of `primary`
- * and `info` look alike in the Gladys theme: a later date is grey in a list
+ * (10, 25, 18 for a birthday...), later. The blues of `primary` and `info`
+ * look alike in the Gladys theme: a later date is grey in a list
  * (`later`), so that only the dates that matter are colored; a tile keeps
  * its blue (`later: 'info'`).
  * @param {object} entry - The date.
@@ -187,30 +196,33 @@ function colorOf(entry, occurrence, defaultReminder, years = null, later = 'neut
 }
 
 /**
- * @description The subtitle of a date in a list: the day, the kind, the years
- * reached ("Dec 24, 2026 · Birthday · 31 years"); for a wedding anniversary,
- * its traditional name in place of the kind ("Oct 16, 2026 · 16 years ·
- * Sapphire"). The front shows either the `date` of an item or its subtitle,
- * never both: the day is written here, and no `date` is sent.
+ * @description A row of a list, laid out like a status line so that it takes
+ * the width of the card: on the left the icon of the kind, the name and the
+ * years reached ("Marie · 31 years"), on the right the day and the days left
+ * ("Dec 24 · 69 d"), "Today" alone on the day. The year of the day is left
+ * out (the days left say it), and so is the name of a wedding anniversary:
+ * a row of a narrow card has no room for it, the caption and the countdown
+ * widget say it.
  * @param {object} entry - The date.
- * @param {string} date - The day, YYYY-MM-DD.
- * @param {string} years - The years reached, as text, or ''.
- * @param {string} wedding - The name of a wedding anniversary, or ''.
- * @param {string} language - The language.
- * @returns {string} The subtitle.
+ * @param {object} at - The occurrence shown.
+ * @param {string} at.date - Its day, YYYY-MM-DD.
+ * @param {number} at.days - Days from today (negative in the past).
+ * @param {string} at.years - The years reached that day, as text, or ''.
+ * @param {string} at.color - The color of the date.
+ * @param {string} at.language - The language.
+ * @returns {object} The status item.
  */
-const subtitleOf = (entry, date, years, wedding, language) =>
-  clip(
-    [
-      formatDay(date, language, 'short'),
-      wedding ? '' : t(`kind_${entry.kind}`, language),
-      years,
-      wedding ? capitalize(wedding) : '',
-    ]
-      .filter(Boolean)
-      .join(' · '),
-    60,
-  );
+const rowOf = (entry, { date, days, years, color, language }) => ({
+  icon: KIND_ICONS[entry.kind] ?? 'calendar',
+  color,
+  label: clip([entry.name, years].filter(Boolean).join(' · '), 40),
+  value: clip(
+    days === 0
+      ? t('today', language)
+      : `${formatDay(`--${date.slice(5)}`, language, 'short')} · ${shortDays(days, language)}`,
+    40,
+  ),
+});
 
 /**
  * @description The tile of the days left: "Today" on the day.
@@ -284,7 +296,7 @@ const originalLabelOf = (entry, language) =>
 
 /**
  * @description The "upcoming" widget: the nearest date put forward (heading,
- * caption and tiles, which fill the card), the next ones in a list.
+ * caption and tiles, which fill the card), the next ones in rows.
  * @param {object} options - Options.
  * @param {object[]} options.entries - The dates.
  * @param {string} options.today - YYYY-MM-DD.
@@ -346,47 +358,19 @@ function buildUpcomingWidget({ entries, today, language, settings = {}, ttl, def
   ];
   if (rest.length > 0) {
     components.push({
-      type: 'card-list',
-      display: 'list',
-      items: rest.map(({ entry, occurrence, color, yearsLabel, wedding }) => ({
-        title: clip(entry.name, 60),
-        subtitle: subtitleOf(entry, occurrence.next, yearsLabel, wedding, language),
-        badge: { text: clip(relativeDays(occurrence.daysRemaining, language), 16), color },
-        description: describeItem(entry, {
+      type: 'status',
+      items: rest.map(({ entry, occurrence, color, yearsLabel }) =>
+        rowOf(entry, {
           date: occurrence.next,
           days: occurrence.daysRemaining,
           years: yearsLabel,
-          wedding,
+          color,
           language,
         }),
-      })),
+      ),
     });
   }
   return { ttl_seconds: ttl, components: [...components, ...buttons] };
-}
-
-/**
- * @description The detail panel of a date in a card-list.
- * @param {object} entry - The date.
- * @param {object} at - The occurrence shown.
- * @param {string} at.date - Its day, YYYY-MM-DD.
- * @param {number} at.days - Days from today (negative in the past).
- * @param {string} at.years - The years reached that day, as text, or ''.
- * @param {string} at.wedding - The name of a wedding anniversary, or ''.
- * @param {string} at.language - The language.
- * @returns {string} The description.
- */
-function describeItem(entry, { date, days, years, wedding, language }) {
-  const text = t('itemDescription', language, {
-    kind: t(`kind_${entry.kind}`, language),
-    recurrence: t(`recurrence_${entry.recurrence}`, language),
-    date: formatDay(date, language),
-    relative: relativeInline(days, language),
-    years: years ? t('itemYears', language, { years }) : '',
-    original: originalOf(entry, language),
-    originalLabel: originalLabelOf(entry, language),
-  });
-  return clip(wedding ? `${text} ${capitalize(wedding)}.` : text, 2000);
 }
 
 /**
@@ -441,10 +425,6 @@ function buildMonthWidget({ entries, today, language, settings = {}, ttl, defaul
       years,
       color: colorOf(entry, { daysRemaining: days, passed: days < 0 }, defaultReminder, years),
       yearsLabel: years === null ? '' : yearsText(years, language),
-      wedding:
-        entry.kind === 'wedding' && entry.recurrence === 'yearly'
-          ? weddingName(at.years, language)
-          : '',
     };
   });
   // The next date to come this month, put forward with its tiles; the
@@ -486,20 +466,10 @@ function buildMonthWidget({ entries, today, language, settings = {}, ttl, defaul
           ]
         : []),
       {
-        type: 'card-list',
-        display: 'list',
-        items: shown.map(({ entry, at, days, color, yearsLabel, wedding }) => ({
-          title: clip(entry.name, 60),
-          subtitle: subtitleOf(entry, at.date, yearsLabel, wedding, language),
-          badge: { text: clip(relativeDays(days, language), 16), color },
-          description: describeItem(entry, {
-            date: at.date,
-            days,
-            years: yearsLabel,
-            wedding,
-            language,
-          }),
-        })),
+        type: 'status',
+        items: shown.map(({ entry, at, days, color, yearsLabel }) =>
+          rowOf(entry, { date: at.date, days, years: yearsLabel, color, language }),
+        ),
       },
       ...buttons,
     ],

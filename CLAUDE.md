@@ -71,9 +71,8 @@ docs/illustrations/     generated widget images (render.sh, gen.mjs, render.js)
   integration's own clock (a tick every 30 s: new local day -> states and
   widget refresh; event hour reached -> scene events).
 - **Days are calendar days in the timezone of Gladys** (`TZ`): never compute a
-  day from UTC. The widget lists send no card `date`: the front
-  shows either the date or the subtitle of an item, never both, so the day
-  is written in the subtitle (formatted integration-side).
+  day from UTC. The widget lists are `status` rows (not a `card-list`, whose
+  rows pile up on the left): the day is formatted integration-side.
 - **Scene events**: one per date, trigger and day, fired at the event hour,
   remembered in `/data/fired.json`; a refused event is retried at the next
   tick; events are spaced (300 events per minute at most). Never fire an
