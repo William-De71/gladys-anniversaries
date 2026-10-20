@@ -5,6 +5,12 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions
 follow [Semantic Versioning](https://semver.org/). This file is generated at
 each release from the Conventional Commits: do not edit it by hand.
 
+## [0.3.0] - 2026-10-20
+
+### Added
+
+- put the nearest date forward in the widgets, with subtitles, clearer colors and an option to hide the add button ([f5343c1](https://github.com/William-De71/gladys-anniversaries/commit/f5343c1adcab05d31757129e68bfaf1e1c5dfaf6))
+
 ## [0.2.0] - 2026-10-19
 
 ### Added
@@ -27,5 +33,6 @@ each release from the Conventional Commits: do not edit it by hand.
 - Local only: the integration calls no online service.
 - English, French, German and Spanish everywhere: settings, devices, widgets, scenes and documentation.
 
+[0.3.0]: https://github.com/William-De71/gladys-anniversaries/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/William-De71/gladys-anniversaries/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/William-De71/gladys-anniversaries/releases/tag/v0.1.0
