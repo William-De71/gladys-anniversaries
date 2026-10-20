@@ -17,6 +17,7 @@ import { LANGUAGES } from '../src/i18n.js';
 import { DATES, MARIE, WEDDING, MOVE, GRANDPA, TODAY, entry } from './helpers/fixtures.js';
 
 const types = (content) => content.components.map((component) => component.type);
+const listOf = (content) => content.components.find((component) => component.type === 'card-list');
 
 /**
  * @description Assert a content is valid and within the budget of a card.
@@ -45,6 +46,8 @@ function assertValid(content, label) {
   }
 }
 
+const month = (language, settings = {}, entries = DATES, today = TODAY) =>
+  buildMonthWidget({ entries, today, language, settings, ttl: 600, defaultReminder: 7 });
 const upcoming = (language, settings = {}, entries = DATES, today = TODAY) =>
   buildUpcomingWidget({ entries, today, language, settings, ttl: 600, defaultReminder: 7 });
 const countdown = (entry, language, today = TODAY) =>
@@ -65,27 +68,66 @@ test('upcoming: valid in every language and case', () => {
   }
 });
 
-test('upcoming: nearest first, calendar dates, badges and colors', () => {
+test('upcoming: the nearest date put forward, then the next ones with subtitles and badges', () => {
   const content = upcoming('fr', { count: 3 });
-  assert.deepEqual(types(content), ['card-list', 'button']);
-  const [list] = content.components;
+  assert.deepEqual(types(content), ['text', 'text', 'value', 'value', 'card-list', 'button']);
+  const [heading, caption, days, years, list] = content.components;
+  assert.equal(heading.text, 'Our wedding');
+  assert.equal(caption.text, 'Noces de saphir · vendredi 16 octobre 2026');
+  assert.deepEqual([days.value, days.color], ['Aujourd’hui', 'success']);
+  assert.deepEqual([years.value, years.unit, years.label], [16, 'ans', 'Années']);
   assert.deepEqual(
-    list.items.map((item) => [item.title, item.date, item.badge.text, item.badge.color]),
+    list.items.map((item) => [
+      item.title,
+      item.subtitle,
+      item.date,
+      item.badge.text,
+      item.badge.color,
+    ]),
     [
-      ['Our wedding · 16 ans', '2026-10-16T00:00:00.000Z', 'Aujourd’hui', 'success'],
-      ['Grandpa', '2026-10-23T00:00:00.000Z', 'Dans 7 jours', 'warning'],
-      ['Marie · 31 ans', '2026-12-24T00:00:00.000Z', 'Dans 69 jours', 'info'],
+      ['Grandpa', '23 oct. 2026 · Anniversaire', undefined, 'Dans 7 jours', 'warning'],
+      ['Marie', '24 déc. 2026 · Anniversaire · 31 ans', undefined, 'Dans 69 jours', 'neutral'],
     ],
   );
   assert.match(
-    list.items[2].description,
+    list.items[1].description,
     /Anniversaire, chaque année\. Prochaine : jeudi 24 décembre 2026/,
   );
-  // Within 30 days: a caption counts them.
-  assert.deepEqual(types(upcoming('en', { days: 30 })), ['text', 'card-list', 'button']);
+  // One date only: no list. A date without year: no years tile.
+  assert.deepEqual(types(upcoming('en', { count: 1 })), [
+    'text',
+    'text',
+    'value',
+    'value',
+    'button',
+  ]);
+  assert.deepEqual(types(upcoming('en', {}, [GRANDPA])), ['text', 'text', 'value', 'button']);
   // A passed one-time date is not listed.
   const later = upcoming('en', {}, [MOVE], '2027-03-02');
   assert.deepEqual(types(later), ['text', 'button']);
+});
+
+test('round years get their own color, after today and the reminder', () => {
+  const tom = entry({ id: 'f0f0f0f0', name: 'Tom', day: 20, month: 12, year: 2008 });
+  const content = upcoming('en', {}, [MARIE, tom]);
+  assert.equal(content.components[0].text, 'Tom', '18 on December 20');
+  assert.equal(content.components[2].color, 'primary');
+  // Marie, 31: not round, a later date is grey in a list (blue on a tile).
+  assert.equal(listOf(content).items[0].badge.color, 'neutral');
+  assert.equal(upcoming('en', {}, [MARIE]).components[2].color, 'info');
+  assert.equal(upcoming('en', {}, [tom], '2026-12-15').components[2].color, 'warning');
+});
+
+test('the "Add a date" button can be turned off', () => {
+  for (const content of [
+    upcoming('en', { show_add_button: false }),
+    upcoming('en', { show_add_button: false }, []),
+    month('en', { show_add_button: false }),
+    month('en', { show_add_button: false }, []),
+  ]) {
+    assert.ok(!types(content).includes('button'));
+  }
+  assert.ok(types(upcoming('en', { show_add_button: true })).includes('button'));
 });
 
 test('countdown: valid for every kind of date, in every language', () => {
@@ -102,7 +144,7 @@ test('countdown: valid for every kind of date, in every language', () => {
   }
 });
 
-test('countdown: days left, years, days elapsed, original date and reminder', () => {
+test('countdown: days left, years, days elapsed, original date, never the reminder', () => {
   const content = countdown(WEDDING, 'en', '2026-10-10');
   assert.deepEqual(types(content), ['text', 'text', 'value', 'value', 'value', 'status']);
   const [heading, caption, days, years, since, status] = content.components;
@@ -111,14 +153,16 @@ test('countdown: days left, years, days elapsed, original date and reminder', ()
   assert.deepEqual([days.value, days.color, years.value, since.value], [6, 'warning', 16, 359]);
   assert.deepEqual(
     status.items.map((item) => item.label),
-    ['Wedding date', 'Half anniversary', 'Reminder'],
+    ['Wedding date', 'Half anniversary'],
   );
   assert.equal(countdown(MARIE, 'de', '2026-12-24').components[2].value, 'Heute');
-  assert.equal(countdown(GRANDPA, 'en').components.length, 4, 'no year: no years tile');
+  // A birthday: no date of birth (the age says it), hence no status at all.
+  assert.deepEqual(types(countdown(MARIE, 'en')), ['text', 'text', 'value', 'value']);
+  assert.equal(countdown(GRANDPA, 'en').components.length, 3, 'no year: no years tile');
 });
 
 test('upcoming: the traditional name of a wedding anniversary in its detail panel', () => {
-  const [list] = upcoming('fr', { count: 1 }).components;
+  const list = listOf(month('fr'));
   assert.match(list.items[0].description, /16 ans ce jour-là\. .* Noces de saphir\.$/);
 });
 
@@ -142,8 +186,6 @@ test('the "Add a date" button: a form of four fields, in every language', () => 
   assert.equal(upcoming('fr').components.at(-1).label, 'Ajouter une date');
 });
 
-const month = (language, settings = {}, entries = DATES, today = TODAY) =>
-  buildMonthWidget({ entries, today, language, settings, ttl: 600, defaultReminder: 7 });
 const crowd = Array.from({ length: 12 }, (_, i) =>
   entry({ id: `0000000${i}`.slice(-8), name: `P${i}`, day: i + 1, month: 10 }),
 );
@@ -161,18 +203,28 @@ test('month: valid in every language and case', () => {
 test('month: the whole month, past days included, in the order of the days', () => {
   const tom = entry({ id: 'f0f0f0f0', name: 'Tom', day: 2, month: 10, year: 2016 });
   const content = month('fr', {}, [...DATES, tom]);
-  assert.deepEqual(types(content), ['text', 'text', 'card-list', 'button']);
-  const [heading, caption, list] = content.components;
+  assert.deepEqual(types(content), ['text', 'text', 'value', 'value', 'card-list', 'button']);
+  const [heading, caption, days, years, list] = content.components;
   assert.equal(heading.text, 'Octobre 2026');
-  assert.equal(caption.text, '3 date(s) ce mois-ci');
+  assert.equal(caption.text, 'Prochaine : Our wedding · 3 date(s)');
+  assert.deepEqual([days.value, years.value], ['Aujourd’hui', 16]);
   assert.deepEqual(
-    list.items.map((item) => [item.title, item.date, item.badge.text, item.badge.color]),
+    list.items.map((item) => [item.title, item.subtitle, item.badge.text, item.badge.color]),
     [
-      ['Tom · 10 ans', '2026-10-02T00:00:00.000Z', 'Il y a 14 jours', 'neutral'],
-      ['Our wedding · 16 ans', '2026-10-16T00:00:00.000Z', 'Aujourd’hui', 'success'],
-      ['Grandpa', '2026-10-23T00:00:00.000Z', 'Dans 7 jours', 'warning'],
+      ['Tom', '2 oct. 2026 · Anniversaire · 10 ans', 'Il y a 14 jours', 'neutral'],
+      ['Our wedding', '16 oct. 2026 · 16 ans · Noces de saphir', 'Aujourd’hui', 'success'],
+      ['Grandpa', '23 oct. 2026 · Anniversaire', 'Dans 7 jours', 'warning'],
     ],
   );
+  // The front shows the date or the subtitle, never both: the day is in the subtitle.
+  assert.ok(list.items.every((item) => item.date === undefined));
+  // Every date of the month passed: no tiles.
+  assert.deepEqual(types(month('en', {}, [tom], '2026-10-20')), [
+    'text',
+    'text',
+    'card-list',
+    'button',
+  ]);
   // The next month, across the end of the year.
   assert.equal(
     month('en', { month: 'next' }, DATES, '2026-11-30').components[0].text,
@@ -183,7 +235,7 @@ test('month: the whole month, past days included, in the order of the days', () 
     'January 2027',
   );
   // A one-time date in its own month only; a date not born yet is left out.
-  assert.equal(month('en', {}, [MOVE], '2027-03-10').components[2].items.length, 1);
+  assert.equal(listOf(month('en', {}, [MOVE], '2027-03-10')).items.length, 1);
   assert.equal(month('en', {}, [MOVE], '2028-03-10').components[1].text, 'No date in March 2028.');
   assert.equal(
     month('en', {}, [MARIE], '1990-12-01').components[1].text,
@@ -191,8 +243,8 @@ test('month: the whole month, past days included, in the order of the days', () 
   );
   // More than 8: the caption says how many are shown.
   const crowded = month('en', {}, crowd);
-  assert.equal(crowded.components[1].text, '8 of 12 dates this month');
-  assert.equal(crowded.components[2].items.length, 8);
+  assert.equal(crowded.components[1].text, '8 of 12 dates this month', 'all passed');
+  assert.equal(listOf(crowded).items.length, 8);
 });
 
 test('countdown: the traditional name of a wedding anniversary', () => {
@@ -203,7 +255,6 @@ test('countdown: the traditional name of a wedding anniversary', () => {
       ['Date du mariage', '16 oct. 2010'],
       ['Demi-anniversaire', '16 avr. 2027 · dans 188 jours'],
       ['Noces', 'Noces de saphir'],
-      ['Rappel', '7 jours avant'],
     ],
   );
 });
@@ -214,12 +265,9 @@ test('the labels read naturally: next age, date of birth, wedding date', () => {
   assert.equal(countdown(WEDDING, 'fr', '2026-10-10').components[4].label, 'Jours écoulés');
   assert.equal(countdown(MOVE, 'fr', '2027-04-01').components[2].label, 'Jours écoulés');
   const status = (entry) => countdown(entry, 'fr').components.at(-1).items[0].label;
-  assert.deepEqual(
-    [status(MARIE), status(WEDDING), status(MOVE)],
-    ['Date de naissance', 'Date du mariage', 'Date de l’événement'],
-  );
-  const [list] = upcoming('en', { count: 3 }).components;
-  assert.match(list.items[2].description, /Date of birth: Dec 24, 1995\.$/);
+  assert.deepEqual([status(WEDDING), status(MOVE)], ['Date du mariage', 'Date de l’événement']);
+  const list = listOf(upcoming('en', { count: 3 }));
+  assert.match(list.items[1].description, /Date of birth: Dec 24, 1995\.$/);
 });
 
 test('the cache lasts until midnight, one hour at most', () => {

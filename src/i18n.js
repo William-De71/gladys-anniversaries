@@ -169,26 +169,12 @@ const TEXTS = {
     de: 'Halber Jahrestag',
     es: 'Medio aniversario',
   },
-  statusReminder: { en: 'Reminder', fr: 'Rappel', de: 'Erinnerung', es: 'Recordatorio' },
   statusWedding: { en: 'Tradition', fr: 'Noces', de: 'Bezeichnung', es: 'Bodas' },
-  reminderDays: {
-    en: '{n} days before',
-    fr: '{n} jours avant',
-    de: '{n} Tage vorher',
-    es: '{n} días antes',
-  },
-  reminderOff: { en: 'None', fr: 'Aucun', de: 'Keine', es: 'Ninguno' },
   passedCaption: {
     en: 'Passed: {date}',
     fr: 'Passée : {date}',
     de: 'Vorbei: {date}',
     es: 'Pasada: {date}',
-  },
-  upcomingCaption: {
-    en: '{count} date(s) in the next {days} days',
-    fr: '{count} date(s) dans les {days} prochains jours',
-    de: '{count} Datum/Daten in den nächsten {days} Tagen',
-    es: '{count} fecha(s) en los próximos {days} días',
   },
   itemDescription: {
     en: '{kind}, {recurrence}. Next: {date} ({relative}).{years} {originalLabel}: {original}.',
@@ -225,6 +211,25 @@ const TEXTS = {
     fr: '{shown} dates sur {count} ce mois-ci',
     de: '{shown} von {count} Daten in diesem Monat',
     es: '{shown} de {count} fechas este mes',
+  },
+  monthNext: {
+    en: 'Next: {name}',
+    fr: 'Prochaine : {name}',
+    de: 'Nächstes: {name}',
+    es: 'Próxima: {name}',
+  },
+  // after "Next: {name}", in the caption of the month widget
+  monthCount: {
+    en: '{count} date(s)',
+    fr: '{count} date(s)',
+    de: '{count} Datum/Daten',
+    es: '{count} fecha(s)',
+  },
+  monthCountMore: {
+    en: '{shown} of {count} dates',
+    fr: '{shown} dates sur {count}',
+    de: '{shown} von {count} Daten',
+    es: '{shown} de {count} fechas',
   },
   monthNothing: {
     en: 'No date in {month}.',

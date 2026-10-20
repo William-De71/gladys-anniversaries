@@ -1047,10 +1047,10 @@
         "es": "Próximas fechas"
       },
       "description": {
-        "en": "The next birthdays and dates, with the days left, and a button to add one.",
-        "fr": "Les prochains anniversaires et dates, avec les jours restants, et un bouton pour en ajouter.",
-        "de": "Die nächsten Geburtstage und Daten mit den verbleibenden Tagen, und eine Taste zum Hinzufügen.",
-        "es": "Los próximos cumpleaños y fechas, con los días restantes, y un botón para añadir."
+        "en": "The nearest date put forward, the next ones with the days left, an add button.",
+        "fr": "La prochaine date mise en avant, les suivantes avec les jours restants, un bouton d’ajout.",
+        "de": "Das nächste Datum hervorgehoben, die folgenden mit verbleibenden Tagen, Taste zum Hinzufügen.",
+        "es": "La próxima fecha destacada, las siguientes con los días restantes, un botón para añadir."
       },
       "settings": [
         {
@@ -1150,6 +1150,23 @@
             "de": "Leer: alle Arten.",
             "es": "Vacío: todos los tipos."
           }
+        },
+        {
+          "key": "show_add_button",
+          "type": "boolean",
+          "default": true,
+          "label": {
+            "en": "Show the “Add a date” button",
+            "fr": "Afficher le bouton « Ajouter une date »",
+            "de": "Schaltfläche „Datum hinzufügen“ anzeigen",
+            "es": "Mostrar el botón «Añadir una fecha»"
+          },
+          "description": {
+            "en": "Turn off for a read-only display: dates can still be added in the configuration.",
+            "fr": "À désactiver pour un affichage en lecture seule : les dates restent ajoutables dans la configuration.",
+            "de": "Für eine reine Anzeige ausschalten: Daten lassen sich weiter in der Konfiguration hinzufügen.",
+            "es": "Desactívelo para una pantalla de solo lectura: las fechas se siguen añadiendo en la configuración."
+          }
         }
       ]
     },
@@ -1163,10 +1180,10 @@
         "es": "Cuenta atrás"
       },
       "description": {
-        "en": "One date: days left, years, date of birth or of the event, reminder.",
-        "fr": "Une date : jours restants, années, date de naissance ou de l’événement, rappel.",
-        "de": "Ein Datum: verbleibende Tage, Jahre, Geburts- oder Ereignisdatum, Erinnerung.",
-        "es": "Una fecha: días restantes, años, fecha de nacimiento o del evento, recordatorio."
+        "en": "One date: days left, years, days elapsed, half anniversary and wedding anniversary name.",
+        "fr": "Une date : jours restants, années, jours écoulés, demi-anniversaire et noces.",
+        "de": "Ein Datum: verbleibende Tage, Jahre, vergangene Tage, halber Jahrestag und Hochzeitstag-Bezeichnung.",
+        "es": "Una fecha: días restantes, años, días pasados, medio aniversario y nombre de las bodas."
       },
       "settings": [
         {
@@ -1199,10 +1216,10 @@
         "es": "Fechas del mes"
       },
       "description": {
-        "en": "Every date of this month (or the next one), past days included, and a button to add one.",
-        "fr": "Toutes les dates du mois (ou du suivant), jours passés compris, et un bouton pour en ajouter.",
-        "de": "Alle Daten dieses (oder des nächsten) Monats, vergangene Tage inbegriffen, mit Taste zum Hinzufügen.",
-        "es": "Todas las fechas de este mes (o del siguiente), días pasados incluidos, y un botón para añadir."
+        "en": "Every date of this (or next) month, past days included, the next one put forward.",
+        "fr": "Les dates du mois (ou du suivant), jours passés compris, la prochaine mise en avant.",
+        "de": "Alle Daten dieses (oder nächsten) Monats, auch vergangene, das nächste hervorgehoben.",
+        "es": "Las fechas del mes (o del siguiente), días pasados incluidos, la próxima destacada."
       },
       "settings": [
         {
@@ -1306,6 +1323,23 @@
             "fr": "Vide : tous les types.",
             "de": "Leer: alle Arten.",
             "es": "Vacío: todos los tipos."
+          }
+        },
+        {
+          "key": "show_add_button",
+          "type": "boolean",
+          "default": true,
+          "label": {
+            "en": "Show the “Add a date” button",
+            "fr": "Afficher le bouton « Ajouter une date »",
+            "de": "Schaltfläche „Datum hinzufügen“ anzeigen",
+            "es": "Mostrar el botón «Añadir una fecha»"
+          },
+          "description": {
+            "en": "Turn off for a read-only display: dates can still be added in the configuration.",
+            "fr": "À désactiver pour un affichage en lecture seule : les dates restent ajoutables dans la configuration.",
+            "de": "Für eine reine Anzeige ausschalten: Daten lassen sich weiter in der Konfiguration hinzufügen.",
+            "es": "Desactívelo para una pantalla de solo lectura: las fechas se siguen añadiendo en la configuración."
           }
         }
       ]

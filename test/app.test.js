@@ -192,8 +192,8 @@ test('widgets and the scene action answer from the registry', async () => {
   const upcoming = ok(
     await gladys.fake.widgetGet('upcoming', { settings: { count: 2 }, language: 'es' }),
   );
-  assert.equal(upcoming.components[0].items.length, 2);
-  assert.equal(upcoming.components[0].items[0].badge.text, 'Hoy');
+  assert.equal(upcoming.components[2].value, 'Hoy');
+  assert.equal(upcoming.components.find((c) => c.type === 'card-list').items.length, 1);
   assert.ok(upcoming.ttl_seconds <= 3600);
   const device = 'ext:test-integration:anniversary:a1b2c3d4';
   const countdown = ok(
@@ -252,8 +252,8 @@ test('the month widget lists the dates of the month', async () => {
   const content = ok(await gladys.fake.widgetGet('month', { settings: {}, language: 'de' }));
   assert.equal(content.components[0].text, 'Oktober 2026');
   assert.deepEqual(
-    content.components[2].items.map((item) => item.title),
-    ['Our wedding · 16 Jahre', 'Grandpa'],
+    content.components.find((c) => c.type === 'card-list').items.map((item) => item.title),
+    ['Our wedding', 'Grandpa'],
   );
   const next = ok(await gladys.fake.widgetGet('month', { settings: { month: 'next' } }));
   assert.equal(next.components[1].text, 'No date in November 2026.');

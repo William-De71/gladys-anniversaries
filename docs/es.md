@@ -59,9 +59,9 @@ Los valores cambian a medianoche en la zona horaria de Gladys. Si cambia las opc
 
 ### Widgets del panel
 
-- **Próximas fechas**: las próximas fechas (1 a 8), con los años cumplidos, el día y una insignia (verde el mismo día, naranja dentro del recordatorio). Ajustes: cuántas, dentro de cuántos días, qué tipos. Toque una fecha para ver sus detalles.
-- **Cuenta atrás**: una fecha entre los dispositivos añadidos: días restantes, años, días pasados, fecha de nacimiento (o de la boda, o del evento), medio aniversario, nombre de las bodas y recordatorio. «Próxima edad» es la edad que se cumplirá, «Días pasados» los días desde la última vez.
-- **Fechas del mes**: todas las fechas del mes en curso (o del siguiente), días pasados incluidos, en el orden de los días; 8 como máximo, la leyenda indica cuántas hay. Ajustes: qué mes, qué tipos.
+- **Próximas fechas**: la fecha más cercana se destaca arriba (su nombre, tipo y día, una tesela de color con los días restantes y otra con la edad o los años), luego las siguientes en lista: nombre, subtítulo (día, tipo, años, bodas) e insignia. Colores: verde el mismo día, naranja dentro del recordatorio, azul para los años redondos (10, 20, 25, 30… y 18 para un cumpleaños), gris después (las teselas siguen azules). Ajustes: cuántas (la destacada incluida), dentro de cuántos días, qué tipos, mostrar o no el botón. Toque una fecha para ver sus detalles.
+- **Cuenta atrás**: una fecha entre los dispositivos añadidos: días restantes, años, días pasados, fecha de la boda o del evento (no la fecha de nacimiento: la edad y el día ya lo dicen), medio aniversario y nombre de las bodas. «Próxima edad» es la edad que se cumplirá, «Días pasados» los días desde la última vez. El recordatorio no aparece: solo sirve para las escenas.
+- **Fechas del mes**: todas las fechas del mes en curso (o del siguiente), días pasados incluidos, en el orden de los días, con los mismos subtítulos y colores; la próxima fecha por venir del mes se destaca con sus teselas. 8 como máximo, la leyenda indica cuántas hay. Ajustes: qué mes, qué tipos, mostrar o no el botón.
 
 **Próximas fechas** y **Fechas del mes** tienen un botón **Añadir fecha**: un pequeño formulario con el nombre, la fecha (primero el día: 24/12/1995, o 24/12 sin el año), el tipo y la repetición. El recordatorio propio y las opciones se ajustan después con «Modificar una fecha» en la configuración. Como con el botón de la configuración, añada luego la fecha desde la pestaña Descubrir para obtener su dispositivo.
 
