@@ -5,6 +5,12 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions
 follow [Semantic Versioning](https://semver.org/). This file is generated at
 each release from the Conventional Commits: do not edit it by hand.
 
+## [0.3.2] - 2026-10-24
+
+### Security
+
+- **security:** build the image on Node.js 24.22.1 or later ([c45bbc9](https://github.com/William-De71/gladys-anniversaries/commit/c45bbc97484835d68965c73eb07ed52bd5c17b41))
+
 ## [0.3.1] - 2026-10-20
 
 ### Fixed
@@ -39,6 +45,7 @@ each release from the Conventional Commits: do not edit it by hand.
 - Local only: the integration calls no online service.
 - English, French, German and Spanish everywhere: settings, devices, widgets, scenes and documentation.
 
+[0.3.2]: https://github.com/William-De71/gladys-anniversaries/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/William-De71/gladys-anniversaries/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/William-De71/gladys-anniversaries/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/William-De71/gladys-anniversaries/compare/v0.1.0...v0.2.0
