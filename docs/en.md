@@ -15,7 +15,7 @@ The image above is a generated illustration, not a screenshot.
 
 ## Prerequisites
 
-- Gladys Assistant 5.2.0 or later.
+- Gladys Assistant 5.3.0 or later.
 - The timezone of Gladys set correctly (**Settings > System**): the days change at its midnight.
 - Nothing else: no account, no device, no internet access.
 

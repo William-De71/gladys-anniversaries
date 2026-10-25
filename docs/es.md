@@ -15,7 +15,7 @@ La imagen de arriba es una ilustración generada, no una captura de pantalla.
 
 ## Requisitos previos
 
-- Gladys Assistant 5.2.0 o posterior.
+- Gladys Assistant 5.3.0 o posterior.
 - La zona horaria de Gladys bien configurada (**Ajustes > Sistema**): los días cambian a su medianoche.
 - Nada más: ni cuenta, ni dispositivo, ni acceso a Internet.
 

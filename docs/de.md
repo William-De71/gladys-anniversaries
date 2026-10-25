@@ -15,7 +15,7 @@ Das Bild oben ist eine generierte Illustration, kein Screenshot.
 
 ## Voraussetzungen
 
-- Gladys Assistant 5.2.0 oder neuer.
+- Gladys Assistant 5.3.0 oder neuer.
 - Die Zeitzone von Gladys richtig eingestellt (**Einstellungen > System**): Die Tage wechseln um ihre Mitternacht.
 - Sonst nichts: kein Konto, kein Gerät, kein Internetzugang.
 

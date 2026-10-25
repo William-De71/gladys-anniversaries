@@ -15,7 +15,7 @@ L’image ci-dessus est une illustration générée, pas une capture d’écran.
 
 ## Prérequis
 
-- Gladys Assistant 5.2.0 ou plus récent.
+- Gladys Assistant 5.3.0 ou plus récent.
 - Le fuseau horaire de Gladys correctement réglé (**Paramètres > Système**) : les jours changent à son minuit.
 - Rien d’autre : ni compte, ni appareil, ni accès à Internet.
 

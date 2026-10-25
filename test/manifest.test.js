@@ -51,9 +51,9 @@ test('declares the local transport: no network call at all', () => {
   assert.doesNotMatch(source('../src/app.js'), /publishTransports|GLADYS_PREFER_LOCAL/);
 });
 
-test('requires the first Gladys accepting widget buttons with a form; no extra permission', () => {
+test('requires Gladys 5.3.0 (catalog keywords), past widget buttons with a form; no extra permission', () => {
   // The "Add a date" button of the widgets carries a form (Gladys 5.2.0).
-  assert.equal(manifest.gladys_version, '>=5.2.0');
+  assert.equal(manifest.gladys_version, '>=5.3.0');
   assert.match(source('../src/widgets.js'), /type: 'button'/);
   assert.deepEqual(manifest.categories, ['services']);
   for (const key of ['location', 'network_wake', 'containers', 'network_discovery', 'webhooks']) {
@@ -174,4 +174,16 @@ test('offers the languages of the code, automatic by default', () => {
   const field = byKey(manifest.config_schema).get('language');
   assert.deepEqual(values(field), [AUTO_LANGUAGE, ...LANGUAGES]);
   assert.equal(field.default, AUTO_LANGUAGE);
+});
+
+test('catalog of Gladys 5.3.0: search keywords within the store bounds, countries', () => {
+  const { keywords } = manifest;
+  assert.ok(Array.isArray(keywords) && keywords.length >= 1 && keywords.length <= 10);
+  const normalized = keywords.map((keyword) => keyword.trim().toLowerCase());
+  for (const keyword of normalized) {
+    assert.ok(keyword.length >= 2 && keyword.length <= 30, keyword);
+  }
+  assert.equal(new Set(normalized).size, normalized.length, 'unique once trimmed and lowercased');
+  assert.ok(!normalized.includes(manifest.name.toLowerCase()), 'never the name itself');
+  assert.equal(manifest.countries, undefined, 'usable worldwide: no country list');
 });
